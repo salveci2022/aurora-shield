@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Aurora Mulher Segura</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Shield - Segurança Feminina</title>
     <style>
         body {
             background: radial-gradient(circle at top, #3a0057, #0a0015);
@@ -14,94 +15,127 @@
             margin: 0;
             color: white;
         }
-        .card {
-            background: #140022;
-            padding: 40px;
-            border-radius: 30px;
-            text-align: center;
-            box-shadow: 0 0 50px #7a00ff;
-            max-width: 400px;
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
         }
         .logo {
-            width: 80px;
-            height: 80px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo-circle {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             background: linear-gradient(45deg, #ff2fd4, #7a00ff);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
+            font-size: 50px;
+            font-weight: bold;
             margin: 0 auto 20px;
+            box-shadow: 0 0 30px #ff2fd4;
         }
         h1 {
+            font-size: 32px;
+            margin: 0;
             background: linear-gradient(45deg, #ff2fd4, #7a00ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
         }
         .subtitle {
             color: #b366ff;
-            margin-bottom: 30px;
+            margin-top: 5px;
+        }
+        .card {
+            background: rgba(20, 0, 34, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 0 50px rgba(122, 0, 255, 0.3);
         }
         .btn {
             display: block;
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             margin: 15px 0;
             border: none;
             border-radius: 15px;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
             text-decoration: none;
-            color: white;
+            text-align: center;
             transition: 0.3s;
         }
         .btn-primary {
-            background: linear-gradient(45deg, #7a00ff, #ff2fd4);
+            background: linear-gradient(45deg, #ff2fd4, #7a00ff);
+            color: white;
         }
         .btn-primary:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
             box-shadow: 0 0 30px #ff2fd4;
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #7a00ff;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #7a00ff40;
         }
         .btn-success {
             background: #00ff88;
             color: #0a0015;
         }
         .btn-success:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
             box-shadow: 0 0 30px #00ff88;
         }
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid #7a00ff;
-        }
-        .btn-secondary:hover {
-            background: #7a00ff40;
-        }
-        .warning {
-            margin-top: 20px;
-            padding: 10px;
-            background: #ff2fd4;
-            color: #0a0015;
-            border-radius: 10px;
+        .info-box {
+            background: #1d0030;
+            border: 1px solid #7a00ff;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
             font-size: 14px;
+        }
+        .info-box strong {
+            color: #ff2fd4;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="logo">♀</div>
-        <h1>AURORA</h1>
-        <div class="subtitle">Mulher Segura</div>
+    <div class="container">
+        <div class="logo">
+            <div class="logo-circle">🛡️</div>
+            <h1>AURORA SHIELD</h1>
+            <div class="subtitle">Segurança Feminina</div>
+        </div>
         
-        <a href="/login" class="btn btn-primary">👩 Acessar como Mulher</a>
-        <a href="/confidant" class="btn btn-success">👥 Acesso Rápido - Pessoa de Confiança</a>
-        <a href="/register" class="btn btn-secondary">📝 Cadastrar</a>
+        <div class="card">
+            <a href="/mulher" class="btn btn-primary">👩 ACESSAR COMO MULHER</a>
+            <a href="/confidant" class="btn btn-success">👥 ACESSO RÁPIDO - PESSOA DE CONFIANÇA</a>
+            <a href="/login-confidante" class="btn btn-secondary">🔐 LOGIN PARA CONFIDENTES</a>
+            <a href="/registro-confidante" class="btn btn-secondary">📝 CADASTRO PARA CONFIDENTES</a>
+            
+            <div class="info-box">
+                <strong>📌 MODO DE USO:</strong><br>
+                • Mulher: acesso direto (sem cadastro)<br>
+                • Confidante: acesso público (sem login)<br>
+                • Cadastro opcional para confidantes
+            </div>
+        </div>
         
-        <div class="warning">
-            ⚠️ Pessoa de Confiança: acesso público e imediato<br>
-            <small>(sem necessidade de login para agilizar emergências)</small>
+        <div class="footer">
+            © 2026 Aurora Shield - Proteção 24h
         </div>
     </div>
 </body>

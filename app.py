@@ -1,69 +1,22 @@
 from flask import Flask, render_template, request, jsonify, redirect, session, send_from_directory
 import sqlite3
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 import secrets
-import logging
-from logging.handlers import RotatingFileHandler
 from werkzeug.security import generate_password_hash, check_password_hash
-import re
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(32))
 
-# Configurações de segurança
-app.config['SESSION_COOKIE_SECURE'] = True
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
-
-# Logs
-os.makedirs('logs', exist_ok=True)
-logging.basicConfig(filename='logs/app.log', level=logging.INFO)
-
 # ============================================
-# FUNÇÕES DE VALIDAÇÃO
-# ============================================
-
-def validar_senha_forte(senha):
-    erros = []
-    if len(senha) < 6:
-        erros.append("A senha deve ter no mínimo 6 caracteres")
-    return erros
-
-def validar_email(email):
-    return '@' in email and '.' in email
-
-# ============================================
-# BANCO DE DADOS (SQLITE SIMPLES)
+# BANCO DE DADOS
 # ============================================
 
 def get_db():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     
-    # Criar tabelas se não existirem
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-    
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS contacts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER NOT NULL,
-            name TEXT NOT NULL,
-            phone TEXT NOT NULL,
-            relationship TEXT,
-            FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-        )
-    """)
-    
+    # Tabela de alertas (para o botão de pânico)
     conn.execute("""
         CREATE TABLE IF NOT EXISTS alerts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -76,66 +29,74 @@ def get_db():
         )
     """)
     
+    # Tabela de pessoas de confiança (agora com login)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS trusted (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            phone TEXT,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    
+    # Tabela de contatos (pessoas de confiança da mulher)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS contacts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            email TEXT,
+            relationship TEXT
+        )
+    """)
+    
     conn.commit()
     
-    # Criar usuários demo se não existirem
-    demo = conn.execute("SELECT id FROM users WHERE email = ?", ("ana@demo.com",)).fetchone()
+    # Criar contatos demo
+    demo = conn.execute("SELECT id FROM contacts LIMIT 1").fetchone()
     if not demo:
-        password_hash = generate_password_hash("123456")
-        
-        # Criar usuárias demo
         conn.execute(
-            "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
-            ("Ana Silva", "ana@demo.com", password_hash)
+            "INSERT INTO contacts (name, phone, relationship) VALUES (?, ?, ?)",
+            ("CLECI", "(11) 99999-9999", "Irmã")
         )
         conn.execute(
-            "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
-            ("Maria Demo", "mulher@demo.com", password_hash)
+            "INSERT INTO contacts (name, phone, relationship) VALUES (?, ?, ?)",
+            ("MARIA", "(11) 98888-7777", "Mãe")
         )
         conn.execute(
-            "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
-            ("João Confiança", "confidante@demo.com", password_hash)
+            "INSERT INTO contacts (name, phone, relationship) VALUES (?, ?, ?)",
+            ("JOÃO", "(11) 97777-6666", "Pai")
         )
-        
-        # Pegar ID da Ana
-        user_id = conn.execute("SELECT id FROM users WHERE email = ?", ("ana@demo.com",)).fetchone()['id']
-        
-        # Criar contato de confiança
-        conn.execute(
-            "INSERT INTO contacts (user_id, name, phone, relationship) VALUES (?, ?, ?, ?)",
-            (user_id, "CLECI", "(11) 99999-9999", "Irmã")
-        )
-        
-        # Criar alerta demo
-        conn.execute("""
-            INSERT INTO alerts (date, name, situation, lat, lng) 
-            VALUES (?, ?, ?, ?, ?)
-        """, (
-            datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-            "Ana Silva",
-            "Situação de risco",
-            "-23.5505",
-            "-46.6333"
-        ))
-        
         conn.commit()
     
     return conn
 
 # ============================================
-# ROTAS PÚBLICAS
+# ROTAS PÚBLICAS (MULHER - SEM LOGIN)
 # ============================================
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
+@app.route("/mulher")
+def mulher():
+    """Painel da Mulher - ACESSO DIRETO (sem login)"""
+    conn = get_db()
+    contacts = conn.execute("SELECT * FROM contacts").fetchall()
+    conn.close()
+    return render_template("mulher.html", contacts=contacts)
+
 @app.route("/confidant")
 def confidant():
+    """Painel da Pessoa de Confiança - ACESSO PÚBLICO"""
     return render_template("confidant.html")
 
 @app.route("/history_json")
 def history_json():
+    """API pública de alertas"""
     try:
         conn = get_db()
         rows = conn.execute("SELECT * FROM alerts ORDER BY id DESC LIMIT 100").fetchall()
@@ -146,117 +107,7 @@ def history_json():
         return jsonify([])
 
 # ============================================
-# ROTAS DE AUTENTICAÇÃO
-# ============================================
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        try:
-            data = request.get_json() if request.is_json else request.form
-            email = data.get("email", "").strip().lower()
-            password = data.get("password", "")
-            
-            if not email or not password:
-                return jsonify({"status": "error", "message": "E-mail e senha obrigatórios"}), 400
-            
-            conn = get_db()
-            user = conn.execute(
-                "SELECT id, name, password_hash FROM users WHERE email = ?",
-                (email,)
-            ).fetchone()
-            
-            if user and check_password_hash(user['password_hash'], password):
-                session['user_id'] = user['id']
-                session['user_name'] = user['name']
-                conn.close()
-                return jsonify({"status": "ok", "redirect": "/mulher"})
-            else:
-                conn.close()
-                return jsonify({"status": "error", "message": "E-mail ou senha inválidos"}), 401
-                
-        except Exception as e:
-            return jsonify({"status": "error", "message": str(e)}), 500
-    
-    return render_template("login.html")
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        try:
-            data = request.get_json() if request.is_json else request.form
-            name = data.get("name", "").strip()
-            email = data.get("email", "").strip().lower()
-            password = data.get("password", "")
-            
-            if not name or not email or not password:
-                return jsonify({"status": "error", "message": "Todos os campos obrigatórios"}), 400
-            
-            if not validar_email(email):
-                return jsonify({"status": "error", "message": "E-mail inválido"}), 400
-            
-            conn = get_db()
-            existing = conn.execute("SELECT id FROM users WHERE email = ?", (email,)).fetchone()
-            
-            if existing:
-                conn.close()
-                return jsonify({"status": "error", "message": "E-mail já cadastrado"}), 409
-            
-            password_hash = generate_password_hash(password)
-            conn.execute(
-                "INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)",
-                (name, email, password_hash)
-            )
-            conn.commit()
-            conn.close()
-            
-            return jsonify({"status": "ok", "message": "Cadastro realizado!", "redirect": "/login"})
-            
-        except Exception as e:
-            return jsonify({"status": "error", "message": str(e)}), 500
-    
-    return render_template("register.html")
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    return redirect("/")
-
-# ============================================
-# ROTAS PROTEGIDAS
-# ============================================
-
-@app.route("/mulher")
-def mulher():
-    if 'user_id' not in session:
-        return redirect("/login")
-    return render_template("mulher.html", user=session.get('user_name'))
-
-@app.route("/contacts")
-def contacts():
-    if 'user_id' not in session:
-        return redirect("/login")
-    
-    conn = get_db()
-    contacts = conn.execute(
-        "SELECT * FROM contacts WHERE user_id = ?",
-        (session['user_id'],)
-    ).fetchall()
-    conn.close()
-    return render_template("contacts.html", contacts=contacts)
-
-@app.route("/history")
-def history():
-    if 'user_id' not in session:
-        return redirect("/login")
-    
-    conn = get_db()
-    alerts = conn.execute("SELECT * FROM alerts ORDER BY id DESC").fetchall()
-    conn.close()
-    return render_template("history.html", alerts=alerts)
-
-# ============================================
-# API DO BOTÃO DE PÂNICO
+# API DO BOTÃO DE PÂNICO (PÚBLICO)
 # ============================================
 
 @app.route("/api/panic", methods=["POST"])
@@ -264,7 +115,7 @@ def api_panic():
     try:
         data = request.get_json()
         
-        name = data.get("name", "Anônimo")
+        name = data.get("name", "Usuária")
         situation = data.get("situation", "Emergência")
         message = data.get("message", "")
         lat = str(data.get("lat", "")) if data.get("lat") else ""
@@ -291,48 +142,87 @@ def api_panic():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 # ============================================
-# API DE CONTATOS
+# ROTAS PARA PESSOAS DE CONFIANÇA (COM LOGIN)
 # ============================================
 
-@app.route("/api/contacts", methods=["GET", "POST", "DELETE"])
-def api_contacts():
-    if 'user_id' not in session:
-        return jsonify({"status": "error", "message": "Não autorizado"}), 401
-    
-    conn = get_db()
-    
-    if request.method == "GET":
-        contacts = conn.execute(
-            "SELECT * FROM contacts WHERE user_id = ?",
-            (session['user_id'],)
-        ).fetchall()
-        conn.close()
-        return jsonify([dict(c) for c in contacts])
-    
-    elif request.method == "POST":
-        data = request.get_json()
-        name = data.get("name")
-        phone = data.get("phone")
-        relationship = data.get("relationship", "")
+@app.route("/login-confidante", methods=["GET", "POST"])
+def login_confidante():
+    """Login exclusivo para pessoas de confiança"""
+    if request.method == "POST":
+        data = request.get_json() if request.is_json else request.form
+        email = data.get("email", "").strip().lower()
+        password = data.get("password", "")
         
-        cursor = conn.execute("""
-            INSERT INTO contacts (user_id, name, phone, relationship)
-            VALUES (?, ?, ?, ?)
-        """, (session['user_id'], name, phone, relationship))
-        conn.commit()
-        contact_id = cursor.lastrowid
+        conn = get_db()
+        user = conn.execute(
+            "SELECT id, name FROM trusted WHERE email = ?",
+            (email,)
+        ).fetchone()
         conn.close()
-        return jsonify({"status": "ok", "id": contact_id})
+        
+        if user and check_password_hash(user['password_hash'], password):
+            session['trusted_id'] = user['id']
+            session['trusted_name'] = user['name']
+            return jsonify({"status": "ok", "redirect": "/painel-confidante"})
+        else:
+            return jsonify({"status": "error", "message": "E-mail ou senha inválidos"}), 401
     
-    elif request.method == "DELETE":
-        contact_id = request.args.get("id")
+    return render_template("login_confidante.html")
+
+@app.route("/registro-confidante", methods=["GET", "POST"])
+def registro_confidante():
+    """Cadastro exclusivo para pessoas de confiança"""
+    if request.method == "POST":
+        data = request.get_json() if request.is_json else request.form
+        name = data.get("name", "").strip()
+        email = data.get("email", "").strip().lower()
+        password = data.get("password", "")
+        phone = data.get("phone", "").strip()
+        
+        if not name or not email or not password:
+            return jsonify({"status": "error", "message": "Todos os campos obrigatórios"}), 400
+        
+        conn = get_db()
+        existing = conn.execute("SELECT id FROM trusted WHERE email = ?", (email,)).fetchone()
+        
+        if existing:
+            conn.close()
+            return jsonify({"status": "error", "message": "E-mail já cadastrado"}), 409
+        
+        password_hash = generate_password_hash(password)
         conn.execute(
-            "DELETE FROM contacts WHERE id = ? AND user_id = ?",
-            (contact_id, session['user_id'])
+            "INSERT INTO trusted (name, email, password_hash, phone) VALUES (?, ?, ?, ?)",
+            (name, email, password_hash, phone)
         )
         conn.commit()
         conn.close()
-        return jsonify({"status": "ok"})
+        
+        return jsonify({"status": "ok", "message": "Cadastro realizado!", "redirect": "/login-confidante"})
+    
+    return render_template("registro_confidante.html")
+
+@app.route("/painel-confidante")
+def painel_confidante():
+    """Painel da pessoa de confiança (protegido)"""
+    if 'trusted_id' not in session:
+        return redirect("/login-confidante")
+    return render_template("painel_confidante.html", user=session.get('trusted_name'))
+
+@app.route("/logout-confidante")
+def logout_confidante():
+    session.clear()
+    return redirect("/")
+
+# ============================================
+# API DE CONTATOS (PÚBLICA)
+# ============================================
+
+@app.route("/api/contacts", methods=["GET"])
+def get_contacts():
+    conn = get_db()
+    contacts = conn.execute("SELECT * FROM contacts").fetchall()
+    conn.close()
+    return jsonify([dict(c) for c in contacts])
 
 # ============================================
 # ARQUIVOS ESTÁTICOS
@@ -358,16 +248,20 @@ def service_worker():
 def diagnostico():
     try:
         conn = get_db()
-        users = conn.execute("SELECT id, name, email FROM users").fetchall()
+        alerts = conn.execute("SELECT COUNT(*) as total FROM alerts").fetchone()
+        contacts = conn.execute("SELECT * FROM contacts").fetchall()
+        trusted = conn.execute("SELECT COUNT(*) as total FROM trusted").fetchone()
         conn.close()
         
         html = "<h1>✅ SISTEMA FUNCIONANDO!</h1>"
-        html += f"<p>Usuários: {len(users)}</p>"
-        html += "<ul>"
-        for user in users:
-            html += f"<li>{user['email']}</li>"
+        html += f"<p>🚨 Alertas: {alerts['total']}</p>"
+        html += f"<p>👥 Contatos de confiança: {len(contacts)}</p>"
+        html += f"<p>🔐 Pessoas de confiança cadastradas: {trusted['total']}</p>"
+        html += "<h3>Contatos:</h3><ul>"
+        for c in contacts:
+            html += f"<li>{c['name']} - {c['phone']} ({c['relationship']})</li>"
         html += "</ul>"
-        html += '<p><a href="/login">Ir para login</a></p>'
+        html += '<p><a href="/">Voltar</a></p>'
         return html
     except Exception as e:
         return f"<h1>❌ ERRO: {str(e)}</h1>"
@@ -377,8 +271,19 @@ def diagnostico():
 # ============================================
 
 if __name__ == "__main__":
-    print("="*50)
-    print("🚀 AURORA-SHIELD INICIADO")
-    print("="*50)
+    print("\n" + "="*60)
+    print("🛡️ AURORA-SHIELD - MODO SIMPLIFICADO")
+    print("="*60)
+    print("\n👩 MULHER: ACESSO DIRETO (sem login)")
+    print("   • https://aurora-shield.onrender.com/mulher")
+    print("\n👥 CONFIDANTE: ACESSO PÚBLICO")
+    print("   • https://aurora-shield.onrender.com/confidant")
+    print("\n🔐 CONFIDANTE COM LOGIN (opcional):")
+    print("   • /login-confidante")
+    print("   • /registro-confidante")
+    print("\n📌 Contatos demo:")
+    print("   • CLECI, MARIA, JOÃO")
+    print("\n" + "="*60)
+    
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
