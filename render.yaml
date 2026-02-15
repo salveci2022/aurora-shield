@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: aurora-mulher-segura
+    runtime: python
+    region: ohio  # ou sao-paulo (se disponível)
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: FLASK_ENV
+        value: production
+    healthCheckPath: /
+    autoDeploy: true

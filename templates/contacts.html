@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Contatos - Aurora</title>
+    <style>
+        body {
+            background: radial-gradient(circle at top, #3a0057, #0a0015);
+            font-family: Arial;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .container { max-width: 500px; margin: 0 auto; }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1d0030;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: #140022;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 0 40px #7a00ff;
+        }
+        .contact-item {
+            background: #1d0030;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border-left: 4px solid #ff2fd4;
+        }
+        button {
+            background: #7a00ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span>📱 Meus Contatos</span>
+            <button onclick="window.location.href='/mulher'">Voltar</button>
+        </div>
+        
+        <div class="card">
+            <h2>Pessoas de Confiança</h2>
+            
+            {% for c in contacts %}
+            <div class="contact-item">
+                <strong>{{ c.name }}</strong><br>
+                📞 {{ c.phone }}<br>
+                {% if c.relationship %}🤝 {{ c.relationship }}{% endif %}
+            </div>
+            {% else %}
+            <p style="text-align: center;">Nenhum contato cadastrado</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

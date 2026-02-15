@@ -1,0 +1,129 @@
+{
+  "name": "Aurora Mulher Segura",
+  "short_name": "Aurora",
+  "description": "Aplicativo de segurança feminina com botão de pânico e alerta para pessoas de confiança",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#120016",
+  "theme_color": "#7a00ff",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["safety", "health", "utilities"],
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/static/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/static/screenshots/home.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Tela inicial do Aurora"
+    },
+    {
+      "src": "/static/screenshots/panic.jpg",
+      "sizes": "1080x1920",
+      "type": "image/jpeg",
+      "platform": "wide",
+      "label": "Botão de pânico"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Botão SOS",
+      "short_name": "SOS",
+      "description": "Ativar botão de pânico rapidamente",
+      "url": "/mulher",
+      "icons": [{ "src": "/static/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Meus Contatos",
+      "short_name": "Contatos",
+      "description": "Gerenciar pessoas de confiança",
+      "url": "/contacts",
+      "icons": [{ "src": "/static/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Histórico",
+      "short_name": "Histórico",
+      "description": "Ver histórico de alertas",
+      "url": "/history",
+      "icons": [{ "src": "/static/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "permissions": [
+    "geolocation",
+    "notifications"
+  ],
+  "features": [
+    "Cross-platform",
+    "Offline-capable",
+    "Push notifications"
+  ]
+}
+{
+  "name": "Aurora Mulher Segura",
+  "short_name": "Aurora",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#120016",
+  "theme_color": "#7a00ff",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro - Aurora</title>
+    <style>
+        body {
+            background: radial-gradient(circle at top, #3a0057, #0a0015);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial;
+            margin: 0;
+            color: white;
+        }
+        .card {
+            background: #140022;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 0 50px #7a00ff;
+            max-width: 350px;
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+            color: #ff2fd4;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #7a00ff;
+            border-radius: 10px;
+            background: transparent;
+            color: white;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            background: linear-gradient(45deg, #7a00ff, #ff2fd4);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        a {
+            color: #ff2fd4;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Cadastro</h2>
+        <form id="registerForm">
+            <input type="text" id="name" placeholder="Nome completo">
+            <input type="email" id="email" placeholder="E-mail">
+            <input type="password" id="password" placeholder="Senha">
+            <select id="role">
+                <option value="mulher">Sou Mulher</option>
+                <option value="confidante">Sou Pessoa de Confiança</option>
+            </select>
+            <button type="submit">Cadastrar</button>
+        </form>
+        <p style="text-align: center;">
+            <a href="/login">Já tem conta?</a> | <a href="/">Voltar</a>
+        </p>
+    </div>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            alert('Cadastro realizado! Use os dados demo por enquanto.');
+            window.location.href = '/login';
+        });
+    </script>
+</body>
+</html>
