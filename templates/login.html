@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Login - Aurora</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Aurora Shield</title>
     <style>
         body {
             background: radial-gradient(circle at top, #3a0057, #0a0015);
@@ -14,89 +15,195 @@
             margin: 0;
             color: white;
         }
-        .card {
-            background: #140022;
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 0 50px #7a00ff;
-            max-width: 350px;
+        .container {
+            max-width: 400px;
             width: 100%;
+            padding: 20px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff2fd4, #7a00ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            margin: 0 auto 15px;
+        }
+        h1 {
+            color: white;
+            margin: 0;
+            font-size: 28px;
+        }
+        .card {
+            background: rgba(20, 0, 34, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(122, 0, 255, 0.3);
         }
         h2 {
-            text-align: center;
             color: #ff2fd4;
-            margin-bottom: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            color: #b366ff;
+            margin-bottom: 5px;
+            font-size: 14px;
         }
         input {
             width: 100%;
             padding: 12px;
-            margin: 10px 0;
             border: 2px solid #7a00ff;
             border-radius: 10px;
-            background: transparent;
+            background: rgba(10, 0, 21, 0.8);
             color: white;
+            font-size: 16px;
             box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #ff2fd4;
+            box-shadow: 0 0 15px #ff2fd4;
         }
         button {
             width: 100%;
-            padding: 12px;
-            margin: 20px 0;
+            padding: 14px;
             background: linear-gradient(45deg, #7a00ff, #ff2fd4);
+            color: white;
             border: none;
             border-radius: 10px;
-            color: white;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            transition: 0.3s;
+            margin: 20px 0;
         }
-        .demo-info {
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px #ff2fd4;
+        }
+        .demo-box {
+            background: #1d0030;
+            border: 1px solid #7a00ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .demo-box strong {
+            color: #ff2fd4;
+        }
+        .links {
             text-align: center;
             margin-top: 20px;
-            padding: 10px;
-            background: #1d0030;
-            border-radius: 10px;
-            font-size: 14px;
         }
-        a {
-            color: #ff2fd4;
+        .links a {
+            color: #b366ff;
             text-decoration: none;
+            margin: 0 10px;
+        }
+        .links a:hover {
+            color: #ff2fd4;
+            text-decoration: underline;
+        }
+        .error-message {
+            background: rgba(255, 0, 0, 0.2);
+            border: 1px solid #ff2fd4;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            color: #ff2fd4;
+            text-align: center;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="E-mail" value="mulher@demo.com">
-            <input type="password" id="password" placeholder="Senha" value="123456">
-            <button type="submit">Entrar</button>
-        </form>
-        <div class="demo-info">
-            <strong>Usuários Demo:</strong><br>
-            Mulher: mulher@demo.com / 123456<br>
-            Confidante: confidante@demo.com / 123456
+    <div class="container">
+        <div class="logo">
+            <div class="logo-circle">🛡️</div>
+            <h1>Aurora Shield</h1>
         </div>
-        <p style="text-align: center; margin-top: 20px;">
-            <a href="/register">Criar conta</a> | <a href="/">Voltar</a>
-        </p>
+        
+        <div class="card">
+            <h2>Login</h2>
+            
+            <div id="errorMessage" class="error-message"></div>
+            
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="password" placeholder="Sua senha" required>
+                </div>
+                
+                <button type="submit">Entrar</button>
+            </form>
+            
+            <div class="demo-box">
+                <strong>📋 Usuários Demo:</strong><br>
+                Mulher: ana@demo.com / 123456<br>
+                Confidante: confidante@demo.com / 123456
+            </div>
+            
+            <div class="links">
+                <a href="/register">Criar conta</a> | 
+                <a href="/">Voltar</a>
+            </div>
+        </div>
     </div>
+    
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        async function handleLogin(event) {
+            event.preventDefault();
+            
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
             
-            const r = await fetch('/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email, password})
-            });
-            const data = await r.json();
-            if (data.status === 'ok') {
-                window.location.href = data.redirect;
-            } else {
-                alert('Erro: ' + data.message);
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email, password})
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'ok') {
+                    window.location.href = data.redirect;
+                } else {
+                    errorDiv.style.display = 'block';
+                    errorDiv.textContent = data.message || 'Erro no login';
+                    setTimeout(() => {
+                        errorDiv.style.display = 'none';
+                    }, 5000);
+                }
+            } catch (error) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Erro de conexão';
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                }, 5000);
             }
-        });
+            
+            return false;
+        }
     </script>
 </body>
 </html>
