@@ -97,7 +97,7 @@ def history_json():
         return jsonify([])
 
 # ============================================
-# API DO BOTÃO DE PÂNICO - CORRIGIDO
+# API DO BOTÃO DE PÂNICO
 # ============================================
 
 @app.route("/api/panic", methods=["POST"])
@@ -397,6 +397,140 @@ def adicionar_contato():
         return f"<h1 style='color:red'>Erro ao adicionar: {str(e)}</h1><p><a href='/gerenciar-contatos'>Voltar</a></p>"
 
 # ============================================
+# ROTA DE TESTE DA SIRENE (NOVA)
+# ============================================
+
+@app.route("/testar-sirene")
+def testar_sirene_direto():
+    """Página para testar a sirene manualmente"""
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Teste de Sirene - Aurora Shield</title>
+        <style>
+            body { 
+                background: #0a0015; 
+                color: white; 
+                font-family: Arial; 
+                text-align: center; 
+                padding: 50px;
+                margin: 0;
+            }
+            h1 {
+                background: linear-gradient(45deg, #ff2fd4, #7a00ff);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-size: 36px;
+                margin-bottom: 30px;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background: #140022;
+                padding: 40px;
+                border-radius: 30px;
+                box-shadow: 0 0 50px #7a00ff;
+            }
+            button { 
+                background: linear-gradient(45deg, #ff2fd4, #7a00ff);
+                color: white;
+                border: none;
+                padding: 20px 40px;
+                font-size: 24px;
+                font-weight: bold;
+                border-radius: 50px;
+                cursor: pointer;
+                margin: 20px;
+                transition: 0.3s;
+                box-shadow: 0 0 20px #ff2fd4;
+            }
+            button:hover {
+                transform: scale(1.05);
+                box-shadow: 0 0 40px #ff2fd4;
+            }
+            .stop-btn {
+                background: #ff2fd4;
+            }
+            .info {
+                margin-top: 30px;
+                color: #b366ff;
+                font-size: 14px;
+            }
+            .back-link {
+                display: inline-block;
+                margin-top: 30px;
+                color: #b366ff;
+                text-decoration: none;
+                padding: 10px 20px;
+                border: 1px solid #7a00ff;
+                border-radius: 8px;
+            }
+            .back-link:hover {
+                background: #7a00ff40;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🔊 TESTE DE SIRENE</h1>
+            
+            <button onclick="tocarSirene()">🔊 TOCAR SIRENE AGORA</button>
+            <button onclick="pararSirene()" class="stop-btn">⏹️ PARAR</button>
+            
+            <audio id="sirene" loop preload="auto">
+                <source src="https://www.soundjay.com/misc/sounds/siren-1.mp3" type="audio/mpeg">
+                <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+                <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
+            </audio>
+            
+            <div class="info">
+                <p>✅ Se ouvir o som, a sirene está funcionando!</p>
+                <p>❌ Se não ouvir, verifique se o volume do computador está ativado.</p>
+            </div>
+            
+            <a href="/confidant" class="back-link">← VOLTAR AO PAINEL</a>
+            <a href="/" class="back-link" style="margin-left: 10px;">🏠 INÍCIO</a>
+        </div>
+        
+        <script>
+            let audio = document.getElementById('sirene');
+            let timeoutSirene = null;
+            
+            function tocarSirene() {
+                audio.currentTime = 0;
+                audio.play()
+                    .then(() => {
+                        alert('✅ Sirene está tocando!');
+                        // Para após 5 segundos automaticamente
+                        if (timeoutSirene) clearTimeout(timeoutSirene);
+                        timeoutSirene = setTimeout(() => {
+                            audio.pause();
+                            audio.currentTime = 0;
+                        }, 5000);
+                    })
+                    .catch(erro => {
+                        alert('❌ Erro: ' + erro.message + '\\n\\nClique em "TOCAR" novamente para permitir o som.');
+                    });
+            }
+            
+            function pararSirene() {
+                audio.pause();
+                audio.currentTime = 0;
+                if (timeoutSirene) {
+                    clearTimeout(timeoutSirene);
+                }
+                alert('🔇 Sirene parada');
+            }
+            
+            // Pré-carregar áudio
+            audio.load();
+        </script>
+    </body>
+    </html>
+    """
+
+# ============================================
 # ARQUIVOS ESTÁTICOS
 # ============================================
 
@@ -431,7 +565,7 @@ def diagnostico():
         for c in contacts:
             html += f"<li><strong>{c['name']}</strong> - {c['phone']} ({c['relationship']})</li>"
         html += "</ul>"
-        html += '<p><a href="/">Voltar ao início</a> | <a href="/mulher">Ir para Mulher</a> | <a href="/confidant">Ir para Confidante</a> | <a href="/gerenciar-contatos">Gerenciar Contatos</a></p>'
+        html += '<p><a href="/">Voltar ao início</a> | <a href="/mulher">Ir para Mulher</a> | <a href="/confidant">Ir para Confidante</a> | <a href="/gerenciar-contatos">Gerenciar Contatos</a> | <a href="/testar-sirene">Testar Sirene</a></p>'
         return html
     except Exception as e:
         return f"<h1 style='color:red'>❌ ERRO: {str(e)}</h1>"
@@ -449,14 +583,17 @@ if __name__ == "__main__":
     print("   • Mulher (direto): /mulher")
     print("   • Confidante (público): /confidant")
     print("   • Gerenciar contatos: /gerenciar-contatos")
+    print("   • Testar sirene: /testar-sirene  🔈 NOVO!")
     print("   • Diagnóstico: /diagnostico")
     print("\n👥 Contatos demo:")
     print("   • CLECI (Irmã)")
     print("   • MARIA (Mãe)")
     print("   • JOÃO (Pai)")
-    print("\n✅ API do botão de pânico corrigida:")
-    print("   • Data/hora: formato brasileiro")
-    print("   • Localização: salva corretamente")
+    print("\n✅ Sistema completo com:")
+    print("   • Botão de pânico funcionando")
+    print("   • Localização correta")
+    print("   • Data/hora no formato brasileiro")
+    print("   • Sirene com página de teste")
     print("="*70)
     
     port = int(os.environ.get('PORT', 5000))
