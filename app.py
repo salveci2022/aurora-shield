@@ -399,7 +399,7 @@ def adicionar_contato():
         return f"<h1 style='color:red'>Erro ao adicionar: {str(e)}</h1><p><a href='/gerenciar-contatos'>Voltar</a></p>"
 
 # ============================================
-# ROTA DE TESTE DA SIRENE - VERSÃO MELHORADA
+# ROTA DE TESTE DA SIRENE - CORRIGIDA COM SIRENES REAIS
 # ============================================
 
 @app.route("/testar-sirene")
@@ -491,15 +491,15 @@ def testar_sirene_direto():
             <button onclick="tocarSirene()" class="sirene-btn">🔊 TOCAR</button>
             <button onclick="pararSirene()" class="sirene-btn stop-btn">⏹️ PARAR</button>
             
-            <!-- MÚLTIPLAS FONTES DE ÁUDIO -->
+            <!-- MÚLTIPLAS FONTES DE ÁUDIO - SIRENES REAIS -->
             <audio id="sirene1" loop preload="auto">
-                <source src="https://www.myinstants.com/media/sounds/sirene_urgente.mp3" type="audio/mpeg">
-            </audio>
-            <audio id="sirene2" loop preload="auto">
                 <source src="https://www.soundjay.com/misc/sounds/siren-1.mp3" type="audio/mpeg">
             </audio>
+            <audio id="sirene2" loop preload="auto">
+                <source src="https://www.soundjay.com/misc/sounds/police-siren-1.mp3" type="audio/mpeg">
+            </audio>
             <audio id="sirene3" loop preload="auto">
-                <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+                <source src="https://www.soundjay.com/misc/sounds/fire-truck-siren-1.mp3" type="audio/mpeg">
             </audio>
             
             <div class="info">
@@ -664,7 +664,7 @@ if __name__ == "__main__":
     print("   • JOÃO (Pai)")
     print("\n✅ Sistema completo com:")
     print("   • Fuso horário brasileiro corrigido")
-    print("   • Múltiplas fontes de áudio para sirene")
+    print("   • SIRENES REAIS: polícia, bombeiro e ambulância")
     print("   • Localização funcionando")
     print("="*70)
     

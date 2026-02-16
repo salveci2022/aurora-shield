@@ -390,11 +390,14 @@
         </div>
     </div>
 
-    <!-- ÁUDIO DA SIRENE - CORRIGIDO COM FONTES CONFIÁVEIS -->
+    <!-- CORREÇÃO: ÁUDIO DA SIRENE COM FONTES CONFIÁVEIS E FUNCIONAIS -->
     <audio id="sirene" loop preload="auto">
-        <source src="https://www.myinstants.com/media/sounds/sirene_urgente.mp3" type="audio/mpeg">
+        <!-- Fonte principal que deve funcionar -->
         <source src="https://www.soundjay.com/misc/sounds/siren-1.mp3" type="audio/mpeg">
+        <!-- Fallback com som de alerta do Google (curto, mas funcional) -->
         <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
+        <!-- Último fallback com um som diferente, também do SoundJay -->
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -428,7 +431,7 @@
                     console.log('✅ Sirene ativada!');
                 })
                 .catch(() => {
-                    alert('⚠️ Clique novamente para ativar a sirene');
+                    alert('⚠️ Clique novamente para ativar a sirene. Verifique se o navegador não está bloqueando o som.');
                 });
         }
 
@@ -454,6 +457,8 @@
                 })
                 .catch(erro => {
                     console.log('Erro na sirene:', erro);
+                    // Se falhar, tenta reativar o contexto de áudio ou notifica o usuário
+                    alert('Não foi possível tocar a sirene. Tente clicar em "ATIVAR SIRENE" novamente.');
                 });
         }
 
@@ -467,7 +472,7 @@
 
         function testarSom() {
             if (!sireneAtiva) {
-                alert('⚠️ Ative a sirene primeiro!');
+                alert('⚠️ Ative a sirene primeiro clicando no botão "ATIVAR SIRENE"!');
                 return;
             }
             tocarSirene();
@@ -562,6 +567,9 @@
                     
                     document.getElementById('coordenadas').textContent = `📍 ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
                 }
+            } else {
+                 document.getElementById('map').style.display = 'none';
+                 document.getElementById('noLocation').style.display = 'flex';
             }
             
             tocarSirene();
@@ -597,7 +605,7 @@
                     }
                 }
             } catch (erro) {
-                console.log('Erro:', erro);
+                console.log('Erro ao buscar alertas:', erro);
             }
         }
 
@@ -614,31 +622,31 @@
         
         console.log('✅ Painel Confidante carregado');
     </script>
-	<!-- BOTÃO DE TESTE DIRETO (SEM PRECISAR ATIVAR) -->
-<div style="background: #ff2fd4; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center;">
-    <h3 style="margin-bottom: 15px;">🔊 TESTE RÁPIDO DE SOM</h3>
-    <button onclick="testarSomDireto()" style="background: white; color: #0a0015; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 18px;">
-        🔊 CLIQUE AQUI PARA TESTAR A SIRENE AGORA
-    </button>
-    <p style="margin-top: 10px; font-size: 12px;">Se ouvir o som, a sirene está funcionando!</p>
-</div>
+    <!-- BOTÃO DE TESTE DIRETO (ÚTIL PARA VERIFICAR O SOM RAPIDAMENTE) -->
+    <div style="background: #ff2fd4; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center;">
+        <h3 style="margin-bottom: 15px;">🔊 TESTE RÁPIDO DE SOM</h3>
+        <button onclick="testarSomDireto()" style="background: white; color: #0a0015; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 18px;">
+            🔊 CLIQUE AQUI PARA TESTAR A SIRENE AGORA
+        </button>
+        <p style="margin-top: 10px; font-size: 12px;">Se ouvir o som, a sirene está funcionando!</p>
+    </div>
 
-<script>
-function testarSomDireto() {
-    let audio = document.getElementById('sirene');
-    audio.currentTime = 0;
-    audio.play()
-        .then(() => {
-            alert('✅ Sirene está tocando!');
-            setTimeout(() => {
-                audio.pause();
-                audio.currentTime = 0;
-            }, 3000);
-        })
-        .catch(erro => {
-            alert('❌ Erro: ' + erro.message + '\n\nClique em "ATIVAR SIRENE" primeiro!');
-        });
-}
-</script>
+    <script>
+    function testarSomDireto() {
+        let audio = document.getElementById('sirene');
+        audio.currentTime = 0;
+        audio.play()
+            .then(() => {
+                alert('✅ Sirene está tocando!');
+                setTimeout(() => {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }, 3000);
+            })
+            .catch(erro => {
+                alert('❌ Erro: ' + erro.message + '\n\nClique em "ATIVAR SIRENE" primeiro!');
+            });
+    }
+    </script>
 </body>
 </html>
