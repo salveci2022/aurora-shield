@@ -85,6 +85,7 @@
             margin-bottom: 20px;
         }
 
+        /* ÁREA DA SIRENE - CORRIGIDA */
         .sirene-area {
             background: linear-gradient(45deg, #ff2fd4, #7a00ff);
             border-radius: 20px;
@@ -113,6 +114,12 @@
             margin-bottom: 5px;
         }
 
+        .sirene-subtitulo {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* BOTÃO DE TESTE */
         .test-audio {
             background: #00ff88;
             color: #0a0015;
@@ -299,18 +306,22 @@
         <div class="card">
             <h2 style="text-align: center; margin-bottom: 20px;">🚨 PAINEL DE EMERGÊNCIA</h2>
 
+            <!-- ÁREA DA SIRENE -->
             <div id="sireneArea" class="sirene-area" onclick="ativarSirene()">
                 <div class="sirene-icon">🔇</div>
                 <div class="sirene-titulo">ATIVAR SIRENE</div>
                 <div class="sirene-subtitulo">Clique aqui para permitir som automático</div>
             </div>
 
-            <div class="test-audio" onclick="testarSom()">🔊 TESTAR SOM (2 segundos)</div>
+            <!-- BOTÃO DE TESTE -->
+            <div class="test-audio" onclick="testarSom()">🔊 TESTAR SOM (3 segundos)</div>
 
+            <!-- ÁREA DO ALERTA -->
             <div id="alertBox" class="alert">
                 ⏳ Aguardando alertas...
             </div>
 
+            <!-- INFORMAÇÕES DO ALERTA -->
             <div class="info-panel">
                 <div class="info-item">
                     <strong>Nome:</strong>
@@ -330,6 +341,7 @@
                 </div>
             </div>
 
+            <!-- MAPA -->
             <div class="map-container">
                 <iframe id="map" class="map"></iframe>
                 <div id="noLocation" class="no-location">
@@ -338,17 +350,21 @@
                 </div>
             </div>
 
+            <!-- LINK DO MAPA -->
             <div id="mapLink" style="display: none; text-align: center; margin: 10px 0;">
                 <a id="directMapLink" href="#" target="_blank" class="local-link">📍 Abrir no Google Maps</a>
             </div>
 
+            <!-- COORDENADAS -->
             <div id="coordenadas" class="coordenadas"></div>
 
+            <!-- BOTÕES DE AÇÃO -->
             <div class="button-group">
                 <button id="btnClear" class="btn btn-secondary" onclick="limparAlerta()">🗑️ Limpar</button>
                 <button id="btnRefresh" class="btn btn-secondary" onclick="reiniciar()">🔄 Reiniciar</button>
             </div>
 
+            <!-- HISTÓRICO -->
             <div class="history-list">
                 <h4 style="margin-bottom: 10px;">Últimos alertas:</h4>
                 <div id="historyItems"></div>
@@ -356,38 +372,34 @@
         </div>
     </div>
 
-    <audio id="sirene1" preload="auto">
+    <!-- ÁUDIO DA SIRENE -->
+    <audio id="sirene" loop preload="auto">
         <source src="https://www.soundjay.com/misc/sounds/siren-1.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sirene2" preload="auto">
         <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
     </audio>
 
     <script>
         // ============================================
-        // VARIÁVEIS
+        // VARIÁVEIS GLOBAIS
         // ============================================
         let ultimoAlertaId = 0;
         let sireneAtiva = false;
-        let sirenes = [
-            document.getElementById('sirene1'),
-            document.getElementById('sirene2')
-        ];
+        let sireneElement = document.getElementById('sirene');
+        let timeoutSirene = null;
 
         // ============================================
-        // SIRENE
+        // FUNÇÕES DA SIRENE - CORRIGIDAS
         // ============================================
         
         function ativarSirene() {
-            Promise.all(sirenes.map(s => s.play().catch(() => {})))
+            // Tenta tocar e pausar para "desbloquear"
+            sireneElement.play()
                 .then(() => {
-                    sirenes.forEach(s => {
-                        s.pause();
-                        s.currentTime = 0;
-                    });
-                    
+                    sireneElement.pause();
+                    sireneElement.currentTime = 0;
                     sireneAtiva = true;
                     
+                    // Muda visual do botão
                     let area = document.getElementById('sireneArea');
                     area.classList.add('ativa');
                     area.innerHTML = `
@@ -395,25 +407,52 @@
                         <div class="sirene-titulo">SIRENE ATIVADA!</div>
                         <div class="sirene-subtitulo">Agora vai tocar automaticamente</div>
                     `;
+                    
+                    console.log('✅ Sirene ativada com sucesso!');
+                })
+                .catch(erro => {
+                    console.log('Erro ao ativar sirene:', erro);
                 });
         }
 
         function tocarSirene() {
-            if (!sireneAtiva) return;
+            if (!sireneAtiva) {
+                console.log('⚠️ Sirene não ativada ainda');
+                return;
+            }
             
-            let s = sirenes[Math.floor(Math.random() * sirenes.length)];
-            s.currentTime = 0;
-            s.play().catch(() => {});
+            // Para qualquer som anterior
+            if (timeoutSirene) {
+                clearTimeout(timeoutSirene);
+            }
             
-            setTimeout(() => {
-                s.pause();
-                s.currentTime = 0;
-            }, 3000);
+            sireneElement.currentTime = 0;
+            sireneElement.play()
+                .then(() => {
+                    console.log('🚨 SIRENE TOCANDO!');
+                    // Para após 5 segundos
+                    timeoutSirene = setTimeout(() => {
+                        sireneElement.pause();
+                        sireneElement.currentTime = 0;
+                        console.log('🔇 Sirene parada');
+                    }, 5000);
+                })
+                .catch(erro => {
+                    console.log('❌ Erro ao tocar sirene:', erro);
+                });
+        }
+
+        function pararSirene() {
+            if (timeoutSirene) {
+                clearTimeout(timeoutSirene);
+            }
+            sireneElement.pause();
+            sireneElement.currentTime = 0;
         }
 
         function testarSom() {
             if (!sireneAtiva) {
-                alert('Ative a sirene primeiro!');
+                alert('⚠️ Ative a sirene primeiro!');
                 return;
             }
             tocarSirene();
@@ -436,6 +475,7 @@
             document.getElementById('noLocation').style.display = 'flex';
             document.getElementById('mapLink').style.display = 'none';
             document.getElementById('coordenadas').textContent = '';
+            pararSirene();
         }
 
         function reiniciar() {
@@ -445,23 +485,55 @@
         }
 
         // ============================================
-        // ATUALIZAR ALERTA
+        // FORMATAR DATA/HORA - CORRIGIDO
+        // ============================================
+        
+        function formatarData(dataString) {
+            if (!dataString || dataString === '—') return '—';
+            
+            // Se já está no formato DD/MM/YYYY HH:MM:SS, retorna ela mesma
+            if (dataString.match(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/)) {
+                return dataString;
+            }
+            
+            // Tenta converter outros formatos
+            try {
+                let data = new Date(dataString);
+                if (!isNaN(data.getTime())) {
+                    return data.toLocaleString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+                }
+            } catch (e) {}
+            
+            return dataString;
+        }
+
+        // ============================================
+        // ATUALIZAR INFORMAÇÕES DO ALERTA
         // ============================================
         
         function atualizarAlerta(alerta) {
-            console.log('🚨 ALERTA RECEBIDO:', alerta);
+            console.log('🚨 NOVO ALERTA:', alerta);
             
+            // Atualizar status
             document.getElementById('alertBox').className = 'alert active';
             document.getElementById('alertBox').textContent = '🚨 ALERTA DE EMERGÊNCIA!';
             document.getElementById('statusPill').className = 'status ativo';
             document.getElementById('statusPill').textContent = '🔴 ALERTA ATIVO';
             
+            // Atualizar informações
             document.getElementById('infoNome').textContent = alerta.name || 'Anônimo';
             document.getElementById('infoSit').textContent = alerta.situation || 'Emergência';
             document.getElementById('infoMsg').textContent = alerta.message || '—';
-            document.getElementById('infoData').textContent = alerta.date || '—';
+            document.getElementById('infoData').textContent = formatarData(alerta.date) || '—';
             
-            // CORREÇÃO DA LOCALIZAÇÃO
+            // Atualizar mapa
             if (alerta.lat && alerta.lng && alerta.lat !== 'null' && alerta.lng !== 'null' && alerta.lat !== '' && alerta.lng !== '') {
                 const lat = parseFloat(alerta.lat);
                 const lng = parseFloat(alerta.lng);
@@ -469,7 +541,6 @@
                 if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
                     console.log('📍 Mostrando mapa:', lat, lng);
                     
-                    // URL do mapa
                     const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lng-0.01},${lat-0.01},${lng+0.01},${lat+0.01}&layer=mapnik&marker=${lat},${lng}`;
                     const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
                     
@@ -488,8 +559,6 @@
                         <div style="font-size: 40px;">📍</div>
                         <div>Localização inválida</div>
                     `;
-                    document.getElementById('mapLink').style.display = 'none';
-                    document.getElementById('coordenadas').textContent = '';
                 }
             } else {
                 document.getElementById('map').style.display = 'none';
@@ -498,52 +567,72 @@
                     <div style="font-size: 40px;">📍</div>
                     <div>Localização não compartilhada</div>
                 `;
-                document.getElementById('mapLink').style.display = 'none';
-                document.getElementById('coordenadas').textContent = '';
             }
             
+            // TOCAR SIRENE!
             tocarSirene();
         }
 
         // ============================================
-        // BUSCAR ALERTAS
+        // BUSCAR ALERTAS EM TEMPO REAL
         // ============================================
         
         async function buscarAlertas() {
             try {
                 const resposta = await fetch('/history_json', {
                     cache: 'no-store',
-                    headers: { 'Cache-Control': 'no-cache' }
+                    headers: { 
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
+                    }
                 });
+                
+                if (!resposta.ok) {
+                    throw new Error('Erro na resposta');
+                }
                 
                 const dados = await resposta.json();
                 
+                // Atualizar histórico
                 if (dados && dados.length > 0) {
                     let historicoHtml = '';
                     for (let i = 0; i < Math.min(dados.length, 5); i++) {
-                        historicoHtml += `<div class="history-item">📢 ${dados[i].date || ''} - ${dados[i].name || 'Alerta'}</div>`;
+                        let item = dados[i];
+                        historicoHtml += `<div class="history-item">📢 ${item.date || ''} - ${item.name || 'Alerta'}</div>`;
                     }
                     document.getElementById('historyItems').innerHTML = historicoHtml;
-                    
+                } else {
+                    document.getElementById('historyItems').innerHTML = '<div class="history-item">Nenhum alerta anterior</div>';
+                }
+                
+                if (dados && dados.length > 0) {
                     const ultimo = dados[0];
+                    
+                    // Se for um alerta NOVO
                     if (ultimo.id !== ultimoAlertaId) {
                         ultimoAlertaId = ultimo.id;
                         atualizarAlerta(ultimo);
                     }
                 }
+                
             } catch (erro) {
-                console.log('Erro:', erro);
+                console.log('Erro ao buscar alertas:', erro);
             }
         }
 
         // ============================================
-        // INICIAR
+        // INICIALIZAÇÃO
         // ============================================
         
+        // Começar a buscar alertas a cada 2 segundos
         setInterval(buscarAlertas, 2000);
         buscarAlertas();
         
-        sirenes.forEach(s => s.load());
+        // Pré-carregar áudio
+        sireneElement.load();
+        sireneElement.volume = 0.8;
+        
+        console.log('✅ Painel Confidante carregado!');
     </script>
 </body>
 </html>
