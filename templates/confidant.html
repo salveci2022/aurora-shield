@@ -14,16 +14,17 @@
         body {
             background: radial-gradient(circle at top, #3a0057, #0a0015);
             min-height: 100vh;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
             color: white;
             padding: 20px;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
         }
 
+        /* ========== HEADER ========== */
         .header {
             display: flex;
             justify-content: space-between;
@@ -43,14 +44,14 @@
         }
 
         .logo-circle {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background: linear-gradient(45deg, #ff2fd4, #7a00ff);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
         }
 
@@ -66,7 +67,7 @@
         .status.ativo {
             background: #ff2fd4;
             color: #0a0015;
-            animation: pulse 1s infinite;
+            animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
@@ -75,6 +76,7 @@
             100% { opacity: 1; }
         }
 
+        /* ========== CARDS ========== */
         .card {
             background: rgba(20, 0, 34, 0.95);
             backdrop-filter: blur(10px);
@@ -85,117 +87,163 @@
             margin-bottom: 20px;
         }
 
-        .sirene-area {
-            background: linear-gradient(45deg, #ff2fd4, #7a00ff);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            margin-bottom: 25px;
-            cursor: pointer;
-            border: 3px solid white;
-            box-shadow: 0 0 30px #ff2fd4;
-            transition: 0.3s;
-        }
-
-        .sirene-area.ativa {
-            background: #00ff88;
-            color: #0a0015;
-        }
-
-        .sirene-icon {
-            font-size: 60px;
-            margin-bottom: 10px;
-        }
-
-        .sirene-titulo {
+        .card-title {
+            color: #ff2fd4;
             font-size: 22px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #7a00ff;
+            padding-bottom: 10px;
+        }
+
+        /* ========== SEÇÃO DA SIRENE ========== */
+        .sirene-section {
+            background: linear-gradient(145deg, #1d0030, #0a0015);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 2px solid #7a00ff;
+        }
+
+        .sirene-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .sirene-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sirene-led {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff2fd4;
+            box-shadow: 0 0 10px #ff2fd4;
+        }
+
+        .sirene-led.ativa {
+            background: #00ff88;
+            box-shadow: 0 0 10px #00ff88;
+        }
+
+        .sirene-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sirene {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
             font-weight: bold;
-            margin-bottom: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .sirene-subtitulo {
-            font-size: 14px;
-            opacity: 0.9;
+        .btn-sirene.ativar {
+            background: linear-gradient(45deg, #ff2fd4, #7a00ff);
+            color: white;
         }
 
-        .test-audio {
+        .btn-sirene.ativar.ativa {
             background: #00ff88;
             color: #0a0015;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin: 10px 0 20px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
         }
 
-        .test-audio:hover {
+        .btn-sirene.testar {
+            background: #00ff88;
+            color: #0a0015;
+        }
+
+        .btn-sirene:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 20px #00ff88;
+            box-shadow: 0 0 20px currentColor;
         }
 
-        .alert {
-            padding: 20px;
-            border-radius: 15px;
+        /* ========== SEÇÃO DO ALERTA ========== */
+        .alert-section {
             background: #1d0030;
-            text-align: center;
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 20px;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
             border-left: 5px solid #7a00ff;
             transition: 0.3s;
         }
 
-        .alert.active {
+        .alert-section.ativo {
             background: #ff2fd4;
-            color: #0a0015;
             border-left-color: #7a00ff;
-            animation: alertaPulse 1s infinite;
-            box-shadow: 0 0 30px #ff2fd4;
+            animation: alertaPulse 1.5s infinite;
         }
 
         @keyframes alertaPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
+            0% { box-shadow: 0 0 20px #ff2fd4; }
+            50% { box-shadow: 0 0 40px #ff2fd4; }
+            100% { box-shadow: 0 0 20px #ff2fd4; }
         }
 
-        .info-panel {
-            background: #1d0030;
-            border-radius: 15px;
-            padding: 20px;
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+        }
+
+        /* ========== INFO GRID ========== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
             margin: 20px 0;
         }
 
-        .info-item {
-            padding: 12px;
-            border-bottom: 1px solid rgba(122, 0, 255, 0.3);
-            display: flex;
+        .info-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #7a00ff40;
         }
 
-        .info-item:last-child {
-            border-bottom: none;
+        .info-label {
+            font-size: 12px;
+            color: #b366ff;
+            margin-bottom: 5px;
         }
 
-        .info-item strong {
-            min-width: 100px;
-            color: #ff2fd4;
-        }
-
-        .info-item div {
-            flex: 1;
+        .info-value {
+            font-size: 16px;
+            font-weight: bold;
             word-break: break-word;
         }
 
+        /* ========== MAPA ========== */
         .map-container {
-            height: 350px;
+            height: 300px;
             border-radius: 15px;
             overflow: hidden;
             border: 3px solid #7a00ff;
             margin: 20px 0;
             position: relative;
-            background: #1d0030;
         }
 
         .map {
@@ -215,63 +263,82 @@
             color: rgba(255,255,255,0.5);
             flex-direction: column;
             gap: 10px;
+        }
+
+        .map-link {
             text-align: center;
-            padding: 20px;
+            margin: 10px 0;
         }
 
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            min-width: 120px;
-        }
-
-        .btn-secondary {
-            background: #1d0030;
-            border: 2px solid #7a00ff;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #7a00ff40;
-            transform: scale(1.05);
-        }
-
-        .local-link {
-            display: inline-block;
-            margin-top: 10px;
+        .map-link a {
             color: #ff2fd4;
             text-decoration: none;
             padding: 8px 15px;
             border: 1px solid #ff2fd4;
             border-radius: 8px;
             font-size: 14px;
+            display: inline-block;
         }
 
-        .local-link:hover {
+        .map-link a:hover {
             background: #ff2fd4;
             color: #0a0015;
         }
 
-        .history-list {
-            max-height: 150px;
-            overflow-y: auto;
+        .coordenadas {
+            text-align: center;
+            font-size: 12px;
+            color: #b366ff;
+            margin-top: 5px;
+        }
+
+        /* ========== BOTÕES DE AÇÃO ========== */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
             margin-top: 20px;
-            background: #1d0030;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            flex: 1;
+            min-width: 100px;
+            padding: 12px;
+            border: 2px solid #7a00ff;
             border-radius: 10px;
-            padding: 10px;
+            background: transparent;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .btn-action:hover {
+            background: #7a00ff40;
+            transform: scale(1.02);
+        }
+
+        /* ========== HISTÓRICO ========== */
+        .history-section {
+            background: #1d0030;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .history-title {
+            color: #b366ff;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .history-list {
+            max-height: 120px;
+            overflow-y: auto;
         }
 
         .history-item {
@@ -280,29 +347,16 @@
             font-size: 12px;
         }
 
-        .coordenadas {
-            font-size: 12px;
-            color: #b366ff;
-            margin-top: 5px;
-            text-align: center;
-        }
-
-        .link-externo {
-            text-align: center;
-            margin: 10px 0;
-        }
-        .link-externo a {
-            color: #ff2fd4;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .link-externo a:hover {
-            text-decoration: underline;
-        }
+        /* ========== UTILITÁRIOS ========== */
+        .text-center { text-align: center; }
+        .mt-10 { margin-top: 10px; }
+        .mb-10 { margin-bottom: 10px; }
+        .opacity-5 { opacity: 0.5; }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- HEADER -->
         <div class="header">
             <div class="logo">
                 <div class="logo-circle">🛡️</div>
@@ -314,81 +368,108 @@
             <div class="status" id="statusPill">🟢 Monitorando</div>
         </div>
 
+        <!-- CARD PRINCIPAL -->
         <div class="card">
-            <h2 style="text-align: center; margin-bottom: 20px;">🚨 PAINEL DE EMERGÊNCIA</h2>
-
-            <!-- ÁREA DA SIRENE -->
-            <div id="sireneArea" class="sirene-area" onclick="ativarSirene()">
-                <div class="sirene-icon">🔇</div>
-                <div class="sirene-titulo">ATIVAR SIRENE</div>
-                <div class="sirene-subtitulo">Clique aqui para permitir som automático</div>
+            <div class="card-title">
+                <span>🚨</span> PAINEL DE EMERGÊNCIA
             </div>
 
-            <!-- BOTÃO DE TESTE -->
-            <div class="test-audio" onclick="testarSom()">🔊 TESTAR SOM AGORA</div>
-
-            <!-- LINK PARA TESTE EXTERNO -->
-            <div class="link-externo">
-                <a href="/testar-sirene" target="_blank">🔊 Teste alternativo da sirene (abre em nova aba)</a>
-            </div>
-
-            <!-- ÁREA DO ALERTA -->
-            <div id="alertBox" class="alert">
-                ⏳ Aguardando alertas...
-            </div>
-
-            <!-- INFORMAÇÕES DO ALERTA -->
-            <div class="info-panel">
-                <div class="info-item">
-                    <strong>Nome:</strong>
-                    <div id="infoNome">—</div>
+            <!-- SEÇÃO DA SIRENE -->
+            <div class="sirene-section">
+                <div class="sirene-status">
+                    <div class="sirene-indicator">
+                        <span class="sirene-led" id="sireneLed"></span>
+                        <span id="sireneStatusText">Sirene desativada</span>
+                    </div>
+                    <span id="sireneInfo" style="font-size: 12px;"></span>
                 </div>
-                <div class="info-item">
-                    <strong>Situação:</strong>
-                    <div id="infoSit">—</div>
-                </div>
-                <div class="info-item">
-                    <strong>Mensagem:</strong>
-                    <div id="infoMsg">—</div>
-                </div>
-                <div class="info-item">
-                    <strong>Data/Hora:</strong>
-                    <div id="infoData">—</div>
+                
+                <div class="sirene-buttons">
+                    <button id="btnAtivarSirene" class="btn-sirene ativar" onclick="ativarSirene()">
+                        <span>🔇</span> ATIVAR
+                    </button>
+                    <button class="btn-sirene testar" onclick="testarSom()">
+                        <span>🔊</span> TESTAR
+                    </button>
                 </div>
             </div>
 
-            <!-- MAPA -->
-            <div class="map-container">
-                <iframe id="map" class="map"></iframe>
-                <div id="noLocation" class="no-location">
-                    <div style="font-size: 40px;">📍</div>
-                    <div>Nenhuma localização disponível</div>
+            <!-- LINK TESTE EXTERNO -->
+            <div class="text-center mb-10">
+                <a href="/testar-sirene" target="_blank" style="color: #b366ff; font-size: 13px;">
+                    🔗 Abrir página de teste da sirene
+                </a>
+            </div>
+
+            <!-- SEÇÃO DO ALERTA -->
+            <div id="alertSection" class="alert-section">
+                <div class="alert-header">
+                    <span class="alert-icon">⏳</span>
+                    <span id="alertTitle">Aguardando alertas...</span>
                 </div>
-            </div>
 
-            <!-- LINK DO MAPA -->
-            <div id="mapLink" style="display: none; text-align: center; margin: 10px 0;">
-                <a id="directMapLink" href="#" target="_blank" class="local-link">📍 Abrir no Google Maps</a>
-            </div>
+                <!-- INFO GRID -->
+                <div class="info-grid" id="infoGrid" style="display: none;">
+                    <div class="info-box">
+                        <div class="info-label">👤 NOME</div>
+                        <div class="info-value" id="infoNome">—</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">⚠️ SITUAÇÃO</div>
+                        <div class="info-value" id="infoSit">—</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">💬 MENSAGEM</div>
+                        <div class="info-value" id="infoMsg">—</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">📅 DATA/HORA</div>
+                        <div class="info-value" id="infoData">—</div>
+                    </div>
+                </div>
 
-            <!-- COORDENADAS -->
-            <div id="coordenadas" class="coordenadas"></div>
+                <!-- MAPA -->
+                <div class="map-container">
+                    <iframe id="map" class="map"></iframe>
+                    <div id="noLocation" class="no-location">
+                        <div style="font-size: 40px;">📍</div>
+                        <div>Nenhuma localização disponível</div>
+                    </div>
+                </div>
+
+                <!-- LINK DO MAPA -->
+                <div id="mapLink" class="map-link" style="display: none;">
+                    <a id="directMapLink" href="#" target="_blank">📍 Abrir no Google Maps</a>
+                </div>
+
+                <!-- COORDENADAS -->
+                <div id="coordenadas" class="coordenadas"></div>
+            </div>
 
             <!-- BOTÕES DE AÇÃO -->
-            <div class="button-group">
-                <button id="btnClear" class="btn btn-secondary" onclick="limparAlerta()">🗑️ Limpar</button>
-                <button id="btnRefresh" class="btn btn-secondary" onclick="reiniciar()">🔄 Reiniciar</button>
+            <div class="action-buttons">
+                <button class="btn-action" onclick="limparAlerta()">
+                    <span>🗑️</span> LIMPAR
+                </button>
+                <button class="btn-action" onclick="reiniciar()">
+                    <span>🔄</span> REINICIAR
+                </button>
             </div>
 
             <!-- HISTÓRICO -->
-            <div class="history-list">
-                <h4 style="margin-bottom: 10px;">Últimos alertas:</h4>
-                <div id="historyItems"></div>
+            <div class="history-section">
+                <div class="history-title">📋 ÚLTIMOS ALERTAS</div>
+                <div class="history-list" id="historyItems"></div>
             </div>
+        </div>
+
+        <!-- TESTE RÁPIDO (opcional) -->
+        <div class="text-center mt-10 opacity-5">
+            <small>Clique em ATIVAR e depois TESTAR para verificar o som</small>
         </div>
     </div>
 
-    <!-- CORREÇÃO: ÁUDIO DA SIRENE REAL - MESMO DA PÁGINA DE TESTE -->
+    <!-- ÁUDIO DA SIRENE REAL -->
     <audio id="sirene" loop preload="auto">
         <source src="/static/sounds/sirene-real.mp3" type="audio/mpeg">
     </audio>
@@ -402,6 +483,14 @@
         let sireneElement = document.getElementById('sirene');
         let timeoutSirene = null;
 
+        // Elementos DOM
+        const sireneLed = document.getElementById('sireneLed');
+        const sireneStatusText = document.getElementById('sireneStatusText');
+        const btnAtivarSirene = document.getElementById('btnAtivarSirene');
+        const alertSection = document.getElementById('alertSection');
+        const alertTitle = document.getElementById('alertTitle');
+        const infoGrid = document.getElementById('infoGrid');
+
         // ============================================
         // FUNÇÕES DA SIRENE
         // ============================================
@@ -413,13 +502,11 @@
                     sireneElement.currentTime = 0;
                     sireneAtiva = true;
                     
-                    let area = document.getElementById('sireneArea');
-                    area.classList.add('ativa');
-                    area.innerHTML = `
-                        <div class="sirene-icon">🔊</div>
-                        <div class="sirene-titulo">SIRENE ATIVADA!</div>
-                        <div class="sirene-subtitulo">Agora vai tocar automaticamente</div>
-                    `;
+                    // Atualizar UI
+                    sireneLed.className = 'sirene-led ativa';
+                    sireneStatusText.textContent = 'Sirene ativada';
+                    btnAtivarSirene.classList.add('ativa');
+                    btnAtivarSirene.innerHTML = '<span>🔊</span> ATIVADA';
                     
                     console.log('✅ Sirene ativada!');
                 })
@@ -474,18 +561,25 @@
         // ============================================
         
         function limparAlerta() {
-            document.getElementById('alertBox').className = 'alert';
-            document.getElementById('alertBox').textContent = '⏳ Aguardando alertas...';
+            // Resetar UI
+            alertSection.className = 'alert-section';
+            alertTitle.innerHTML = '⏳ Aguardando alertas...';
             document.getElementById('statusPill').className = 'status';
             document.getElementById('statusPill').textContent = '🟢 Monitorando';
-            document.getElementById('infoNome').textContent = '—';
-            document.getElementById('infoSit').textContent = '—';
-            document.getElementById('infoMsg').textContent = '—';
-            document.getElementById('infoData').textContent = '—';
+            
+            // Esconder informações
+            infoGrid.style.display = 'none';
             document.getElementById('map').style.display = 'none';
             document.getElementById('noLocation').style.display = 'flex';
             document.getElementById('mapLink').style.display = 'none';
             document.getElementById('coordenadas').textContent = '';
+            
+            // Limpar valores
+            document.getElementById('infoNome').textContent = '—';
+            document.getElementById('infoSit').textContent = '—';
+            document.getElementById('infoMsg').textContent = '—';
+            document.getElementById('infoData').textContent = '—';
+            
             pararSirene();
         }
 
@@ -501,11 +595,9 @@
         
         function formatarData(dataString) {
             if (!dataString || dataString === '—') return '—';
-            
             if (dataString.match(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/)) {
                 return dataString;
             }
-            
             try {
                 let data = new Date(dataString);
                 if (!isNaN(data.getTime())) {
@@ -519,7 +611,6 @@
                     });
                 }
             } catch (e) {}
-            
             return dataString;
         }
 
@@ -530,11 +621,14 @@
         function atualizarAlerta(alerta) {
             console.log('🚨 NOVO ALERTA:', alerta);
             
-            document.getElementById('alertBox').className = 'alert active';
-            document.getElementById('alertBox').textContent = '🚨 ALERTA DE EMERGÊNCIA!';
+            // Atualizar UI
+            alertSection.className = 'alert-section ativo';
+            alertTitle.innerHTML = '🚨 ALERTA DE EMERGÊNCIA!';
             document.getElementById('statusPill').className = 'status ativo';
             document.getElementById('statusPill').textContent = '🔴 ALERTA ATIVO';
             
+            // Mostrar informações
+            infoGrid.style.display = 'grid';
             document.getElementById('infoNome').textContent = alerta.name || 'Anônimo';
             document.getElementById('infoSit').textContent = alerta.situation || 'Emergência';
             document.getElementById('infoMsg').textContent = alerta.message || '—';
@@ -609,33 +703,6 @@
         sireneElement.volume = 0.8;
         
         console.log('✅ Painel Confidante carregado');
-    </script>
-    
-    <!-- BOTÃO DE TESTE DIRETO -->
-    <div style="background: #ff2fd4; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center;">
-        <h3 style="margin-bottom: 15px;">🔊 TESTE RÁPIDO DE SOM</h3>
-        <button onclick="testarSomDireto()" style="background: white; color: #0a0015; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 18px;">
-            🔊 CLIQUE AQUI PARA TESTAR A SIRENE AGORA
-        </button>
-        <p style="margin-top: 10px; font-size: 12px;">Se ouvir o som, a sirene está funcionando!</p>
-    </div>
-
-    <script>
-    function testarSomDireto() {
-        let audio = document.getElementById('sirene');
-        audio.currentTime = 0;
-        audio.play()
-            .then(() => {
-                alert('✅ Sirene REAL está tocando!');
-                setTimeout(() => {
-                    audio.pause();
-                    audio.currentTime = 0;
-                }, 3000);
-            })
-            .catch(erro => {
-                alert('❌ Erro: ' + erro.message + '\n\nClique em "ATIVAR SIRENE" primeiro!');
-            });
-    }
     </script>
 </body>
 </html>
