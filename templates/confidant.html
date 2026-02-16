@@ -288,6 +288,19 @@
             margin-top: 5px;
             text-align: center;
         }
+
+        .link-externo {
+            text-align: center;
+            margin: 10px 0;
+        }
+        .link-externo a {
+            color: #ff2fd4;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .link-externo a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -316,9 +329,9 @@
             <!-- BOTÃO DE TESTE -->
             <div class="test-audio" onclick="testarSom()">🔊 TESTAR SOM AGORA</div>
 
-            <!-- LINK PARA TESTE DIRETO -->
-            <div style="text-align: center; margin: 10px 0;">
-                <a href="/testar-sirene" target="_blank" style="color: #ff2fd4;">🔊 Teste alternativo da sirene</a>
+            <!-- LINK PARA TESTE EXTERNO -->
+            <div class="link-externo">
+                <a href="/testar-sirene" target="_blank">🔊 Teste alternativo da sirene (abre em nova aba)</a>
             </div>
 
             <!-- ÁREA DO ALERTA -->
@@ -377,15 +390,11 @@
         </div>
     </div>
 
-    <!-- MÚLTIPLAS FONTES DE ÁUDIO -->
-    <audio id="sirene1" preload="auto">
+    <!-- ÁUDIO DA SIRENE - CORRIGIDO COM FONTES CONFIÁVEIS -->
+    <audio id="sirene" loop preload="auto">
+        <source src="https://www.myinstants.com/media/sounds/sirene_urgente.mp3" type="audio/mpeg">
         <source src="https://www.soundjay.com/misc/sounds/siren-1.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sirene2" preload="auto">
         <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
-    </audio>
-    <audio id="sirene3" preload="auto">
-        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -394,34 +403,20 @@
         // ============================================
         let ultimoAlertaId = 0;
         let sireneAtiva = false;
-        let sirenes = [
-            document.getElementById('sirene1'),
-            document.getElementById('sirene2'),
-            document.getElementById('sirene3')
-        ];
+        let sireneElement = document.getElementById('sirene');
         let timeoutSirene = null;
-        let audioContext = null;
 
         // ============================================
-        // FUNÇÕES DA SIRENE - VERSÃO ULTRA CORRIGIDA
+        // FUNÇÕES DA SIRENE
         // ============================================
         
         function ativarSirene() {
-            // Método 1: Tentar com play/pause normal
-            let promessas = sirenes.map(s => {
-                return s.play().catch(() => {});
-            });
-            
-            Promise.all(promessas)
+            sireneElement.play()
                 .then(() => {
-                    sirenes.forEach(s => {
-                        s.pause();
-                        s.currentTime = 0;
-                    });
-                    
+                    sireneElement.pause();
+                    sireneElement.currentTime = 0;
                     sireneAtiva = true;
                     
-                    // Muda visual
                     let area = document.getElementById('sireneArea');
                     area.classList.add('ativa');
                     area.innerHTML = `
@@ -430,7 +425,7 @@
                         <div class="sirene-subtitulo">Agora vai tocar automaticamente</div>
                     `;
                     
-                    alert('✅ Sirene ativada com sucesso!');
+                    console.log('✅ Sirene ativada!');
                 })
                 .catch(() => {
                     alert('⚠️ Clique novamente para ativar a sirene');
@@ -443,24 +438,19 @@
                 return;
             }
             
-            // Para som anterior
             if (timeoutSirene) {
                 clearTimeout(timeoutSirene);
             }
             
-            // Escolhe uma sirene aleatória
-            let s = sirenes[Math.floor(Math.random() * sirenes.length)];
-            
-            s.currentTime = 0;
-            s.play()
+            sireneElement.currentTime = 0;
+            sireneElement.play()
                 .then(() => {
                     console.log('🚨 SIRENE TOCANDO!');
-                    // Para após 4 segundos
                     timeoutSirene = setTimeout(() => {
-                        s.pause();
-                        s.currentTime = 0;
+                        sireneElement.pause();
+                        sireneElement.currentTime = 0;
                         console.log('🔇 Sirene parada');
-                    }, 4000);
+                    }, 5000);
                 })
                 .catch(erro => {
                     console.log('Erro na sirene:', erro);
@@ -471,10 +461,8 @@
             if (timeoutSirene) {
                 clearTimeout(timeoutSirene);
             }
-            sirenes.forEach(s => {
-                s.pause();
-                s.currentTime = 0;
-            });
+            sireneElement.pause();
+            sireneElement.currentTime = 0;
         }
 
         function testarSom() {
@@ -512,18 +500,16 @@
         }
 
         // ============================================
-        // FORMATAR DATA/HORA - CORRIGIDO
+        // FORMATAR DATA/HORA
         // ============================================
         
         function formatarData(dataString) {
             if (!dataString || dataString === '—') return '—';
             
-            // Se já está no formato correto, retorna
             if (dataString.match(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/)) {
                 return dataString;
             }
             
-            // Tenta converter de ISO
             try {
                 let data = new Date(dataString);
                 if (!isNaN(data.getTime())) {
@@ -578,7 +564,6 @@
                 }
             }
             
-            // TOCAR SIRENE!
             tocarSirene();
         }
 
@@ -623,11 +608,9 @@
         setInterval(buscarAlertas, 2000);
         buscarAlertas();
         
-        // Pré-carregar áudios
-        sirenes.forEach(s => {
-            s.load();
-            s.volume = 0.8;
-        });
+        // Pré-carregar áudio
+        sireneElement.load();
+        sireneElement.volume = 0.8;
         
         console.log('✅ Painel Confidante carregado');
     </script>

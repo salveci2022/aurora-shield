@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 import secrets
 from werkzeug.security import generate_password_hash, check_password_hash
+import pytz
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 app.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(32))
@@ -97,7 +98,7 @@ def history_json():
         return jsonify([])
 
 # ============================================
-# API DO BOTÃO DE PÂNICO
+# API DO BOTÃO DE PÂNICO - CORRIGIDO COM FUSO BR
 # ============================================
 
 @app.route("/api/panic", methods=["POST"])
@@ -109,7 +110,7 @@ def api_panic():
         situation = data.get("situation", "Emergência")
         message = data.get("message", "")
         
-        # CORREÇÃO: Pegar latitude e longitude corretamente
+        # CORREÇÃO: Pegar latitude e longitude
         lat = None
         lng = None
         
@@ -120,11 +121,12 @@ def api_panic():
         else:
             print("📍 Localização NÃO fornecida")
         
-        # CORREÇÃO: Data e hora no formato brasileiro
-        agora = datetime.now()
+        # CORREÇÃO: Data e hora no fuso brasileiro
+        fuso_br = pytz.timezone('America/Sao_Paulo')
+        agora = datetime.now(fuso_br)
         data_formatada = agora.strftime("%d/%m/%Y %H:%M:%S")
         
-        print(f"📅 Data formatada: {data_formatada}")
+        print(f"📅 Data formatada (BR): {data_formatada}")
         
         conn = get_db()
         conn.execute("""
@@ -397,7 +399,7 @@ def adicionar_contato():
         return f"<h1 style='color:red'>Erro ao adicionar: {str(e)}</h1><p><a href='/gerenciar-contatos'>Voltar</a></p>"
 
 # ============================================
-# ROTA DE TESTE DA SIRENE (NOVA)
+# ROTA DE TESTE DA SIRENE - VERSÃO MELHORADA
 # ============================================
 
 @app.route("/testar-sirene")
@@ -414,8 +416,16 @@ def testar_sirene_direto():
                 color: white; 
                 font-family: Arial; 
                 text-align: center; 
-                padding: 50px;
+                padding: 20px;
                 margin: 0;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background: #140022;
+                padding: 30px;
+                border-radius: 30px;
+                box-shadow: 0 0 50px #7a00ff;
             }
             h1 {
                 background: linear-gradient(45deg, #ff2fd4, #7a00ff);
@@ -424,15 +434,7 @@ def testar_sirene_direto():
                 font-size: 36px;
                 margin-bottom: 30px;
             }
-            .container {
-                max-width: 600px;
-                margin: 0 auto;
-                background: #140022;
-                padding: 40px;
-                border-radius: 30px;
-                box-shadow: 0 0 50px #7a00ff;
-            }
-            button { 
+            .sirene-btn { 
                 background: linear-gradient(45deg, #ff2fd4, #7a00ff);
                 color: white;
                 border: none;
@@ -441,11 +443,12 @@ def testar_sirene_direto():
                 font-weight: bold;
                 border-radius: 50px;
                 cursor: pointer;
-                margin: 20px;
+                margin: 10px;
                 transition: 0.3s;
                 box-shadow: 0 0 20px #ff2fd4;
+                width: 250px;
             }
-            button:hover {
+            .sirene-btn:hover {
                 transform: scale(1.05);
                 box-shadow: 0 0 40px #ff2fd4;
             }
@@ -456,10 +459,13 @@ def testar_sirene_direto():
                 margin-top: 30px;
                 color: #b366ff;
                 font-size: 14px;
+                background: #1d0030;
+                padding: 20px;
+                border-radius: 15px;
             }
             .back-link {
                 display: inline-block;
-                margin-top: 30px;
+                margin: 10px;
                 color: #b366ff;
                 text-decoration: none;
                 padding: 10px 20px;
@@ -469,62 +475,129 @@ def testar_sirene_direto():
             .back-link:hover {
                 background: #7a00ff40;
             }
+            .data-hora {
+                color: #00ff88;
+                font-size: 18px;
+                margin: 20px 0;
+            }
         </style>
     </head>
     <body>
         <div class="container">
             <h1>🔊 TESTE DE SIRENE</h1>
             
-            <button onclick="tocarSirene()">🔊 TOCAR SIRENE AGORA</button>
-            <button onclick="pararSirene()" class="stop-btn">⏹️ PARAR</button>
+            <div class="data-hora" id="dataHora"></div>
             
-            <audio id="sirene" loop preload="auto">
+            <button onclick="tocarSirene()" class="sirene-btn">🔊 TOCAR</button>
+            <button onclick="pararSirene()" class="sirene-btn stop-btn">⏹️ PARAR</button>
+            
+            <!-- MÚLTIPLAS FONTES DE ÁUDIO -->
+            <audio id="sirene1" loop preload="auto">
+                <source src="https://www.myinstants.com/media/sounds/sirene_urgente.mp3" type="audio/mpeg">
+            </audio>
+            <audio id="sirene2" loop preload="auto">
                 <source src="https://www.soundjay.com/misc/sounds/siren-1.mp3" type="audio/mpeg">
+            </audio>
+            <audio id="sirene3" loop preload="auto">
                 <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
-                <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
             </audio>
             
             <div class="info">
-                <p>✅ Se ouvir o som, a sirene está funcionando!</p>
-                <p>❌ Se não ouvir, verifique se o volume do computador está ativado.</p>
+                <p>✅ <strong>Instruções:</strong></p>
+                <p>1. Clique em "TOCAR" - se ouvir o som, a sirene está funcionando!</p>
+                <p>2. Se não ouvir, clique no botão "PARAR" e tente novamente</p>
+                <p>3. Verifique se o volume do computador está ativado</p>
+                <p>4. Se ainda assim não funcionar, tente em outro navegador (Chrome, Edge)</p>
             </div>
             
-            <a href="/confidant" class="back-link">← VOLTAR AO PAINEL</a>
-            <a href="/" class="back-link" style="margin-left: 10px;">🏠 INÍCIO</a>
+            <div style="margin-top: 30px;">
+                <a href="/confidant" class="back-link">← VOLTAR AO PAINEL</a>
+                <a href="/" class="back-link">🏠 INÍCIO</a>
+            </div>
         </div>
         
         <script>
-            let audio = document.getElementById('sirene');
+            // Atualizar data/hora
+            function atualizarDataHora() {
+                let agora = new Date();
+                let dia = String(agora.getDate()).padStart(2, '0');
+                let mes = String(agora.getMonth() + 1).padStart(2, '0');
+                let ano = agora.getFullYear();
+                let hora = String(agora.getHours()).padStart(2, '0');
+                let min = String(agora.getMinutes()).padStart(2, '0');
+                let seg = String(agora.getSeconds()).padStart(2, '0');
+                
+                document.getElementById('dataHora').innerHTML = 
+                    `📅 Data/Hora atual: ${dia}/${mes}/${ano} ${hora}:${min}:${seg}`;
+            }
+            
+            setInterval(atualizarDataHora, 1000);
+            atualizarDataHora();
+            
+            // Áudios
+            let audios = [
+                document.getElementById('sirene1'),
+                document.getElementById('sirene2'),
+                document.getElementById('sirene3')
+            ];
+            let audioAtual = 0;
             let timeoutSirene = null;
             
             function tocarSirene() {
-                audio.currentTime = 0;
-                audio.play()
-                    .then(() => {
-                        alert('✅ Sirene está tocando!');
-                        // Para após 5 segundos automaticamente
-                        if (timeoutSirene) clearTimeout(timeoutSirene);
-                        timeoutSirene = setTimeout(() => {
-                            audio.pause();
-                            audio.currentTime = 0;
-                        }, 5000);
-                    })
-                    .catch(erro => {
-                        alert('❌ Erro: ' + erro.message + '\\n\\nClique em "TOCAR" novamente para permitir o som.');
-                    });
+                // Para qualquer som anterior
+                if (timeoutSirene) {
+                    clearTimeout(timeoutSirene);
+                }
+                
+                // Pausa todos
+                audios.forEach(a => {
+                    a.pause();
+                    a.currentTime = 0;
+                });
+                
+                // Tenta cada áudio até um funcionar
+                function tentarProximo(index) {
+                    if (index >= audios.length) {
+                        alert('❌ Nenhuma fonte de áudio funcionou. Tente em outro navegador.');
+                        return;
+                    }
+                    
+                    let audio = audios[index];
+                    audio.currentTime = 0;
+                    
+                    audio.play()
+                        .then(() => {
+                            console.log('✅ Áudio tocando:', index);
+                            audioAtual = index;
+                            // Para após 5 segundos
+                            timeoutSirene = setTimeout(() => {
+                                audio.pause();
+                                audio.currentTime = 0;
+                                alert('🔇 Sirene parada automaticamente');
+                            }, 5000);
+                        })
+                        .catch(() => {
+                            console.log('❌ Áudio falhou:', index);
+                            tentarProximo(index + 1);
+                        });
+                }
+                
+                tentarProximo(0);
             }
             
             function pararSirene() {
-                audio.pause();
-                audio.currentTime = 0;
+                audios.forEach(a => {
+                    a.pause();
+                    a.currentTime = 0;
+                });
                 if (timeoutSirene) {
                     clearTimeout(timeoutSirene);
                 }
                 alert('🔇 Sirene parada');
             }
             
-            // Pré-carregar áudio
-            audio.load();
+            // Pré-carregar áudios
+            audios.forEach(a => a.load());
         </script>
     </body>
     </html>
@@ -583,17 +656,16 @@ if __name__ == "__main__":
     print("   • Mulher (direto): /mulher")
     print("   • Confidante (público): /confidant")
     print("   • Gerenciar contatos: /gerenciar-contatos")
-    print("   • Testar sirene: /testar-sirene  🔈 NOVO!")
+    print("   • Testar sirene: /testar-sirene")
     print("   • Diagnóstico: /diagnostico")
     print("\n👥 Contatos demo:")
     print("   • CLECI (Irmã)")
     print("   • MARIA (Mãe)")
     print("   • JOÃO (Pai)")
     print("\n✅ Sistema completo com:")
-    print("   • Botão de pânico funcionando")
-    print("   • Localização correta")
-    print("   • Data/hora no formato brasileiro")
-    print("   • Sirene com página de teste")
+    print("   • Fuso horário brasileiro corrigido")
+    print("   • Múltiplas fontes de áudio para sirene")
+    print("   • Localização funcionando")
     print("="*70)
     
     port = int(os.environ.get('PORT', 5000))
