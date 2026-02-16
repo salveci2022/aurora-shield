@@ -72,6 +72,13 @@
             border: 3px solid #ffb3aa;
             box-shadow: 0 8px 0 #731f26;
             color: white;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-alert.inactive {
+            background: #4A148C;
+            border-color: #B39DDB;
+            box-shadow: 0 8px 0 #2a0a4a;
         }
 
         .emergency-title {
@@ -139,6 +146,13 @@
             box-shadow: 0 4px 0 #731f26;
             text-transform: uppercase;
             letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .sirene-status.inactive {
+            background: #4A148C;
+            border-color: #B39DDB;
+            box-shadow: 0 4px 0 #2a0a4a;
         }
 
         .sirene-buttons {
@@ -175,6 +189,10 @@
             color: white;
             box-shadow: 0 4px 0 #731f26;
             border: 2px solid #ffb3aa;
+        }
+
+        .sirene-btn.emergency:active {
+            box-shadow: 0 1px 0 #731f26;
         }
 
         .map-section {
@@ -244,11 +262,20 @@
             cursor: pointer;
             text-transform: uppercase;
             font-size: 14px;
+            transition: 0.05s linear;
         }
 
         .map-link:active {
             transform: translateY(4px);
             box-shadow: 0 1px 0 #2d5a3a;
+        }
+
+        .map-link.disabled {
+            background: #8b6f5e;
+            border-color: #6b4f3f;
+            box-shadow: 0 4px 0 #4d3a2e;
+            pointer-events: none;
+            opacity: 0.5;
         }
 
         .map-credit {
@@ -298,6 +325,11 @@
             font-size: 11px;
             color: #aa8877;
         }
+
+        .sirene-btn:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
@@ -311,73 +343,74 @@
             </div>
         </div>
 
-        <div class="emergency-alert">
-            <div class="emergency-title">🚨 ALERTA DE EMERGÊNCIA!</div>
-            <div class="emergency-detail">
+        <div class="emergency-alert" id="emergencyAlert">
+            <div class="emergency-title" id="emergencyTitle">🚨 ALERTA DE EMERGÊNCIA!</div>
+            <div class="emergency-detail" id="emergencyDetail">
                 <div class="detail-row">
                     <span class="detail-label">NOME:</span>
-                    <span class="detail-value">MARISA</span>
+                    <span class="detail-value" id="alertaNome">---</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">SITUAÇÃO:</span>
-                    <span class="detail-value">Violência física</span>
+                    <span class="detail-value" id="alertaSituacao">---</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">DATA/HORA:</span>
-                    <span class="detail-value">16/02/2026 16:00:44</span>
+                    <span class="detail-value" id="alertaData">---</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">MENSAGEM:</span>
-                    <span class="detail-value">Socorro, preciso de ajuda!</span>
+                    <span class="detail-value" id="alertaMensagem">---</span>
                 </div>
             </div>
         </div>
 
         <div class="sirene-section">
             <div class="sirene-title">🔊 CONTROLE DA SIRENE</div>
-            <div id="sireneStatus" class="sirene-status">🔴 SIRENE ATIVADA</div>
+            <div id="sireneStatus" class="sirene-status inactive">⚫ SIRENE DESATIVADA</div>
             <div class="sirene-buttons">
-                <div id="ativarSirene" class="sirene-btn emergency">ATIVAR SIRENE</div>
-                <div id="desativarSirene" class="sirene-btn">DESATIVAR</div>
-                <div id="testarSom" class="sirene-btn">TESTAR SIRENE</div>
+                <button id="ativarSirene" class="sirene-btn emergency">ATIVAR SIRENE</button>
+                <button id="desativarSirene" class="sirene-btn">DESATIVAR</button>
+                <button id="testarSom" class="sirene-btn">TESTAR</button>
             </div>
         </div>
 
         <div class="map-section">
             <div class="map-title">📍 LOCALIZAÇÃO DA VÍTIMA</div>
             <div class="map-container">
-                <div class="map-placeholder">
-                    🗺️ SANTA MARIA
+                <div class="map-placeholder" id="mapPlaceholder">
+                    🗺️ AGUARDANDO ALERTA
                 </div>
-                <div class="coordinates">
-                    -16.020084, -48.020784
+                <div class="coordinates" id="coordenadas">
+                    ---, ---
                 </div>
-                <a href="https://www.google.com/maps?q=-16.020084,-48.020784" target="_blank" class="map-link">
+                <a id="mapLink" href="#" target="_blank" class="map-link disabled">
                     ABRIR NO GOOGLE MAPS
                 </a>
             </div>
             <div class="map-credit">
-                Santa Maria • Reportar um problema | © OpenStreetMap contributors
+                Santa Maria • Em tempo real | © OpenStreetMap
             </div>
         </div>
 
         <div class="action-buttons">
-            <div id="limparAlerta" class="action-btn limpar">LIMPAR</div>
-            <div id="reiniciarAlerta" class="action-btn">REINICIAR</div>
+            <button id="limparAlerta" class="action-btn limpar">LIMPAR</button>
+            <button id="reiniciarAlerta" class="action-btn">REINICIAR</button>
         </div>
 
         <div class="footer-info">
-            Aurora-Shield • Sistema de Proteção Ativa
+            Aurora-Shield • Sistema de Proteção Ativa • <span id="statusConexao">🟢 Monitorando</span>
         </div>
     </div>
 
     <script>
-        // CONFIGURAÇÃO DA SIRENE - SOM CONTÍNUO
-        let sireneAtiva = true;
-        let oscilador = null;
-        let audioContext = null;
-        let ganho = null;
-        let efeitoVisual = null;
+        // Elementos do DOM
+        const emergencyAlert = document.getElementById('emergencyAlert');
+        const emergencyTitle = document.getElementById('emergencyTitle');
+        const alertaNome = document.getElementById('alertaNome');
+        const alertaSituacao = document.getElementById('alertaSituacao');
+        const alertaData = document.getElementById('alertaData');
+        const alertaMensagem = document.getElementById('alertaMensagem');
         
         const sireneStatus = document.getElementById('sireneStatus');
         const btnAtivar = document.getElementById('ativarSirene');
@@ -386,14 +419,28 @@
         const btnLimpar = document.getElementById('limparAlerta');
         const btnReiniciar = document.getElementById('reiniciarAlerta');
         
-        function criarSomContinuo() {
+        const mapPlaceholder = document.getElementById('mapPlaceholder');
+        const coordenadas = document.getElementById('coordenadas');
+        const mapLink = document.getElementById('mapLink');
+        const statusConexao = document.getElementById('statusConexao');
+
+        // Variáveis de áudio
+        let audioContext = null;
+        let oscilador = null;
+        let ganho = null;
+        let sireneAtiva = false;
+        let efeitoVisual = null;
+        let monitorInterval = null;
+
+        // Funções de áudio
+        async function iniciarAudio() {
             try {
                 if (!audioContext) {
                     audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 }
                 
                 if (audioContext.state === 'suspended') {
-                    audioContext.resume();
+                    await audioContext.resume();
                 }
                 
                 oscilador = audioContext.createOscillator();
@@ -401,48 +448,21 @@
                 
                 oscilador.type = 'sawtooth';
                 oscilador.frequency.value = 620;
-                
-                ganho.gain.value = 0.2;
+                ganho.gain.value = 0.3;
                 
                 oscilador.connect(ganho);
                 ganho.connect(audioContext.destination);
                 
                 oscilador.start();
                 
-                let corAlternada = false;
-                efeitoVisual = setInterval(() => {
-                    if (sireneAtiva) {
-                        if (corAlternada) {
-                            sireneStatus.style.background = '#c32f3b';
-                        } else {
-                            sireneStatus.style.background = '#ff0000';
-                        }
-                        corAlternada = !corAlternada;
-                    }
-                }, 400);
-                
+                return true;
             } catch (e) {
-                console.log('Erro no áudio:', e);
-                let corAlternada = false;
-                efeitoVisual = setInterval(() => {
-                    if (sireneAtiva) {
-                        if (corAlternada) {
-                            sireneStatus.style.background = '#c32f3b';
-                        } else {
-                            sireneStatus.style.background = '#ff0000';
-                        }
-                        corAlternada = !corAlternada;
-                    }
-                }, 400);
+                console.error('Erro ao iniciar áudio:', e);
+                return false;
             }
         }
-        
-        function pararSirene() {
-            if (efeitoVisual) {
-                clearInterval(efeitoVisual);
-                efeitoVisual = null;
-            }
-            
+
+        function pararAudio() {
             if (oscilador) {
                 try {
                     oscilador.stop();
@@ -456,136 +476,237 @@
                 } catch (e) {}
                 audioContext = null;
             }
+        }
+
+        function iniciarEfeitoVisual() {
+            if (efeitoVisual) clearInterval(efeitoVisual);
             
-            sireneStatus.style.background = '#4A148C';
+            let corAlternada = false;
+            efeitoVisual = setInterval(() => {
+                if (sireneAtiva) {
+                    sireneStatus.style.background = corAlternada ? '#c32f3b' : '#ff0000';
+                    emergencyAlert.style.background = corAlternada ? '#c32f3b' : '#ff0000';
+                    corAlternada = !corAlternada;
+                }
+            }, 300);
         }
-        
-        function atualizarStatus() {
-            if (sireneAtiva) {
-                sireneStatus.innerHTML = '🔴 SIRENE ATIVADA';
-                sireneStatus.style.background = '#c32f3b';
-                sireneStatus.style.border = '2px solid #ffb3aa';
-                sireneStatus.style.boxShadow = '0 4px 0 #731f26';
-            } else {
-                sireneStatus.innerHTML = '⚫ SIRENE DESATIVADA';
-                sireneStatus.style.background = '#4A148C';
-                sireneStatus.style.border = '2px solid #B39DDB';
-                sireneStatus.style.boxShadow = '0 4px 0 #7B5BA7';
+
+        function pararEfeitoVisual() {
+            if (efeitoVisual) {
+                clearInterval(efeitoVisual);
+                efeitoVisual = null;
             }
+            sireneStatus.style.background = '';
+            emergencyAlert.style.background = '';
         }
-        
-        if (sireneAtiva) {
-            criarSomContinuo();
-            atualizarStatus();
-        }
-        
-        btnAtivar.addEventListener('click', function() {
-            if (!sireneAtiva) {
-                sireneAtiva = true;
-                atualizarStatus();
-                criarSomContinuo();
-                
-                this.style.background = '#c32f3b';
-                setTimeout(() => {
-                    this.style.background = 'white';
-                }, 200);
-            }
-        });
-        
-        btnDesativar.addEventListener('click', function() {
-            if (sireneAtiva) {
-                sireneAtiva = false;
-                pararSirene();
-                atualizarStatus();
-                
-                this.style.background = '#4A148C';
-                this.style.color = 'white';
-                setTimeout(() => {
-                    this.style.background = 'white';
-                    this.style.color = '#4A148C';
-                }, 200);
-            }
-        });
-        
-        btnTestar.addEventListener('click', function() {
-            const estavaAtiva = sireneAtiva;
+
+        async function ativarSirene() {
+            if (sireneAtiva) return;
             
-            if (estavaAtiva) {
+            sireneAtiva = true;
+            const audioOk = await iniciarAudio();
+            
+            if (audioOk) {
+                iniciarEfeitoVisual();
+            }
+            
+            atualizarInterfaceSirene();
+        }
+
+        function desativarSirene() {
+            sireneAtiva = false;
+            pararAudio();
+            pararEfeitoVisual();
+            atualizarInterfaceSirene();
+        }
+
+        function testarSirene() {
+            if (sireneAtiva) {
                 alert('Sirene já está ativada!');
                 return;
             }
-            
-            const testAudio = new (window.AudioContext || window.webkitAudioContext)();
-            const testOsc = testAudio.createOscillator();
-            const testGain = testAudio.createGain();
+
+            // Teste rápido de 2 segundos
+            const testContext = new (window.AudioContext || window.webkitAudioContext)();
+            const testOsc = testContext.createOscillator();
+            const testGain = testContext.createGain();
             
             testOsc.type = 'sawtooth';
             testOsc.frequency.value = 620;
-            testGain.gain.value = 0.15;
+            testGain.gain.value = 0.2;
             
             testOsc.connect(testGain);
-            testGain.connect(testAudio.destination);
+            testGain.connect(testContext.destination);
             
             testOsc.start();
             
+            // Efeito visual do teste
             const originalColor = sireneStatus.style.background;
             let testFlash = true;
             const testInterval = setInterval(() => {
                 sireneStatus.style.background = testFlash ? '#c32f3b' : '#ff0000';
+                emergencyAlert.style.background = testFlash ? '#c32f3b' : '#ff0000';
                 testFlash = !testFlash;
-            }, 300);
+            }, 200);
             
             setTimeout(() => {
                 testOsc.stop();
-                testAudio.close();
+                testContext.close();
                 clearInterval(testInterval);
                 sireneStatus.style.background = originalColor;
+                emergencyAlert.style.background = originalColor;
             }, 2000);
-            
-            this.style.background = '#B39DDB';
-            setTimeout(() => {
-                this.style.background = 'white';
-            }, 200);
-        });
-        
-        btnLimpar.addEventListener('click', function() {
+        }
+
+        function atualizarInterfaceSirene() {
             if (sireneAtiva) {
-                sireneAtiva = false;
-                pararSirene();
-                atualizarStatus();
+                sireneStatus.innerHTML = '🔴 SIRENE ATIVADA';
+                sireneStatus.classList.remove('inactive');
+                btnAtivar.disabled = true;
+                btnDesativar.disabled = false;
+            } else {
+                sireneStatus.innerHTML = '⚫ SIRENE DESATIVADA';
+                sireneStatus.classList.add('inactive');
+                btnAtivar.disabled = false;
+                btnDesativar.disabled = true;
             }
+        }
+
+        // Atualizar alerta na interface
+        function atualizarAlerta(alerta) {
+            if (alerta && alerta.status === 'ativo') {
+                // Mostrar alerta
+                emergencyAlert.classList.remove('inactive');
+                emergencyTitle.innerHTML = '🚨 ALERTA DE EMERGÊNCIA!';
+                alertaNome.textContent = alerta.nome || '---';
+                alertaSituacao.textContent = alerta.situacao || '---';
+                alertaData.textContent = alerta.dataHora || '---';
+                alertaMensagem.textContent = alerta.mensagem || '---';
+                
+                // Atualizar localização
+                if (alerta.localizacao) {
+                    const lat = alerta.localizacao.lat.toFixed(6);
+                    const lng = alerta.localizacao.lng.toFixed(6);
+                    coordenadas.textContent = `${lat}, ${lng}`;
+                    mapPlaceholder.innerHTML = `📍 SANTA MARIA<br><small>${lat}, ${lng}</small>`;
+                    mapLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
+                    mapLink.classList.remove('disabled');
+                } else {
+                    coordenadas.textContent = '---, ---';
+                    mapPlaceholder.innerHTML = '🗺️ LOCALIZAÇÃO NÃO COMPARTILHADA';
+                    mapLink.classList.add('disabled');
+                }
+                
+                // Ativar sirene automaticamente
+                if (!sireneAtiva) {
+                    ativarSirene();
+                }
+            } else {
+                // Sem alerta ativo
+                emergencyAlert.classList.add('inactive');
+                emergencyTitle.innerHTML = '✅ SISTEMA MONITORANDO';
+                alertaNome.textContent = '---';
+                alertaSituacao.textContent = '---';
+                alertaData.textContent = '---';
+                alertaMensagem.textContent = '---';
+                coordenadas.textContent = '---, ---';
+                mapPlaceholder.innerHTML = '🗺️ AGUARDANDO ALERTA';
+                mapLink.classList.add('disabled');
+                
+                // Desativar sirene se não houver alerta
+                if (sireneAtiva) {
+                    desativarSirene();
+                }
+            }
+        }
+
+        // Monitorar alertas
+        function iniciarMonitoramento() {
+            monitorInterval = setInterval(() => {
+                try {
+                    const alertaAtivo = localStorage.getItem('aurora_alerta_ativo') === 'true';
+                    const ultimoAlerta = localStorage.getItem('aurora_ultimo_alerta');
+                    
+                    if (alertaAtivo && ultimoAlerta) {
+                        const alerta = JSON.parse(ultimoAlerta);
+                        atualizarAlerta(alerta);
+                        statusConexao.innerHTML = '🔴 ALERTA ATIVO';
+                        statusConexao.style.color = '#c32f3b';
+                    } else {
+                        atualizarAlerta(null);
+                        statusConexao.innerHTML = '🟢 Monitorando';
+                        statusConexao.style.color = '';
+                    }
+                } catch (e) {
+                    console.error('Erro no monitoramento:', e);
+                }
+            }, 500); // Verificar a cada 500ms
+        }
+
+        // Limpar alerta
+        function limparAlerta() {
+            localStorage.removeItem('aurora_alerta_ativo');
+            // Manter último alerta no histórico mas marcar como inativo
+            const ultimoAlerta = localStorage.getItem('aurora_ultimo_alerta');
+            if (ultimoAlerta) {
+                try {
+                    const alerta = JSON.parse(ultimoAlerta);
+                    alerta.status = 'finalizado';
+                    localStorage.setItem('aurora_ultimo_alerta', JSON.stringify(alerta));
+                } catch (e) {}
+            }
+            atualizarAlerta(null);
+        }
+
+        // Reiniciar (simular novo alerta para teste)
+        function reiniciarAlerta() {
+            // Criar alerta de teste
+            const alertaTeste = {
+                id: Date.now(),
+                nome: 'MARISA',
+                situacao: 'Violência física',
+                mensagem: 'Socorro, preciso de ajuda!',
+                dataHora: new Date().toLocaleString('pt-BR'),
+                timestamp: Date.now(),
+                localizacao: {
+                    lat: -16.020084,
+                    lng: -48.020784
+                },
+                status: 'ativo'
+            };
             
-            document.querySelector('.emergency-alert').style.background = '#4A148C';
-            document.querySelector('.emergency-alert').style.border = '3px solid #B39DDB';
-            document.querySelector('.emergency-title').innerHTML = '✅ ALERTA FINALIZADO';
-            
-            this.style.background = '#8b6f5e';
-            this.style.color = 'white';
-            setTimeout(() => {
-                this.style.background = '#d0b9ab';
-                this.style.color = '#352217';
-            }, 200);
-        });
+            localStorage.setItem('aurora_alerta_ativo', 'true');
+            localStorage.setItem('aurora_ultimo_alerta', JSON.stringify(alertaTeste));
+            atualizarAlerta(alertaTeste);
+        }
+
+        // Event listeners
+        btnAtivar.addEventListener('click', ativarSirene);
+        btnDesativar.addEventListener('click', desativarSirene);
+        btnTestar.addEventListener('click', testarSirene);
+        btnLimpar.addEventListener('click', limparAlerta);
+        btnReiniciar.addEventListener('click', reiniciarAlerta);
+
+        // Inicializar
+        atualizarInterfaceSirene();
+        iniciarMonitoramento();
+
+        // Verificar alerta inicial
+        const alertaInicial = localStorage.getItem('aurora_ultimo_alerta');
+        const alertaAtivo = localStorage.getItem('aurora_alerta_ativo') === 'true';
         
-        btnReiniciar.addEventListener('click', function() {
-            sireneAtiva = true;
-            pararSirene();
-            criarSomContinuo();
-            atualizarStatus();
-            
-            document.querySelector('.emergency-alert').style.background = '#c32f3b';
-            document.querySelector('.emergency-alert').style.border = '3px solid #ffb3aa';
-            document.querySelector('.emergency-title').innerHTML = '🚨 ALERTA DE EMERGÊNCIA!';
-            
-            this.style.background = '#4f7960';
-            this.style.color = 'white';
-            setTimeout(() => {
-                this.style.background = '#e6d5ca';
-                this.style.color = '#352217';
-            }, 200);
+        if (alertaInicial && alertaAtivo) {
+            try {
+                const alerta = JSON.parse(alertaInicial);
+                atualizarAlerta(alerta);
+            } catch (e) {}
+        }
+
+        // Limpeza ao sair
+        window.addEventListener('beforeunload', () => {
+            if (monitorInterval) clearInterval(monitorInterval);
+            pararAudio();
         });
-        
-        atualizarStatus();
     </script>
 </body>
 </html>

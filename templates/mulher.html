@@ -241,6 +241,13 @@
             user-select: none;
         }
 
+        .situation-item.selected {
+            background: #c32f3b;
+            color: white;
+            border-color: #ffb3aa;
+            box-shadow: 0 3px 0 #731f26;
+        }
+
         .situation-item:active {
             transform: translateY(2px);
             box-shadow: 0 1px 0 #aa8b78;
@@ -262,6 +269,7 @@
         }
 
         .message-field {
+            width: 100%;
             background: white;
             border-radius: 30px;
             padding: 14px 18px;
@@ -270,6 +278,7 @@
             font-size: 15px;
             margin-bottom: 14px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            resize: none;
         }
 
         .gps-row {
@@ -324,7 +333,6 @@
 
         .action-btn.sair {
             background: #d0b9ab;
-            color: #2e1d14;
         }
 
         .recent-alerts {
@@ -395,9 +403,37 @@
             border-top: 1px dashed #cbb5a7;
             padding-top: 16px;
         }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .loading-spinner {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
+    <div class="loading" id="loading">
+        <div class="loading-spinner">📍 Obtendo localização...</div>
+    </div>
+
     <div class="phone-panel">
         <div class="header-protected">
             <div class="main-title">
@@ -410,11 +446,11 @@
 
         <div class="sos-section">
             <div class="sos-label">BOTÃO DE PÂNICO</div>
-            <div class="sos-button" onclick="alert('🚨 ALERTA AURORA ENVIADO!\nSua localização foi compartilhada com seus contatos de confiança.')">
+            <div class="sos-button" id="sosButton">
                 <span>SOS</span>
-                <span>toque e segure</span>
+                <span>toque para alertar</span>
             </div>
-            <div class="touch-hint">▼ mantenha pressionado para emergência</div>
+            <div class="touch-hint">▼ toque uma vez para enviar alerta</div>
         </div>
 
         <div class="trusted-section">
@@ -446,20 +482,20 @@
 
         <div class="user-name-block">
             <span class="user-label">SEU NOME</span>
-            <span class="user-value">MARISA</span>
+            <span class="user-value" id="userName">MARISA</span>
         </div>
 
         <div style="font-weight: 700; margin: 6px 0 8px; color: #513b2e;">TIPO DE SITUAÇÃO</div>
-        <div class="situation-grid">
-            <span class="situation-item">Violência física</span>
-            <span class="situation-item">Agressão verbal</span>
-            <span class="situation-item">Perseguição</span>
-            <span class="situation-item">Risco iminente</span>
+        <div class="situation-grid" id="situationGrid">
+            <span class="situation-item" data-situacao="Violência física">Violência física</span>
+            <span class="situation-item" data-situacao="Agressão verbal">Agressão verbal</span>
+            <span class="situation-item" data-situacao="Perseguição">Perseguição</span>
+            <span class="situation-item" data-situacao="Risco iminente">Risco iminente</span>
         </div>
 
         <div class="message-box">
             <div class="message-label">📝 MENSAGEM (OPCIONAL)</div>
-            <div class="message-field">Descreva rapidamente o que está acontecendo...</div>
+            <textarea class="message-field" id="mensagem" rows="2" placeholder="Descreva rapidamente o que está acontecendo..."></textarea>
             <div class="gps-row">
                 <input type="checkbox" id="gpsCheck" checked>
                 <label for="gpsCheck" style="flex:1; font-weight: 500;">📍 Compartilhar localização exata (GPS)</label>
@@ -467,25 +503,25 @@
         </div>
 
         <div class="action-buttons">
-            <span class="action-btn">REENVIAR</span>
-            <span class="action-btn">LIMPAR</span>
-            <span class="action-btn sair">SAIR</span>
+            <span class="action-btn" id="reenviarBtn">REENVIAR</span>
+            <span class="action-btn" id="limparBtn">LIMPAR</span>
+            <span class="action-btn sair" id="sairBtn">SAIR</span>
         </div>
 
         <div class="recent-alerts">
             <div class="recent-title">📋 ÚLTIMOS ALERTAS</div>
-            <div class="alert-item">
+            <div id="ultimoAlerta" class="alert-item">
                 <div class="alert-row">
                     <span class="alert-label">DATA/HORA:</span>
-                    <span class="alert-value">16/02/2026 16:00:44</span>
+                    <span class="alert-value" id="alertaData">--</span>
                 </div>
                 <div class="alert-row">
                     <span class="alert-label">SITUAÇÃO:</span>
-                    <span class="alert-value">Violência física</span>
+                    <span class="alert-value" id="alertaSituacao">--</span>
                 </div>
                 <div class="alert-row">
                     <span class="alert-label">LOCALIZAÇÃO:</span>
-                    <span class="location-badge">DISPONÍVEL</span>
+                    <span class="location-badge" id="alertaLocal">--</span>
                 </div>
             </div>
             <hr>
@@ -494,8 +530,178 @@
         
         <div class="footer-info">
             <span>Aurora-Shield v1.0</span>
-            <span>16/02/2026 16:44</span>
+            <span id="dataHora"></span>
         </div>
     </div>
+
+    <script>
+        // Elementos do DOM
+        const sosButton = document.getElementById('sosButton');
+        const userName = document.getElementById('userName');
+        const mensagem = document.getElementById('mensagem');
+        const gpsCheck = document.getElementById('gpsCheck');
+        const loading = document.getElementById('loading');
+        const alertaData = document.getElementById('alertaData');
+        const alertaSituacao = document.getElementById('alertaSituacao');
+        const alertaLocal = document.getElementById('alertaLocal');
+        const dataHora = document.getElementById('dataHora');
+        
+        let situacaoSelecionada = 'Violência física';
+        let ultimaLocalizacao = null;
+
+        // Atualizar data/hora
+        function atualizarDataHora() {
+            const agora = new Date();
+            dataHora.textContent = agora.toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        setInterval(atualizarDataHora, 1000);
+        atualizarDataHora();
+
+        // Selecionar situação
+        document.querySelectorAll('.situation-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.situation-item').forEach(i => i.classList.remove('selected'));
+                this.classList.add('selected');
+                situacaoSelecionada = this.dataset.situacao;
+            });
+        });
+        
+        // Selecionar primeiro item por padrão
+        document.querySelector('.situation-item').classList.add('selected');
+
+        // Função para obter localização
+        function obterLocalizacao() {
+            return new Promise((resolve, reject) => {
+                if (!gpsCheck.checked) {
+                    resolve(null);
+                    return;
+                }
+
+                if (!navigator.geolocation) {
+                    alert('Geolocalização não suportada');
+                    resolve(null);
+                    return;
+                }
+
+                loading.classList.add('active');
+                
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        loading.classList.remove('active');
+                        const loc = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        ultimaLocalizacao = loc;
+                        resolve(loc);
+                    },
+                    (error) => {
+                        loading.classList.remove('active');
+                        console.error('Erro ao obter localização:', error);
+                        alert('Não foi possível obter a localização. Verifique as permissões.');
+                        resolve(null);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            });
+        }
+
+        // Função para enviar alerta
+        async function enviarAlerta() {
+            try {
+                // Obter localização
+                const localizacao = await obterLocalizacao();
+                
+                // Criar objeto do alerta
+                const alerta = {
+                    id: Date.now(),
+                    nome: userName.textContent,
+                    situacao: situacaoSelecionada,
+                    mensagem: mensagem.value || 'Socorro, preciso de ajuda!',
+                    dataHora: new Date().toLocaleString('pt-BR'),
+                    timestamp: Date.now(),
+                    localizacao: localizacao,
+                    status: 'ativo'
+                };
+
+                // Salvar no localStorage
+                localStorage.setItem('aurora_alerta_ativo', 'true');
+                localStorage.setItem('aurora_ultimo_alerta', JSON.stringify(alerta));
+
+                // Atualizar último alerta na interface
+                alertaData.textContent = alerta.dataHora;
+                alertaSituacao.textContent = alerta.situacao;
+                alertaLocal.textContent = localizacao ? '📍 DISPONÍVEL' : '⛔ NÃO COMPARTILHADO';
+
+                // Feedback visual
+                sosButton.style.background = '#4CAF50';
+                setTimeout(() => {
+                    sosButton.style.background = '#c32f3b';
+                }, 500);
+
+                alert('🚨 ALERTA ENVIADO!\nSuas pessoas de confiança foram notificadas.');
+
+                // Se tiver localização, mostrar no mapa
+                if (localizacao) {
+                    console.log('Localização:', localizacao);
+                }
+
+            } catch (error) {
+                console.error('Erro ao enviar alerta:', error);
+                alert('Erro ao enviar alerta. Tente novamente.');
+            }
+        }
+
+        // Reenviar último alerta
+        async function reenviarAlerta() {
+            const ultimoAlerta = localStorage.getItem('aurora_ultimo_alerta');
+            if (ultimoAlerta) {
+                await enviarAlerta();
+            } else {
+                alert('Nenhum alerta anterior para reenviar.');
+            }
+        }
+
+        // Limpar alerta atual
+        function limparAlerta() {
+            localStorage.removeItem('aurora_alerta_ativo');
+            alertaData.textContent = '--';
+            alertaSituacao.textContent = '--';
+            alertaLocal.textContent = '--';
+            mensagem.value = '';
+            alert('✅ Alerta finalizado.');
+        }
+
+        // Event listeners
+        sosButton.addEventListener('click', enviarAlerta);
+        document.getElementById('reenviarBtn').addEventListener('click', reenviarAlerta);
+        document.getElementById('limparBtn').addEventListener('click', limparAlerta);
+        document.getElementById('sairBtn').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+
+        // Verificar alertas existentes ao carregar
+        const ultimoAlerta = localStorage.getItem('aurora_ultimo_alerta');
+        if (ultimoAlerta) {
+            try {
+                const alerta = JSON.parse(ultimoAlerta);
+                alertaData.textContent = alerta.dataHora;
+                alertaSituacao.textContent = alerta.situacao;
+                alertaLocal.textContent = alerta.localizacao ? '📍 DISPONÍVEL' : '⛔ NÃO COMPARTILHADO';
+            } catch (e) {
+                console.error('Erro ao carregar último alerta:', e);
+            }
+        }
+    </script>
 </body>
 </html>
