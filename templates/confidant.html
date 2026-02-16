@@ -1,158 +1,139 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Aurora-Shield · Confidente</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Shield - Pessoa de Confiança</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: #1a1e2b;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: radial-gradient(circle at top, #2a0040, #080012);
             min-height: 100vh;
-            padding: 12px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #f0f0f0;
+            padding: 20px;
         }
 
-        .phone-panel {
-            max-width: 400px;
-            width: 100%;
-            background: #f8f5f2;
-            border-radius: 40px;
-            padding: 24px 20px 32px 20px;
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 10px #3a2e28;
-            border: 2px solid #b7a08b;
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
         }
 
-        .header-protected {
+        /* ========== HEADER ========== */
+        .header {
             display: flex;
-            flex-direction: column;
-            margin-bottom: 24px;
-        }
-
-        .main-title {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: #231f1b;
-            line-height: 1;
-        }
-
-        .main-title span {
-            font-weight: 400;
-            font-size: 16px;
-            color: #b3597a;
-            margin-left: 8px;
-        }
-
-        .aurora-badge {
-            font-size: 14px;
-            font-weight: 500;
-            color: #b3597a;
-            background: #f2dfe8;
-            padding: 6px 14px;
-            border-radius: 40px;
-            align-self: flex-start;
-            margin-top: 6px;
-            border: 1px solid #dbb2c5;
-        }
-
-        .emergency-alert {
-            background: #c32f3b;
-            border-radius: 28px;
-            padding: 18px;
-            margin-bottom: 20px;
-            border: 3px solid #ffb3aa;
-            box-shadow: 0 8px 0 #731f26;
-            color: white;
-            transition: all 0.3s ease;
-        }
-
-        .emergency-alert.inactive {
-            background: #4A148C;
-            border-color: #B39DDB;
-            box-shadow: 0 8px 0 #2a0a4a;
-        }
-
-        .emergency-title {
-            font-size: 24px;
-            font-weight: 900;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 0 #540f16;
-            margin-bottom: 16px;
-        }
-
-        .emergency-detail {
-            background: rgba(255, 255, 255, 0.15);
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(25, 0, 35, 0.85);
+            padding: 20px;
             border-radius: 20px;
-            padding: 14px;
-            border: 1px solid #ffb3aa;
-        }
-
-        .detail-row {
-            display: flex;
-            margin-bottom: 8px;
-        }
-
-        .detail-label {
-            font-weight: 600;
-            width: 90px;
-            color: #ffe6e3;
-        }
-
-        .detail-value {
-            font-weight: 800;
-            color: white;
-            flex: 1;
-        }
-
-        .sirene-section {
-            background: linear-gradient(145deg, #F8F3FF 0%, #F0E8FF 100%);
-            border-radius: 28px;
-            padding: 18px 16px;
             margin-bottom: 20px;
-            border: 1px solid #D8C5FF;
-            box-shadow: 0 8px 20px rgba(106, 27, 154, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid #a259ff;
         }
 
-        .sirene-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #4A148C;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff7ab0, #a259ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .status {
+            background: #1a0025;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #a259ff;
+            font-size: 14px;
+            font-weight: bold;
+            color: #d0b0ff;
+        }
+
+        .status.ativo {
+            background: #ff4d7a;
+            color: white;
+            border-color: #ffb0c0;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        /* ========== CARDS ========== */
+        .card {
+            background: rgba(25, 0, 35, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 25px;
+            box-shadow: 0 0 30px rgba(162, 89, 255, 0.3);
+            border: 1px solid rgba(255, 122, 176, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            color: #ff9ec0;
+            font-size: 22px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #a259ff;
+            padding-bottom: 10px;
+        }
+
+        /* ========== SEÇÃO DA SIRENE ========== */
+        .sirene-section {
+            background: linear-gradient(145deg, #1f0030, #100020);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 2px solid #a259ff;
         }
 
         .sirene-status {
-            background: #c32f3b;
-            color: white;
-            padding: 16px;
-            border-radius: 40px;
-            font-weight: 800;
-            font-size: 18px;
-            text-align: center;
-            margin-bottom: 12px;
-            border: 2px solid #ffb3aa;
-            box-shadow: 0 4px 0 #731f26;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
         }
 
-        .sirene-status.inactive {
-            background: #4A148C;
-            border-color: #B39DDB;
-            box-shadow: 0 4px 0 #2a0a4a;
+        .sirene-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sirene-led {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #a259ff;
+            box-shadow: 0 0 10px #a259ff;
+        }
+
+        .sirene-led.ativa {
+            background: #66ff99;
+            box-shadow: 0 0 10px #66ff99;
         }
 
         .sirene-buttons {
@@ -161,669 +142,555 @@
             flex-wrap: wrap;
         }
 
-        .sirene-btn {
+        .btn-sirene {
             flex: 1;
-            min-width: 110px;
-            background: white;
+            min-width: 120px;
+            padding: 12px;
             border: none;
-            padding: 14px 0;
-            border-radius: 40px;
-            font-weight: 800;
-            font-size: 14px;
-            color: #4A148C;
-            box-shadow: 0 4px 0 #7B5BA7;
-            border: 2px solid #B39DDB;
-            text-align: center;
+            border-radius: 12px;
+            font-weight: bold;
             cursor: pointer;
-            transition: 0.05s linear;
-            text-transform: uppercase;
-        }
-
-        .sirene-btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 1px 0 #7B5BA7;
-        }
-
-        .sirene-btn.emergency {
-            background: #c32f3b;
-            color: white;
-            box-shadow: 0 4px 0 #731f26;
-            border: 2px solid #ffb3aa;
-        }
-
-        .sirene-btn.emergency:active {
-            box-shadow: 0 1px 0 #731f26;
-        }
-
-        .sirene-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: 0 2px 0 #7B5BA7;
-        }
-
-        .map-section {
-            background: #f4ede7;
-            border-radius: 24px;
-            padding: 16px;
-            border: 1px solid #d8c3b6;
-            margin-bottom: 20px;
-        }
-
-        .map-title {
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #3e2c21;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             font-size: 15px;
         }
 
-        .map-container {
-            background: #dac2b2;
-            border-radius: 20px;
-            padding: 16px;
-            border: 1px solid #b5947e;
-            margin-bottom: 12px;
-            text-align: center;
+        .btn-sirene.ativar {
+            background: linear-gradient(135deg, #ff7ab0, #a259ff);
+            color: white;
         }
 
-        .map-placeholder {
-            background: #a48d7c;
-            min-height: 120px;
-            border-radius: 16px;
+        .btn-sirene.ativar.ativa {
+            background: #66cc88;
+            color: #0a0015;
+        }
+
+        .btn-sirene.testar {
+            background: #66cc88;
+            color: #0a0015;
+        }
+
+        .btn-sirene:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px currentColor;
+        }
+
+        /* ========== SEÇÃO DO ALERTA ========== */
+        .alert-section {
+            background: #1a0025;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid #a259ff;
+            transition: 0.3s;
+        }
+
+        .alert-section.ativo {
+            background: #ff4d7a;
+            border-left-color: #ffb0c0;
+            animation: alertaPulse 1.5s infinite;
+            color: white;
+        }
+
+        @keyframes alertaPulse {
+            0% { box-shadow: 0 0 15px #ff7ab0; }
+            50% { box-shadow: 0 0 30px #ff7ab0; }
+            100% { box-shadow: 0 0 15px #ff7ab0; }
+        }
+
+        .alert-header {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+        }
+
+        /* ========== INFO GRID ========== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(162, 89, 255, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .alert-section.ativo .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #ffb0d0;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .alert-section.ativo .info-label {
+            color: #ffe0f0;
+        }
+
+        .info-value {
+            font-size: 18px;
+            font-weight: bold;
+            word-break: break-word;
+            color: white;
+        }
+
+        /* ========== MAPA ========== */
+        .map-container {
+            height: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 3px solid #a259ff;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .map {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: none;
+        }
+
+        .no-location {
+            width: 100%;
+            height: 100%;
+            display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 600;
-            border: 2px solid #6b4f3f;
-            margin-bottom: 12px;
-            background-image: radial-gradient(circle at 20px 20px, #8b6f5e 2px, transparent 2px), 
-                              radial-gradient(circle at 60px 80px, #8b6f5e 2px, transparent 2px);
-            background-size: 40px 40px;
-            padding: 20px;
-        }
-
-        .coordinates {
-            background: #f1e1d6;
-            padding: 12px;
-            border-radius: 30px;
-            font-family: monospace;
-            font-weight: 700;
-            font-size: 16px;
-            color: #1f130c;
-            border: 1px solid #b5947e;
-            margin-bottom: 12px;
-            text-align: center;
+            background: #1a0025;
+            color: #b0b0b0;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .map-link {
-            background: #4f7960;
-            color: white;
-            padding: 14px;
-            border-radius: 40px;
             text-align: center;
-            font-weight: 800;
+            margin: 10px 0;
+        }
+
+        .map-link a {
+            color: #ff9ec0;
             text-decoration: none;
-            display: block;
-            border: 2px solid #89b78a;
-            box-shadow: 0 4px 0 #2d5a3a;
-            cursor: pointer;
-            text-transform: uppercase;
+            padding: 8px 15px;
+            border: 1px solid #ff9ec0;
+            border-radius: 8px;
             font-size: 14px;
-            transition: 0.05s linear;
+            display: inline-block;
+            background: rgba(0,0,0,0.2);
         }
 
-        .map-link:active {
-            transform: translateY(4px);
-            box-shadow: 0 1px 0 #2d5a3a;
+        .map-link a:hover {
+            background: #ff9ec0;
+            color: #0a0015;
         }
 
-        .map-link.disabled {
-            background: #8b6f5e;
-            border-color: #6b4f3f;
-            box-shadow: 0 4px 0 #4d3a2e;
-            pointer-events: none;
-            opacity: 0.5;
-        }
-
-        .map-credit {
-            font-size: 11px;
-            color: #8b6f5e;
+        .coordenadas {
             text-align: center;
-            margin-top: 12px;
+            font-size: 13px;
+            color: #b0b0ff;
+            margin-top: 5px;
         }
 
+        /* ========== BOTÕES DE AÇÃO ========== */
         .action-buttons {
             display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin: 20px 0 10px;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
-        .action-btn {
-            background: #e6d5ca;
-            border: none;
-            padding: 16px 20px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 16px;
-            color: #352217;
-            box-shadow: 0 4px 0 #b19482;
-            border: 1px solid #ccb5a6;
+        .btn-action {
             flex: 1;
-            text-align: center;
+            min-width: 100px;
+            padding: 14px;
+            border: 2px solid #a259ff;
+            border-radius: 12px;
+            background: transparent;
+            color: white;
+            font-weight: bold;
             cursor: pointer;
-            transition: 0.05s linear;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 16px;
         }
 
-        .action-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #b19482;
+        .btn-action:hover {
+            background: rgba(162, 89, 255, 0.2);
+            transform: scale(1.02);
         }
 
-        .action-btn.limpar {
-            background: #d0b9ab;
-        }
-
-        .footer-info {
-            text-align: center;
-            margin-top: 16px;
-            font-size: 11px;
-            color: #aa8877;
-        }
+        /* ========== UTILITÁRIOS ========== */
+        .text-center { text-align: center; }
+        .mt-10 { margin-top: 10px; }
+        .mb-10 { margin-bottom: 10px; }
+        .opacity-5 { opacity: 0.7; }
     </style>
 </head>
 <body>
-    <div class="phone-panel">
-        <div class="header-protected">
-            <div class="main-title">
-                AURORA-SHIELD <span>· confidente</span>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-circle">🛡️</div>
+                <div>
+                    <div style="font-weight: bold; color: #ffb0d0;">AURORA SHIELD</div>
+                    <div style="font-size: 12px; color: #b0b0ff;">Pessoa de Confiança</div>
+                </div>
             </div>
-            <div class="aurora-badge">
-                ✦ Painel de Emergência ✦
-            </div>
+            <div class="status" id="statusPill">🟢 Monitorando</div>
         </div>
 
-        <div class="emergency-alert" id="emergencyAlert">
-            <div class="emergency-title" id="emergencyTitle">🚨 ALERTA DE EMERGÊNCIA!</div>
-            <div class="emergency-detail" id="emergencyDetail">
-                <div class="detail-row">
-                    <span class="detail-label">NOME:</span>
-                    <span class="detail-value" id="alertaNome">---</span>
+        <!-- CARD PRINCIPAL -->
+        <div class="card">
+            <div class="card-title">
+                <span>🚨</span> PAINEL DE EMERGÊNCIA
+            </div>
+
+            <!-- SEÇÃO DA SIRENE -->
+            <div class="sirene-section">
+                <div class="sirene-status">
+                    <div class="sirene-indicator">
+                        <span class="sirene-led" id="sireneLed"></span>
+                        <span id="sireneStatusText" style="color: #d0b0ff;">Sirene desativada</span>
+                    </div>
                 </div>
-                <div class="detail-row">
-                    <span class="detail-label">SITUAÇÃO:</span>
-                    <span class="detail-value" id="alertaSituacao">---</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">DATA/HORA:</span>
-                    <span class="detail-value" id="alertaData">---</span>
-                </div>
-                <div class="detail-row">
-                    <span class="detail-label">MENSAGEM:</span>
-                    <span class="detail-value" id="alertaMensagem">---</span>
+                
+                <div class="sirene-buttons">
+                    <button id="btnAtivarSirene" class="btn-sirene ativar" onclick="ativarSirene()">
+                        <span>🔇</span> ATIVAR SIRENE
+                    </button>
+                    <button class="btn-sirene testar" onclick="testarSom()">
+                        <span>🔊</span> TESTAR SOM
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <div class="sirene-section">
-            <div class="sirene-title">🔊 CONTROLE DA SIRENE</div>
-            <div id="sireneStatus" class="sirene-status inactive">⚫ SIRENE DESATIVADA</div>
-            <div class="sirene-buttons">
-                <button id="ativarSirene" class="sirene-btn emergency">ATIVAR SIRENE</button>
-                <button id="desativarSirene" class="sirene-btn" disabled>DESATIVAR</button>
-                <button id="testarSom" class="sirene-btn">TESTAR</button>
-            </div>
-        </div>
-
-        <div class="map-section">
-            <div class="map-title">📍 LOCALIZAÇÃO DA VÍTIMA</div>
-            <div class="map-container">
-                <div class="map-placeholder" id="mapPlaceholder">
-                    🗺️ AGUARDANDO ALERTA
-                </div>
-                <div class="coordinates" id="coordenadas">
-                    ---, ---
-                </div>
-                <a id="mapLink" href="#" target="_blank" class="map-link disabled">
-                    ABRIR NO GOOGLE MAPS
+            <!-- LINK TESTE EXTERNO -->
+            <div class="text-center mb-10">
+                <a href="/testar-sirene" target="_blank" style="color: #b0b0ff; font-size: 13px;">
+                    🔗 Abrir página de teste da sirene
                 </a>
             </div>
-            <div class="map-credit">
-                Santa Maria • Em tempo real | © OpenStreetMap
+
+            <!-- SEÇÃO DO ALERTA -->
+            <div id="alertSection" class="alert-section">
+                <div class="alert-header">
+                    <span class="alert-icon">⏳</span>
+                    <span id="alertTitle" style="color: white;">Aguardando alertas...</span>
+                </div>
+
+                <!-- INFO GRID -->
+                <div class="info-grid" id="infoGrid" style="display: none;">
+                    <div class="info-box">
+                        <div class="info-label">👤 NOME</div>
+                        <div class="info-value" id="infoNome">—</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">⚠️ SITUAÇÃO</div>
+                        <div class="info-value" id="infoSit">—</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">💬 MENSAGEM</div>
+                        <div class="info-value" id="infoMsg">—</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">📅 DATA/HORA</div>
+                        <div class="info-value" id="infoData">—</div>
+                    </div>
+                </div>
+
+                <!-- MAPA -->
+                <div class="map-container">
+                    <iframe id="map" class="map"></iframe>
+                    <div id="noLocation" class="no-location">
+                        <div style="font-size: 40px;">📍</div>
+                        <div>Nenhuma localização disponível</div>
+                    </div>
+                </div>
+
+                <!-- LINK DO MAPA -->
+                <div id="mapLink" class="map-link" style="display: none;">
+                    <a id="directMapLink" href="#" target="_blank">📍 Abrir no Google Maps</a>
+                </div>
+
+                <!-- COORDENADAS -->
+                <div id="coordenadas" class="coordenadas"></div>
+            </div>
+
+            <!-- BOTÕES DE AÇÃO -->
+            <div class="action-buttons">
+                <button class="btn-action" onclick="limparAlerta()">
+                    <span>🗑️</span> LIMPAR
+                </button>
+                <button class="btn-action" onclick="reiniciar()">
+                    <span>🔄</span> REINICIAR
+                </button>
             </div>
         </div>
 
-        <div class="action-buttons">
-            <button id="limparAlerta" class="action-btn limpar">LIMPAR</button>
-            <button id="reiniciarAlerta" class="action-btn">REINICIAR</button>
-        </div>
-
-        <div class="footer-info">
-            Aurora-Shield • Sistema de Proteção Ativa • <span id="statusConexao">🟢 Monitorando</span>
+        <!-- RODAPÉ -->
+        <div class="text-center mt-10 opacity-5">
+            <small style="color: #b0b0b0;">Clique em ATIVAR SIRENE e depois TESTAR SOM para verificar</small>
         </div>
     </div>
 
+    <!-- ÁUDIO DA SIRENE REAL -->
+    <audio id="sirene" loop preload="auto">
+        <source src="/static/sounds/sirene-real.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // Elementos do DOM
-        const emergencyAlert = document.getElementById('emergencyAlert');
-        const emergencyTitle = document.getElementById('emergencyTitle');
-        const alertaNome = document.getElementById('alertaNome');
-        const alertaSituacao = document.getElementById('alertaSituacao');
-        const alertaData = document.getElementById('alertaData');
-        const alertaMensagem = document.getElementById('alertaMensagem');
-        
-        const sireneStatus = document.getElementById('sireneStatus');
-        const btnAtivar = document.getElementById('ativarSirene');
-        const btnDesativar = document.getElementById('desativarSirene');
-        const btnTestar = document.getElementById('testarSom');
-        const btnLimpar = document.getElementById('limparAlerta');
-        const btnReiniciar = document.getElementById('reiniciarAlerta');
-        
-        const mapPlaceholder = document.getElementById('mapPlaceholder');
-        const coordenadas = document.getElementById('coordenadas');
-        const mapLink = document.getElementById('mapLink');
-        const statusConexao = document.getElementById('statusConexao');
-
-        // Variáveis de áudio
-        let audioContext = null;
+        // ============================================
+        // VARIÁVEIS GLOBAIS
+        // ============================================
+        let ultimoAlertaId = 0;
         let sireneAtiva = false;
-        let efeitoVisual = null;
-        let osciladores = [];
-        let ganhos = [];
-        let monitorInterval = null;
+        let sireneElement = document.getElementById('sirene');
+        let timeoutSirene = null;
 
-        // Função para criar som de sirene realista (alternando entre duas frequências)
-        function criarSomSirene() {
-            try {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
+        // Elementos DOM
+        const sireneLed = document.getElementById('sireneLed');
+        const sireneStatusText = document.getElementById('sireneStatusText');
+        const btnAtivarSirene = document.getElementById('btnAtivarSirene');
+        const alertSection = document.getElementById('alertSection');
+        const alertTitle = document.getElementById('alertTitle');
+        const infoGrid = document.getElementById('infoGrid');
+        const statusPill = document.getElementById('statusPill');
 
-                // Limpar osciladores anteriores
-                pararAudio();
-
-                // Criar dois osciladores para efeito mais realista
-                const osc1 = audioContext.createOscillator();
-                const osc2 = audioContext.createOscillator();
-                const gain1 = audioContext.createGain();
-                const gain2 = audioContext.createGain();
-                const masterGain = audioContext.createGain();
-
-                // Configurar osciladores
-                osc1.type = 'sawtooth';
-                osc2.type = 'square';
-                
-                // Configurar ganhos
-                gain1.gain.value = 0.15;
-                gain2.gain.value = 0.1;
-                masterGain.gain.value = 0.3;
-
-                // Conectar
-                osc1.connect(gain1);
-                osc2.connect(gain2);
-                gain1.connect(masterGain);
-                gain2.connect(masterGain);
-                masterGain.connect(audioContext.destination);
-
-                // Iniciar osciladores
-                osc1.start();
-                osc2.start();
-
-                // Salvar referências
-                osciladores = [osc1, osc2];
-                ganhos = [gain1, gain2];
-
-                // Criar efeito de sirene (alternância de frequência)
-                let frequenciaAlta = true;
-                const efeitoSirene = setInterval(() => {
-                    if (sireneAtiva && audioContext) {
-                        const now = audioContext.currentTime;
-                        
-                        if (frequenciaAlta) {
-                            osc1.frequency.linearRampToValueAtTime(880, now + 0.1);
-                            osc2.frequency.linearRampToValueAtTime(440, now + 0.1);
-                        } else {
-                            osc1.frequency.linearRampToValueAtTime(620, now + 0.1);
-                            osc2.frequency.linearRampToValueAtTime(310, now + 0.1);
-                        }
-                        
-                        frequenciaAlta = !frequenciaAlta;
-                    }
-                }, 300);
-
-                return efeitoSirene;
-
-            } catch (e) {
-                console.error('Erro ao criar som:', e);
-                return null;
-            }
+        // ============================================
+        // FUNÇÕES DA SIRENE
+        // ============================================
+        
+        function ativarSirene() {
+            sireneElement.play()
+                .then(() => {
+                    sireneElement.pause();
+                    sireneElement.currentTime = 0;
+                    sireneAtiva = true;
+                    
+                    // Atualizar UI
+                    sireneLed.className = 'sirene-led ativa';
+                    sireneStatusText.textContent = 'Sirene ativada';
+                    sireneStatusText.style.color = '#aaffaa';
+                    btnAtivarSirene.classList.add('ativa');
+                    btnAtivarSirene.innerHTML = '<span>🔊</span> SIRENE ATIVA';
+                    
+                    console.log('✅ Sirene ativada!');
+                })
+                .catch(() => {
+                    alert('⚠️ Clique novamente para ativar a sirene');
+                });
         }
 
-        function pararAudio() {
-            // Parar todos os osciladores
-            osciladores.forEach(osc => {
-                try {
-                    osc.stop();
-                } catch (e) {}
-            });
-            osciladores = [];
-            ganhos = [];
-            
-            if (audioContext) {
-                try {
-                    audioContext.close();
-                } catch (e) {}
-                audioContext = null;
-            }
-        }
-
-        function iniciarEfeitoVisual() {
-            if (efeitoVisual) clearInterval(efeitoVisual);
-            
-            efeitoVisual = setInterval(() => {
-                if (sireneAtiva) {
-                    // Alternar cores para efeito visual
-                    const corAtual = sireneStatus.style.background;
-                    if (corAtual === 'rgb(195, 47, 59)' || corAtual === '#c32f3b') {
-                        sireneStatus.style.background = '#ff0000';
-                        emergencyAlert.style.background = '#ff0000';
-                    } else {
-                        sireneStatus.style.background = '#c32f3b';
-                        emergencyAlert.style.background = '#c32f3b';
-                    }
-                }
-            }, 300);
-        }
-
-        function pararEfeitoVisual() {
-            if (efeitoVisual) {
-                clearInterval(efeitoVisual);
-                efeitoVisual = null;
-            }
-            sireneStatus.style.background = '';
-            emergencyAlert.style.background = '';
-        }
-
-        async function ativarSirene() {
-            if (sireneAtiva) return;
-            
-            sireneAtiva = true;
-            
-            try {
-                // Solicitar interação do usuário com o áudio
-                if (audioContext && audioContext.state === 'suspended') {
-                    await audioContext.resume();
-                }
-                
-                const efeitoSirene = criarSomSirene();
-                
-                // Iniciar efeitos visuais
-                iniciarEfeitoVisual();
-                
-                // Feedback tátil (vibração) se disponível
-                if (navigator.vibrate) {
-                    navigator.vibrate([500, 200, 500]);
-                }
-                
-            } catch (e) {
-                console.error('Erro ao ativar sirene:', e);
-                // Fallback: apenas efeito visual
-                iniciarEfeitoVisual();
-            }
-            
-            atualizarInterfaceSirene();
-        }
-
-        function desativarSirene() {
-            sireneAtiva = false;
-            pararAudio();
-            pararEfeitoVisual();
-            atualizarInterfaceSirene();
-            
-            // Parar vibração
-            if (navigator.vibrate) {
-                navigator.vibrate(0);
-            }
-        }
-
-        function testarSirene() {
-            if (sireneAtiva) {
-                alert('Sirene já está ativada! Desative primeiro para testar.');
+        function tocarSirene() {
+            if (!sireneAtiva) {
+                console.log('Sirene não ativada');
                 return;
             }
-
-            // Teste rápido de 2 segundos
-            const testContext = new (window.AudioContext || window.webkitAudioContext)();
             
-            const testOsc1 = testContext.createOscillator();
-            const testOsc2 = testContext.createOscillator();
-            const testGain = testContext.createGain();
-            
-            testOsc1.type = 'sawtooth';
-            testOsc2.type = 'square';
-            testOsc1.frequency.value = 880;
-            testOsc2.frequency.value = 440;
-            
-            testGain.gain.value = 0.2;
-            
-            testOsc1.connect(testGain);
-            testOsc2.connect(testGain);
-            testGain.connect(testContext.destination);
-            
-            testOsc1.start();
-            testOsc2.start();
-            
-            // Efeito visual do teste
-            const originalColor1 = sireneStatus.style.background;
-            const originalColor2 = emergencyAlert.style.background;
-            
-            let testFlash = true;
-            const testInterval = setInterval(() => {
-                const cor = testFlash ? '#c32f3b' : '#ff0000';
-                sireneStatus.style.background = cor;
-                emergencyAlert.style.background = cor;
-                testFlash = !testFlash;
-            }, 200);
-            
-            // Parar após 2 segundos
-            setTimeout(() => {
-                testOsc1.stop();
-                testOsc2.stop();
-                testContext.close();
-                clearInterval(testInterval);
-                sireneStatus.style.background = originalColor1;
-                emergencyAlert.style.background = originalColor2;
-            }, 2000);
-            
-            // Feedback do botão
-            btnTestar.style.background = '#B39DDB';
-            setTimeout(() => {
-                btnTestar.style.background = 'white';
-            }, 200);
-        }
-
-        function atualizarInterfaceSirene() {
-            if (sireneAtiva) {
-                sireneStatus.innerHTML = '🔴 SIRENE ATIVADA';
-                sireneStatus.classList.remove('inactive');
-                btnAtivar.disabled = true;
-                btnDesativar.disabled = false;
-            } else {
-                sireneStatus.innerHTML = '⚫ SIRENE DESATIVADA';
-                sireneStatus.classList.add('inactive');
-                btnAtivar.disabled = false;
-                btnDesativar.disabled = true;
+            if (timeoutSirene) {
+                clearTimeout(timeoutSirene);
             }
+            
+            sireneElement.currentTime = 0;
+            sireneElement.play()
+                .then(() => {
+                    console.log('🚨 SIRENE REAL TOCANDO!');
+                    timeoutSirene = setTimeout(() => {
+                        sireneElement.pause();
+                        sireneElement.currentTime = 0;
+                        console.log('🔇 Sirene parada');
+                    }, 5000);
+                })
+                .catch(erro => {
+                    console.log('Erro na sirene:', erro);
+                });
         }
 
-        // Atualizar alerta na interface
-        function atualizarAlerta(alerta) {
-            if (alerta && alerta.status === 'ativo') {
-                // Mostrar alerta
-                emergencyAlert.classList.remove('inactive');
-                emergencyTitle.innerHTML = '🚨 ALERTA DE EMERGÊNCIA!';
-                alertaNome.textContent = alerta.nome || '---';
-                alertaSituacao.textContent = alerta.situacao || '---';
-                alertaData.textContent = alerta.dataHora || '---';
-                alertaMensagem.textContent = alerta.mensagem || '---';
-                
-                // Atualizar localização
-                if (alerta.localizacao) {
-                    const lat = alerta.localizacao.lat.toFixed(6);
-                    const lng = alerta.localizacao.lng.toFixed(6);
-                    coordenadas.textContent = `${lat}, ${lng}`;
-                    mapPlaceholder.innerHTML = `📍 LOCALIZAÇÃO ATUAL<br><small>${lat}, ${lng}</small>`;
-                    mapLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
-                    mapLink.classList.remove('disabled');
-                } else {
-                    coordenadas.textContent = '---, ---';
-                    mapPlaceholder.innerHTML = '🗺️ LOCALIZAÇÃO NÃO COMPARTILHADA';
-                    mapLink.classList.add('disabled');
-                }
-                
-                // Ativar sirene automaticamente (com delay para garantir interação do usuário)
-                setTimeout(() => {
-                    if (!sireneAtiva) {
-                        ativarSirene();
-                    }
-                }, 500);
-            } else {
-                // Sem alerta ativo
-                emergencyAlert.classList.add('inactive');
-                emergencyTitle.innerHTML = '✅ SISTEMA MONITORANDO';
-                alertaNome.textContent = '---';
-                alertaSituacao.textContent = '---';
-                alertaData.textContent = '---';
-                alertaMensagem.textContent = '---';
-                coordenadas.textContent = '---, ---';
-                mapPlaceholder.innerHTML = '🗺️ AGUARDANDO ALERTA';
-                mapLink.classList.add('disabled');
-                
-                // Desativar sirene se não houver alerta
-                if (sireneAtiva) {
-                    desativarSirene();
-                }
+        function pararSirene() {
+            if (timeoutSirene) {
+                clearTimeout(timeoutSirene);
             }
+            sireneElement.pause();
+            sireneElement.currentTime = 0;
         }
 
-        // Monitorar alertas
-        function iniciarMonitoramento() {
-            monitorInterval = setInterval(() => {
-                try {
-                    const alertaAtivo = localStorage.getItem('aurora_alerta_ativo') === 'true';
-                    const ultimoAlerta = localStorage.getItem('aurora_ultimo_alerta');
-                    
-                    if (alertaAtivo && ultimoAlerta) {
-                        const alerta = JSON.parse(ultimoAlerta);
-                        atualizarAlerta(alerta);
-                        statusConexao.innerHTML = '🔴 ALERTA ATIVO';
-                        statusConexao.style.color = '#c32f3b';
-                    } else {
-                        atualizarAlerta(null);
-                        statusConexao.innerHTML = '🟢 Monitorando';
-                        statusConexao.style.color = '';
-                    }
-                } catch (e) {
-                    console.error('Erro no monitoramento:', e);
-                }
-            }, 500);
-        }
-
-        // Limpar alerta
-        function limparAlerta() {
-            localStorage.removeItem('aurora_alerta_ativo');
-            const ultimoAlerta = localStorage.getItem('aurora_ultimo_alerta');
-            if (ultimoAlerta) {
-                try {
-                    const alerta = JSON.parse(ultimoAlerta);
-                    alerta.status = 'finalizado';
-                    localStorage.setItem('aurora_ultimo_alerta', JSON.stringify(alerta));
-                } catch (e) {}
+        function testarSom() {
+            if (!sireneAtiva) {
+                alert('⚠️ Ative a sirene primeiro!');
+                return;
             }
-            atualizarAlerta(null);
-            
-            // Feedback visual
-            btnLimpar.style.background = '#8b6f5e';
-            btnLimpar.style.color = 'white';
-            setTimeout(() => {
-                btnLimpar.style.background = '#d0b9ab';
-                btnLimpar.style.color = '#352217';
-            }, 200);
+            tocarSirene();
         }
 
-        // Reiniciar (simular novo alerta para teste)
-        function reiniciarAlerta() {
-            // Criar alerta de teste
-            const alertaTeste = {
-                id: Date.now(),
-                nome: 'MARISA',
-                situacao: 'Violência física',
-                mensagem: 'Socorro, preciso de ajuda!',
-                dataHora: new Date().toLocaleString('pt-BR'),
-                timestamp: Date.now(),
-                localizacao: {
-                    lat: -16.020084,
-                    lng: -48.020784
-                },
-                status: 'ativo'
-            };
-            
-            localStorage.setItem('aurora_alerta_ativo', 'true');
-            localStorage.setItem('aurora_ultimo_alerta', JSON.stringify(alertaTeste));
-            atualizarAlerta(alertaTeste);
-            
-            // Feedback visual
-            btnReiniciar.style.background = '#4f7960';
-            btnReiniciar.style.color = 'white';
-            setTimeout(() => {
-                btnReiniciar.style.background = '#e6d5ca';
-                btnReiniciar.style.color = '#352217';
-            }, 200);
-        }
-
-        // Event listeners
-        btnAtivar.addEventListener('click', ativarSirene);
-        btnDesativar.addEventListener('click', desativarSirene);
-        btnTestar.addEventListener('click', testarSirene);
-        btnLimpar.addEventListener('click', limparAlerta);
-        btnReiniciar.addEventListener('click', reiniciarAlerta);
-
-        // Inicializar
-        atualizarInterfaceSirene();
-        iniciarMonitoramento();
-
-        // Verificar alerta inicial
-        const alertaInicial = localStorage.getItem('aurora_ultimo_alerta');
-        const alertaAtivo = localStorage.getItem('aurora_alerta_ativo') === 'true';
+        // ============================================
+        // FUNÇÕES DO PAINEL
+        // ============================================
         
-        if (alertaInicial && alertaAtivo) {
-            try {
-                const alerta = JSON.parse(alertaInicial);
-                atualizarAlerta(alerta);
-            } catch (e) {}
+        function limparAlerta() {
+            // Resetar UI
+            alertSection.className = 'alert-section';
+            alertTitle.innerHTML = '⏳ Aguardando alertas...';
+            statusPill.className = 'status';
+            statusPill.textContent = '🟢 Monitorando';
+            
+            // Esconder informações
+            infoGrid.style.display = 'none';
+            document.getElementById('map').style.display = 'none';
+            document.getElementById('noLocation').style.display = 'flex';
+            document.getElementById('mapLink').style.display = 'none';
+            document.getElementById('coordenadas').textContent = '';
+            
+            // Limpar valores
+            document.getElementById('infoNome').textContent = '—';
+            document.getElementById('infoSit').textContent = '—';
+            document.getElementById('infoMsg').textContent = '—';
+            document.getElementById('infoData').textContent = '—';
+            
+            pararSirene();
         }
 
-        // Garantir que o áudio possa ser iniciado após interação do usuário
-        document.addEventListener('click', function iniciarAudioContext() {
-            if (audioContext && audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-        }, { once: true });
+        function reiniciar() {
+            ultimoAlertaId = 0;
+            limparAlerta();
+            buscarAlertas();
+        }
 
-        // Limpeza ao sair
-        window.addEventListener('beforeunload', () => {
-            if (monitorInterval) clearInterval(monitorInterval);
-            pararAudio();
-            pararEfeitoVisual();
-        });
+        // ============================================
+        // FORMATAR DATA/HORA
+        // ============================================
+        
+        function formatarData(dataString) {
+            if (!dataString || dataString === '—') return '—';
+            if (dataString.match(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/)) {
+                return dataString;
+            }
+            try {
+                let data = new Date(dataString);
+                if (!isNaN(data.getTime())) {
+                    return data.toLocaleString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+                }
+            } catch (e) {}
+            return dataString;
+        }
+
+        // ============================================
+        // ATUALIZAR ALERTA
+        // ============================================
+        
+        function atualizarAlerta(alerta) {
+            console.log('🚨 NOVO ALERTA:', alerta);
+            
+            // Atualizar UI
+            alertSection.className = 'alert-section ativo';
+            alertTitle.innerHTML = '🚨 ALERTA DE EMERGÊNCIA!';
+            statusPill.className = 'status ativo';
+            statusPill.textContent = '🔴 ALERTA ATIVO';
+            
+            // Mostrar informações
+            infoGrid.style.display = 'grid';
+            document.getElementById('infoNome').textContent = alerta.name || 'Anônimo';
+            document.getElementById('infoSit').textContent = alerta.situation || 'Emergência';
+            document.getElementById('infoMsg').textContent = alerta.message || '—';
+            document.getElementById('infoData').textContent = formatarData(alerta.date) || '—';
+            
+            // Mapa
+            if (alerta.lat && alerta.lng && alerta.lat !== 'null' && alerta.lng !== 'null' && alerta.lat !== '' && alerta.lng !== '') {
+                const lat = parseFloat(alerta.lat);
+                const lng = parseFloat(alerta.lng);
+                
+                if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
+                    const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lng-0.01},${lat-0.01},${lng+0.01},${lat+0.01}&layer=mapnik&marker=${lat},${lng}`;
+                    const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+                    
+                    document.getElementById('map').src = mapUrl;
+                    document.getElementById('map').style.display = 'block';
+                    document.getElementById('noLocation').style.display = 'none';
+                    
+                    document.getElementById('directMapLink').href = googleMapsUrl;
+                    document.getElementById('mapLink').style.display = 'block';
+                    
+                    document.getElementById('coordenadas').textContent = `📍 ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+                }
+            } else {
+                document.getElementById('map').style.display = 'none';
+                document.getElementById('noLocation').style.display = 'flex';
+                document.getElementById('mapLink').style.display = 'none';
+                document.getElementById('coordenadas').textContent = '';
+            }
+            
+            tocarSirene();
+        }
+
+        // ============================================
+        // BUSCAR ALERTAS
+        // ============================================
+        
+        async function buscarAlertas() {
+            try {
+                const resposta = await fetch('/history_json', {
+                    cache: 'no-store',
+                    headers: { 
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
+                    }
+                });
+                
+                const dados = await resposta.json();
+                
+                if (dados && dados.length > 0) {
+                    const ultimo = dados[0];
+                    if (ultimo.id !== ultimoAlertaId) {
+                        ultimoAlertaId = ultimo.id;
+                        atualizarAlerta(ultimo);
+                    }
+                }
+            } catch (erro) {
+                console.log('Erro:', erro);
+            }
+        }
+
+        // ============================================
+        // INICIAR
+        // ============================================
+        
+        setInterval(buscarAlertas, 2000);
+        buscarAlertas();
+        
+        // Pré-carregar áudio
+        sireneElement.load();
+        sireneElement.volume = 0.8;
+        
+        console.log('✅ Painel Confidante carregado');
     </script>
 </body>
 </html>

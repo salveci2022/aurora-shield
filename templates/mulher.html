@@ -1,707 +1,921 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Aurora-Shield · Painel da Mulher</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Shield - Painel da Mulher</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: #1a1e2b;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: linear-gradient(135deg, #1a0025 0%, #2d0040 100%);
             min-height: 100vh;
-            padding: 12px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #f0f0f0;
+            padding: 20px;
         }
 
-        .phone-panel {
-            max-width: 400px;
-            width: 100%;
-            background: #f8f5f2;
-            border-radius: 40px;
-            padding: 24px 20px 32px 20px;
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 10px #3a2e28;
-            border: 2px solid #b7a08b;
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
         }
 
-        .header-protected {
+        /* ========== HEADER ========== */
+        .header {
             display: flex;
-            flex-direction: column;
-            margin-bottom: 24px;
-        }
-
-        .main-title {
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: #231f1b;
-            line-height: 1;
-        }
-
-        .main-title span {
-            font-weight: 400;
-            font-size: 18px;
-            color: #6b4f3f;
-            margin-left: 8px;
-        }
-
-        .aurora-badge {
-            font-size: 14px;
-            font-weight: 500;
-            color: #b3597a;
-            background: #f2dfe8;
-            padding: 6px 14px;
-            border-radius: 40px;
-            align-self: flex-start;
-            margin-top: 6px;
-            border: 1px solid #dbb2c5;
-        }
-
-        .sos-section {
-            display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(162, 89, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
-        .sos-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #6d4f41;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff7ab0, #a259ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(162, 89, 255, 0.4);
+        }
+
+        .user-info {
+            line-height: 1.4;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffb0d0;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #b0b0ff;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-sair {
+            background: rgba(255, 122, 176, 0.2);
+            border: 2px solid #ff7ab0;
+            color: #ffb0d0;
+            padding: 10px 25px;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .btn-sair:hover {
+            background: #ff7ab0;
+            color: #0a0015;
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px #ff7ab0;
+        }
+
+        /* ========== CARD PRINCIPAL ========== */
+        .main-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(162, 89, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ff9ec0;
+            border-bottom: 2px solid #a259ff;
+            padding-bottom: 15px;
+        }
+
+        /* ========== SEÇÃO DE CONTATOS ========== */
+        .contacts-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(162, 89, 255, 0.3);
+        }
+
+        .section-subtitle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #b0b0ff;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .contact-badge {
+            background: linear-gradient(135deg, rgba(255, 122, 176, 0.2), rgba(162, 89, 255, 0.2));
+            border: 1px solid rgba(255, 122, 176, 0.4);
+            border-radius: 15px;
+            padding: 12px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .contact-badge:hover {
+            transform: translateY(-2px);
+            border-color: #ff7ab0;
+            box-shadow: 0 5px 15px rgba(255, 122, 176, 0.2);
+        }
+
+        .contact-name {
+            font-weight: bold;
+            color: #ffb0d0;
+            font-size: 16px;
             margin-bottom: 4px;
         }
 
-        .sos-button {
-            background: #c32f3b;
-            width: 180px;
-            height: 180px;
-            border-radius: 9999px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 0 #731f26, 0 15px 30px rgba(190, 40, 50, 0.4);
-            border: 3px solid #ffb3aa;
-            margin: 6px 0 6px;
-            transition: all 0.05s ease;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
+        .contact-phone {
+            font-size: 12px;
+            color: #b0b0ff;
         }
 
-        .sos-button:active {
-            transform: translateY(6px);
-            box-shadow: 0 4px 0 #731f26, 0 12px 25px rgba(190, 40, 50, 0.4);
+        .contact-relation {
+            font-size: 10px;
+            color: #8888aa;
+            margin-top: 4px;
         }
 
-        .sos-button span:first-child {
-            font-size: 46px;
-            font-weight: 900;
+        /* ========== FORMULÁRIO ========== */
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b0b0ff;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(162, 89, 255, 0.4);
+            border-radius: 15px;
             color: white;
-            letter-spacing: 4px;
-            text-shadow: 2px 2px 0 #540f16;
-            line-height: 1;
-        }
-
-        .sos-button span:last-child {
             font-size: 16px;
-            font-weight: 600;
-            color: #ffe6e3;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            margin-top: -4px;
+            transition: 0.3s;
         }
 
-        .touch-hint {
-            font-size: 13px;
-            color: #896b5b;
-            background: #ece2da;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-weight: 500;
-            border: 1px dashed #b4937e;
-            margin-top: 8px;
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #ff7ab0;
+            box-shadow: 0 0 0 3px rgba(255, 122, 176, 0.2);
+            background: rgba(0, 0, 0, 0.4);
         }
 
-        .trusted-section {
-            background: #f0e7e0;
-            border-radius: 28px;
-            padding: 18px 16px;
-            margin-bottom: 20px;
-            border: 1px solid #dacbbc;
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
         }
 
-        .section-title {
-            font-size: 15px;
-            font-weight: 700;
-            color: #401f12;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .trusted-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .trusted-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: white;
-            padding: 8px 16px 8px 14px;
-            border-radius: 40px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            border: 1px solid #ebdad0;
-        }
-
-        .trusted-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .trusted-name {
-            font-weight: 700;
-            font-size: 16px;
-            color: #2a211c;
-        }
-
-        .trusted-phone {
-            font-size: 13px;
-            color: #7f685b;
-            letter-spacing: 0.2px;
-        }
-
-        .trusted-tag {
-            background: #dbc9bc;
-            padding: 6px 12px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #3b2a20;
-        }
-
-        .user-name-block {
-            background: #dac2b2;
-            border-radius: 30px;
-            padding: 10px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            border: 1px solid #b5947e;
-        }
-
-        .user-label {
-            font-weight: 500;
-            color: #4d3324;
-            font-size: 15px;
-        }
-
-        .user-value {
-            font-weight: 800;
-            font-size: 20px;
-            color: #1f130c;
-            background: #f1e1d6;
-            padding: 4px 16px;
-            border-radius: 50px;
-        }
-
-        .situation-grid {
+        /* ========== TAGS DE SITUAÇÃO ========== */
+        .tags-container {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin: 16px 0 20px;
+            margin: 15px 0;
         }
 
-        .situation-item {
-            background: #ede0d7;
-            border: 2px solid #c9b1a1;
-            padding: 10px 16px;
-            border-radius: 40px;
+        .tag {
+            flex: 1 0 auto;
+            min-width: 120px;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(162, 89, 255, 0.4);
+            border-radius: 15px;
+            color: #b0b0ff;
             font-weight: 600;
-            font-size: 15px;
-            color: #3c2c22;
-            box-shadow: 0 3px 0 #aa8b78;
             cursor: pointer;
-            transition: 0.05s linear;
-            user-select: none;
+            transition: 0.3s;
+            text-align: center;
         }
 
-        .situation-item.selected {
-            background: #c32f3b;
+        .tag:hover {
+            border-color: #ff7ab0;
+            background: rgba(255, 122, 176, 0.1);
+        }
+
+        .tag.active {
+            background: linear-gradient(135deg, #ff7ab0, #a259ff);
+            border-color: #ff7ab0;
             color: white;
-            border-color: #ffb3aa;
-            box-shadow: 0 3px 0 #731f26;
+            box-shadow: 0 5px 15px rgba(255, 122, 176, 0.4);
         }
 
-        .situation-item:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 0 #aa8b78;
-        }
-
-        .message-box {
-            background: #f4ede7;
-            border-radius: 24px;
-            padding: 16px;
-            border: 1px solid #d8c3b6;
-            margin-bottom: 20px;
-        }
-
-        .message-label {
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: #3e2c21;
-            font-size: 15px;
-        }
-
-        .message-field {
-            width: 100%;
-            background: white;
-            border-radius: 30px;
-            padding: 14px 18px;
-            color: #35322f;
-            border: 1px solid #cfb9ab;
-            font-size: 15px;
-            margin-bottom: 14px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-            resize: none;
-        }
-
-        .gps-row {
+        /* ========== CHECKBOX ========== */
+        .checkbox-wrapper {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: #e2d4cb;
-            border-radius: 40px;
-            padding: 10px 16px;
-            font-weight: 500;
-            color: #2c1d15;
-            border: 1px solid #b49480;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
         }
 
-        .gps-row input {
-            width: 22px;
-            height: 22px;
-            accent-color: #aa3863;
-            transform: scale(1.1);
-            margin-right: 4px;
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #ff7ab0;
+            cursor: pointer;
         }
 
-        .action-buttons {
+        .checkbox-wrapper label {
+            color: #b0b0ff;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* ========== BOTÃO SOS ========== */
+        .sos-wrapper {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .sos-button {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: none;
+            background: radial-gradient(circle at 30% 30%, #ff4d7a, #a259ff);
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 50px rgba(255, 77, 122, 0.5);
+            transition: 0.3s;
+            animation: pulse 2s infinite;
             display: flex;
-            gap: 12px;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            margin: 28px 0 20px;
+            margin: 0 auto;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 50px rgba(255, 77, 122, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 80px rgba(255, 77, 122, 0.8);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 50px rgba(255, 77, 122, 0.5);
+            }
+        }
+
+        .sos-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            animation: none;
+        }
+
+        .sos-button:not(:disabled):hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 100px #ff4d7a;
+        }
+
+        .sos-subtitle {
+            font-size: 16px;
+            margin-top: 15px;
+            font-weight: normal;
+            opacity: 0.9;
+        }
+
+        /* ========== BOTÕES DE AÇÃO ========== */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0 20px;
         }
 
         .action-btn {
-            background: #e6d5ca;
+            padding: 15px;
             border: none;
-            padding: 12px 20px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 16px;
-            color: #352217;
-            box-shadow: 0 4px 0 #b19482;
-            border: 1px solid #ccb5a6;
-            flex: 1;
-            text-align: center;
+            border-radius: 15px;
+            font-weight: bold;
             cursor: pointer;
-            transition: 0.05s linear;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .action-btn:active {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #b19482;
-        }
-
-        .action-btn.sair {
-            background: #d0b9ab;
-        }
-
-        .recent-alerts {
-            background: #ded0c5;
-            border-radius: 22px;
-            padding: 16px;
-            margin-top: 12px;
-            border: 1px solid #b29888;
-        }
-
-        .recent-title {
-            font-weight: 800;
-            font-size: 15px;
-            color: #3f271b;
-            margin-bottom: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        .alert-item {
-            background: #efe2d9;
-            border-radius: 18px;
-            padding: 12px 14px;
+            transition: 0.3s;
             display: flex;
-            flex-direction: column;
-            gap: 5px;
-            border-left: 6px solid #b6576a;
-            box-shadow: 0 2px 8px rgba(85, 45, 30, 0.1);
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 16px;
         }
 
-        .alert-row {
+        .btn-reenviar {
+            background: linear-gradient(135deg, #a259ff, #7a3fb0);
+            color: white;
+        }
+
+        .btn-limpar {
+            background: linear-gradient(135deg, #ff7ab0, #b05a80);
+            color: white;
+        }
+
+        .btn-sair-2 {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ff7ab0;
+            color: #ffb0d0;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ========== SEÇÃO DE RELATÓRIOS ========== */
+        .reports-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px solid rgba(162, 89, 255, 0.3);
+        }
+
+        .reports-header {
             display: flex;
+            align-items: center;
             justify-content: space-between;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .reports-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #b0b0ff;
+            font-size: 18px;
+        }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #ff4d7a, #a259ff);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-pdf:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(255, 77, 122, 0.5);
+        }
+
+        .alerts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .alerts-table th {
+            text-align: left;
+            padding: 12px;
+            color: #b0b0ff;
+            font-size: 13px;
+            border-bottom: 2px solid rgba(162, 89, 255, 0.4);
+        }
+
+        .alerts-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(162, 89, 255, 0.2);
+            color: #e0e0e0;
             font-size: 14px;
         }
 
-        .alert-label {
-            font-weight: 500;
-            color: #6b4a38;
+        .alerts-table tr:hover {
+            background: rgba(255, 122, 176, 0.05);
         }
 
-        .alert-value {
-            font-weight: 700;
-            color: #281a12;
-        }
-
-        .location-badge {
-            background: #4f7960;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
-            align-self: flex-start;
-        }
-
-        hr {
-            border: 1px solid #cab7ab;
-            margin: 16px 0 10px;
-        }
-        
-        .footer-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            font-size: 12px;
-            color: #8b6f5e;
-            border-top: 1px dashed #cbb5a7;
-            padding-top: 16px;
-        }
-
-        .loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
+        /* ========== STATUS MESSAGE ========== */
+        .status-message {
+            padding: 15px;
+            border-radius: 15px;
+            margin: 15px 0;
             display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            font-weight: 500;
         }
 
-        .loading.active {
-            display: flex;
+        .status-message.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #66ff99;
+            color: #aaffaa;
+            display: block;
         }
 
-        .loading-spinner {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            font-weight: bold;
+        .status-message.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff4d7a;
+            color: #ffb0b0;
+            display: block;
         }
+
+        .status-message.info {
+            background: rgba(162, 89, 255, 0.1);
+            border: 1px solid #a259ff;
+            color: #b0b0ff;
+            display: block;
+        }
+
+        /* ========== UTILITÁRIOS ========== */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .opacity-7 { opacity: 0.7; }
     </style>
 </head>
 <body>
-    <div class="loading" id="loading">
-        <div class="loading-spinner">📍 Obtendo localização...</div>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-circle">🛡️</div>
+                <div class="user-info">
+                    <div class="user-name" id="userNameDisplay">MARISA</div>
+                    <div class="user-role">Protegida por Aurora</div>
+                </div>
+            </div>
+            <button class="btn-sair" onclick="logout()">
+                <span>🚪</span> SAIR
+            </button>
+        </div>
+
+        <!-- CARD PRINCIPAL -->
+        <div class="main-card">
+            <div class="card-title">
+                <span>🚨</span> BOTÃO DE PÂNICO
+            </div>
+
+            <!-- SEÇÃO DE CONTATOS DE CONFIANÇA -->
+            <div class="contacts-section">
+                <div class="section-subtitle">
+                    <span>👥</span> PESSOAS DE CONFIANÇA
+                </div>
+                <div class="contacts-grid" id="contactsGrid">
+                    <!-- Contatos serão inseridos aqui via JavaScript -->
+                </div>
+            </div>
+
+            <!-- STATUS MESSAGE -->
+            <div id="statusMessage" class="status-message"></div>
+
+            <!-- FORMULÁRIO -->
+            <div class="form-section">
+                <div class="form-group">
+                    <label class="form-label">SEU NOME</label>
+                    <input type="text" id="name" class="form-input" placeholder="Como deseja ser identificada" value="MARISA">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">TIPO DE SITUAÇÃO</label>
+                    <div class="tags-container" id="situationTags">
+                        <div class="tag active" data-situacao="Violência física">🔴 Violência física</div>
+                        <div class="tag" data-situacao="Agressão verbal">🗣️ Agressão verbal</div>
+                        <div class="tag" data-situacao="Perseguição">👁️ Perseguição</div>
+                        <div class="tag" data-situacao="Risco iminente">⚠️ Risco iminente</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">MENSAGEM (OPCIONAL)</label>
+                    <textarea id="message" class="form-textarea" rows="3" placeholder="Descreva rapidamente o que está acontecendo..."></textarea>
+                </div>
+
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="shareLocation" checked>
+                    <label for="shareLocation">📍 Compartilhar localização exata (GPS)</label>
+                </div>
+            </div>
+
+            <!-- BOTÃO SOS -->
+            <div class="sos-wrapper">
+                <button class="sos-button" id="sosBtn" onmousedown="startPress()" onmouseup="cancelPress()" onmouseleave="cancelPress()" ontouchstart="startPress()" ontouchend="cancelPress()" ontouchcancel="cancelPress()">
+                    SOS
+                    <span class="sos-subtitle">TOQUE E SEGURE</span>
+                </button>
+            </div>
+
+            <!-- BOTÕES DE AÇÃO -->
+            <div class="action-buttons">
+                <button class="action-btn btn-reenviar" onclick="reenviarAlerta()">
+                    <span>🔄</span> REENVIAR
+                </button>
+                <button class="action-btn btn-limpar" onclick="clearForm()">
+                    <span>🗑️</span> LIMPAR
+                </button>
+                <button class="action-btn btn-sair-2" onclick="logout()">
+                    <span>🚪</span> SAIR
+                </button>
+            </div>
+
+            <!-- SEÇÃO DE RELATÓRIOS -->
+            <div class="reports-section">
+                <div class="reports-header">
+                    <div class="reports-title">
+                        <span>📊</span> ÚLTIMOS ALERTAS
+                    </div>
+                    <button class="btn-pdf" onclick="gerarPDF()">
+                        <span>📥</span> BAIXAR RELATÓRIO PDF
+                    </button>
+                </div>
+
+                <div style="max-height: 200px; overflow-y: auto;">
+                    <table class="alerts-table" id="alertsTable">
+                        <thead>
+                            <tr>
+                                <th>DATA/HORA</th>
+                                <th>SITUAÇÃO</th>
+                                <th>LOCALIZAÇÃO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alertsTableBody">
+                            <tr>
+                                <td colspan="3" class="text-center opacity-7">Carregando alertas...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- RODAPÉ -->
+        <div class="text-center mt-20 opacity-7">
+            <small>Aurora Shield - Proteção 24 horas</small>
+        </div>
     </div>
 
-    <div class="phone-panel">
-        <div class="header-protected">
-            <div class="main-title">
-                AURORA-SHIELD <span>· protegendo</span>
-            </div>
-            <div class="aurora-badge">
-                ✦ Sistema de Proteção Ativa ✦
-            </div>
-        </div>
-
-        <div class="sos-section">
-            <div class="sos-label">BOTÃO DE PÂNICO</div>
-            <div class="sos-button" id="sosButton">
-                <span>SOS</span>
-                <span>toque para alertar</span>
-            </div>
-            <div class="touch-hint">▼ toque uma vez para enviar alerta</div>
-        </div>
-
-        <div class="trusted-section">
-            <div class="section-title">👥 PESSOAS DE CONFIANÇA</div>
-            <div class="trusted-list">
-                <div class="trusted-item">
-                    <div class="trusted-info">
-                        <span class="trusted-name">CLECI</span>
-                        <span class="trusted-phone">(11) 99999-9999</span>
-                    </div>
-                    <span class="trusted-tag">Irmã</span>
-                </div>
-                <div class="trusted-item">
-                    <div class="trusted-info">
-                        <span class="trusted-name">MARIA</span>
-                        <span class="trusted-phone">(11) 98888-7777</span>
-                    </div>
-                    <span class="trusted-tag">Mãe</span>
-                </div>
-                <div class="trusted-item">
-                    <div class="trusted-info">
-                        <span class="trusted-name">JOÃO</span>
-                        <span class="trusted-phone">(11) 97777-6666</span>
-                    </div>
-                    <span class="trusted-tag">Pai</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="user-name-block">
-            <span class="user-label">SEU NOME</span>
-            <span class="user-value" id="userName">MARISA</span>
-        </div>
-
-        <div style="font-weight: 700; margin: 6px 0 8px; color: #513b2e;">TIPO DE SITUAÇÃO</div>
-        <div class="situation-grid" id="situationGrid">
-            <span class="situation-item" data-situacao="Violência física">Violência física</span>
-            <span class="situation-item" data-situacao="Agressão verbal">Agressão verbal</span>
-            <span class="situation-item" data-situacao="Perseguição">Perseguição</span>
-            <span class="situation-item" data-situacao="Risco iminente">Risco iminente</span>
-        </div>
-
-        <div class="message-box">
-            <div class="message-label">📝 MENSAGEM (OPCIONAL)</div>
-            <textarea class="message-field" id="mensagem" rows="2" placeholder="Descreva rapidamente o que está acontecendo..."></textarea>
-            <div class="gps-row">
-                <input type="checkbox" id="gpsCheck" checked>
-                <label for="gpsCheck" style="flex:1; font-weight: 500;">📍 Compartilhar localização exata (GPS)</label>
-            </div>
-        </div>
-
-        <div class="action-buttons">
-            <span class="action-btn" id="reenviarBtn">REENVIAR</span>
-            <span class="action-btn" id="limparBtn">LIMPAR</span>
-            <span class="action-btn sair" id="sairBtn">SAIR</span>
-        </div>
-
-        <div class="recent-alerts">
-            <div class="recent-title">📋 ÚLTIMOS ALERTAS</div>
-            <div id="ultimoAlerta" class="alert-item">
-                <div class="alert-row">
-                    <span class="alert-label">DATA/HORA:</span>
-                    <span class="alert-value" id="alertaData">--</span>
-                </div>
-                <div class="alert-row">
-                    <span class="alert-label">SITUAÇÃO:</span>
-                    <span class="alert-value" id="alertaSituacao">--</span>
-                </div>
-                <div class="alert-row">
-                    <span class="alert-label">LOCALIZAÇÃO:</span>
-                    <span class="location-badge" id="alertaLocal">--</span>
-                </div>
-            </div>
-            <hr>
-            <div style="font-size:13px; color:#5e4233; text-align:center; font-weight:500;">último alerta em destaque</div>
-        </div>
-        
-        <div class="footer-info">
-            <span>Aurora-Shield v1.0</span>
-            <span id="dataHora"></span>
-        </div>
-    </div>
+    <!-- INCLUSÃO DA BIBLIOTECA jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
     <script>
-        // Elementos do DOM
-        const sosButton = document.getElementById('sosButton');
-        const userName = document.getElementById('userName');
-        const mensagem = document.getElementById('mensagem');
-        const gpsCheck = document.getElementById('gpsCheck');
-        const loading = document.getElementById('loading');
-        const alertaData = document.getElementById('alertaData');
-        const alertaSituacao = document.getElementById('alertaSituacao');
-        const alertaLocal = document.getElementById('alertaLocal');
-        const dataHora = document.getElementById('dataHora');
-        
-        let situacaoSelecionada = 'Violência física';
-        let ultimaLocalizacao = null;
+        // ============================================
+        // VARIÁVEIS GLOBAIS
+        // ============================================
+        let pressTimer = null;
+        let isPressing = false;
+        let alertas = [];
 
-        // Atualizar data/hora
-        function atualizarDataHora() {
-            const agora = new Date();
-            dataHora.textContent = agora.toLocaleString('pt-BR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-        setInterval(atualizarDataHora, 1000);
-        atualizarDataHora();
-
-        // Selecionar situação
-        document.querySelectorAll('.situation-item').forEach(item => {
-            item.addEventListener('click', function() {
-                document.querySelectorAll('.situation-item').forEach(i => i.classList.remove('selected'));
-                this.classList.add('selected');
-                situacaoSelecionada = this.dataset.situacao;
-            });
-        });
-        
-        // Selecionar primeiro item por padrão
-        document.querySelector('.situation-item').classList.add('selected');
-
-        // Função para obter localização
-        function obterLocalizacao() {
-            return new Promise((resolve, reject) => {
-                if (!gpsCheck.checked) {
-                    resolve(null);
-                    return;
-                }
-
-                if (!navigator.geolocation) {
-                    alert('Geolocalização não suportada');
-                    resolve(null);
-                    return;
-                }
-
-                loading.classList.add('active');
-                
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        loading.classList.remove('active');
-                        const loc = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-                        ultimaLocalizacao = loc;
-                        resolve(loc);
-                    },
-                    (error) => {
-                        loading.classList.remove('active');
-                        console.error('Erro ao obter localização:', error);
-                        alert('Não foi possível obter a localização. Verifique as permissões.');
-                        resolve(null);
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 0
-                    }
-                );
-            });
-        }
-
-        // Função para enviar alerta
-        async function enviarAlerta() {
+        // ============================================
+        // CARREGAR CONTATOS
+        // ============================================
+        async function carregarContatos() {
             try {
-                // Obter localização
-                const localizacao = await obterLocalizacao();
+                const response = await fetch('/api/contacts');
+                const contatos = await response.json();
                 
-                // Criar objeto do alerta
-                const alerta = {
-                    id: Date.now(),
-                    nome: userName.textContent,
-                    situacao: situacaoSelecionada,
-                    mensagem: mensagem.value || 'Socorro, preciso de ajuda!',
-                    dataHora: new Date().toLocaleString('pt-BR'),
-                    timestamp: Date.now(),
-                    localizacao: localizacao,
-                    status: 'ativo'
-                };
-
-                // Salvar no localStorage
-                localStorage.setItem('aurora_alerta_ativo', 'true');
-                localStorage.setItem('aurora_ultimo_alerta', JSON.stringify(alerta));
-
-                // Atualizar último alerta na interface
-                alertaData.textContent = alerta.dataHora;
-                alertaSituacao.textContent = alerta.situacao;
-                alertaLocal.textContent = localizacao ? '📍 DISPONÍVEL' : '⛔ NÃO COMPARTILHADO';
-
-                // Feedback visual
-                sosButton.style.background = '#4CAF50';
-                setTimeout(() => {
-                    sosButton.style.background = '#c32f3b';
-                }, 500);
-
-                alert('🚨 ALERTA ENVIADO!\nSuas pessoas de confiança foram notificadas.');
-
-                // Se tiver localização, mostrar no mapa
-                if (localizacao) {
-                    console.log('Localização:', localizacao);
+                const contactsGrid = document.getElementById('contactsGrid');
+                contactsGrid.innerHTML = '';
+                
+                if (contatos && contatos.length > 0) {
+                    contatos.forEach(contato => {
+                        const badge = document.createElement('div');
+                        badge.className = 'contact-badge';
+                        badge.innerHTML = `
+                            <div class="contact-name">${contato.name}</div>
+                            <div class="contact-phone">${contato.phone}</div>
+                            <div class="contact-relation">${contato.relationship || 'Contato'}</div>
+                        `;
+                        contactsGrid.appendChild(badge);
+                    });
+                } else {
+                    contactsGrid.innerHTML = '<div class="contact-badge">Nenhum contato cadastrado</div>';
                 }
-
             } catch (error) {
-                console.error('Erro ao enviar alerta:', error);
-                alert('Erro ao enviar alerta. Tente novamente.');
+                console.error('Erro ao carregar contatos:', error);
             }
         }
 
-        // Reenviar último alerta
-        async function reenviarAlerta() {
-            const ultimoAlerta = localStorage.getItem('aurora_ultimo_alerta');
-            if (ultimoAlerta) {
-                await enviarAlerta();
-            } else {
-                alert('Nenhum alerta anterior para reenviar.');
+        // ============================================
+        // CARREGAR ALERTAS
+        // ============================================
+        async function carregarAlertas() {
+            try {
+                const response = await fetch('/history_json');
+                alertas = await response.json();
+                
+                const tbody = document.getElementById('alertsTableBody');
+                
+                if (alertas && alertas.length > 0) {
+                    let html = '';
+                    alertas.slice(0, 10).forEach(alerta => {
+                        const temLocalizacao = alerta.lat && alerta.lng && alerta.lat !== 'null' && alerta.lat !== '';
+                        html += `
+                            <tr>
+                                <td>${alerta.date || '—'}</td>
+                                <td>${alerta.situation || 'Emergência'}</td>
+                                <td>${temLocalizacao ? '📍 Disponível' : '—'}</td>
+                            </tr>
+                        `;
+                    });
+                    tbody.innerHTML = html;
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="3" class="text-center opacity-7">Nenhum alerta registrado</td></tr>';
+                }
+            } catch (error) {
+                console.error('Erro ao carregar alertas:', error);
             }
         }
 
-        // Limpar alerta atual
-        function limparAlerta() {
-            localStorage.removeItem('aurora_alerta_ativo');
-            alertaData.textContent = '--';
-            alertaSituacao.textContent = '--';
-            alertaLocal.textContent = '--';
-            mensagem.value = '';
-            alert('✅ Alerta finalizado.');
+        // ============================================
+        // FUNÇÕES DAS TAGS
+        // ============================================
+        function selectTag(element) {
+            document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
+            element.classList.add('active');
         }
 
-        // Event listeners
-        sosButton.addEventListener('click', enviarAlerta);
-        document.getElementById('reenviarBtn').addEventListener('click', reenviarAlerta);
-        document.getElementById('limparBtn').addEventListener('click', limparAlerta);
-        document.getElementById('sairBtn').addEventListener('click', () => {
-            window.location.href = 'index.html';
+        // ============================================
+        // FUNÇÕES DO BOTÃO SOS
+        // ============================================
+        function startPress() {
+            if (isPressing) return;
+            isPressing = true;
+            
+            const btn = document.getElementById('sosBtn');
+            btn.style.transform = 'scale(0.95)';
+            btn.style.animation = 'none';
+            
+            pressTimer = setTimeout(() => {
+                if (isPressing) {
+                    enviarAlerta();
+                }
+            }, 1000);
+        }
+
+        function cancelPress() {
+            isPressing = false;
+            clearTimeout(pressTimer);
+            
+            const btn = document.getElementById('sosBtn');
+            btn.style.transform = '';
+            btn.style.animation = 'pulse 2s infinite';
+        }
+
+        // ============================================
+        // FUNÇÃO PARA ENVIAR ALERTA
+        // ============================================
+        async function enviarAlerta() {
+            const btn = document.getElementById('sosBtn');
+            const originalHTML = btn.innerHTML;
+            
+            btn.innerHTML = 'ENVIANDO...';
+            btn.disabled = true;
+            
+            const name = document.getElementById('name').value || 'MARISA';
+            const situation = document.querySelector('.tag.active')?.getAttribute('data-situacao') || 'Emergência';
+            const message = document.getElementById('message').value;
+            const shareLocation = document.getElementById('shareLocation').checked;
+            
+            showStatus('Enviando alerta...', 'info');
+            
+            try {
+                let lat = null;
+                let lng = null;
+                
+                if (shareLocation && navigator.geolocation) {
+                    try {
+                        const position = await new Promise((resolve, reject) => {
+                            navigator.geolocation.getCurrentPosition(resolve, reject, {
+                                enableHighAccuracy: true,
+                                timeout: 10000
+                            });
+                        });
+                        lat = position.coords.latitude;
+                        lng = position.coords.longitude;
+                    } catch (geoError) {
+                        console.warn('Erro ao obter localização:', geoError);
+                        showStatus('Não foi possível obter localização. Enviando sem GPS.', 'error');
+                    }
+                }
+                
+                const response = await fetch('/api/panic', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, situation, message, lat, lng })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'ok') {
+                    showStatus('✅ ALERTA ENVIADO COM SUCESSO!', 'success');
+                    if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
+                    await carregarAlertas(); // Recarregar a lista
+                } else {
+                    throw new Error(data.message || 'Erro ao enviar');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                showStatus('❌ Erro ao enviar alerta. Tente novamente.', 'error');
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
+        }
+
+        // ============================================
+        // FUNÇÃO PARA REENVIAR ALERTA
+        // ============================================
+        function reenviarAlerta() {
+            enviarAlerta();
+        }
+
+        // ============================================
+        // FUNÇÕES DE FORMULÁRIO
+        // ============================================
+        function clearForm() {
+            document.getElementById('name').value = 'MARISA';
+            document.getElementById('message').value = '';
+            document.getElementById('shareLocation').checked = true;
+            
+            // Resetar tags
+            document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
+            document.querySelector('.tag').classList.add('active');
+            
+            showStatus('Formulário limpo', 'success');
+        }
+
+        function logout() {
+            window.location.href = '/';
+        }
+
+        // ============================================
+        // FUNÇÃO PARA MOSTRAR STATUS
+        // ============================================
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status-message ' + type;
+            
+            setTimeout(() => {
+                statusDiv.className = 'status-message';
+            }, 4000);
+        }
+
+        // ============================================
+        // FUNÇÃO PARA GERAR PDF
+        // ============================================
+        function gerarPDF() {
+            const { jsPDF } = window.jspdf;
+            
+            // Criar documento PDF
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+            
+            // Configurar cores
+            const primaryColor = [162, 89, 255]; // Roxo
+            const secondaryColor = [255, 122, 176]; // Rosa
+            
+            // Título
+            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+            doc.rect(0, 0, 210, 30, 'F');
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(20);
+            doc.setFont('helvetica', 'bold');
+            doc.text('RELATÓRIO DE ALERTAS - AURORA SHIELD', 15, 18);
+            
+            // Informações do usuário
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(12);
+            doc.text(`Usuária: ${document.getElementById('name').value || 'MARISA'}`, 15, 40);
+            doc.text(`Data de emissão: ${new Date().toLocaleString('pt-BR')}`, 15, 47);
+            
+            // Preparar dados da tabela
+            const tableData = alertas.map(alerta => [
+                alerta.date || '—',
+                alerta.situation || 'Emergência',
+                alerta.lat && alerta.lng ? '📍 Com localização' : '—'
+            ]);
+            
+            // Adicionar tabela
+            doc.autoTable({
+                head: [['DATA/HORA', 'SITUAÇÃO', 'LOCALIZAÇÃO']],
+                body: tableData,
+                startY: 55,
+                theme: 'grid',
+                headStyles: {
+                    fillColor: secondaryColor,
+                    textColor: [255, 255, 255],
+                    fontStyle: 'bold'
+                },
+                alternateRowStyles: {
+                    fillColor: [240, 240, 240]
+                }
+            });
+            
+            // Rodapé
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(10);
+                doc.setTextColor(150, 150, 150);
+                doc.text(
+                    `Aurora Shield - Página ${i} de ${pageCount}`,
+                    105,
+                    285,
+                    { align: 'center' }
+                );
+            }
+            
+            // Salvar PDF
+            const dataAtual = new Date().toISOString().slice(0, 10);
+            doc.save(`aurora-alertas-${dataAtual}.pdf`);
+        }
+
+        // ============================================
+        // INICIALIZAÇÃO
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            carregarContatos();
+            carregarAlertas();
+            
+            // Atualizar alertas a cada 30 segundos
+            setInterval(carregarAlertas, 30000);
+            
+            // Adicionar eventos às tags
+            document.querySelectorAll('.tag').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    selectTag(this);
+                });
+            });
+            
+            // Atualizar nome do usuário
+            const urlParams = new URLSearchParams(window.location.search);
+            const userName = urlParams.get('nome') || 'MARISA';
+            document.getElementById('name').value = userName;
+            document.getElementById('userNameDisplay').textContent = userName;
         });
 
-        // Verificar alertas existentes ao carregar
-        const ultimoAlerta = localStorage.getItem('aurora_ultimo_alerta');
-        if (ultimoAlerta) {
-            try {
-                const alerta = JSON.parse(ultimoAlerta);
-                alertaData.textContent = alerta.dataHora;
-                alertaSituacao.textContent = alerta.situacao;
-                alertaLocal.textContent = alerta.localizacao ? '📍 DISPONÍVEL' : '⛔ NÃO COMPARTILHADO';
-            } catch (e) {
-                console.error('Erro ao carregar último alerta:', e);
+        // Prevenir comportamento padrão em dispositivos touch
+        document.addEventListener('touchstart', (e) => {
+            if (e.target.classList.contains('sos-button')) {
+                e.preventDefault();
             }
-        }
+        });
     </script>
 </body>
 </html>
