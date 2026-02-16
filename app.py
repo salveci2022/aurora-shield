@@ -97,7 +97,7 @@ def history_json():
         return jsonify([])
 
 # ============================================
-# API DO BOTÃO DE PÂNICO
+# API DO BOTÃO DE PÂNICO - CORRIGIDO
 # ============================================
 
 @app.route("/api/panic", methods=["POST"])
@@ -108,15 +108,30 @@ def api_panic():
         name = data.get("name", "Usuária")
         situation = data.get("situation", "Emergência")
         message = data.get("message", "")
-        lat = str(data.get("lat", "")) if data.get("lat") else ""
-        lng = str(data.get("lng", "")) if data.get("lng") else ""
+        
+        # CORREÇÃO: Pegar latitude e longitude corretamente
+        lat = None
+        lng = None
+        
+        if data.get("lat") and data.get("lng"):
+            lat = str(data.get("lat"))
+            lng = str(data.get("lng"))
+            print(f"📍 Localização recebida: {lat}, {lng}")
+        else:
+            print("📍 Localização NÃO fornecida")
+        
+        # CORREÇÃO: Data e hora no formato brasileiro
+        agora = datetime.now()
+        data_formatada = agora.strftime("%d/%m/%Y %H:%M:%S")
+        
+        print(f"📅 Data formatada: {data_formatada}")
         
         conn = get_db()
         conn.execute("""
             INSERT INTO alerts (date, name, situation, message, lat, lng)
             VALUES (?, ?, ?, ?, ?, ?)
         """, (
-            datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            data_formatada,
             name,
             situation,
             message,
@@ -126,9 +141,15 @@ def api_panic():
         conn.commit()
         conn.close()
         
-        return jsonify({"status": "ok", "message": "Alerta enviado!"})
+        return jsonify({
+            "status": "ok", 
+            "message": "Alerta enviado!",
+            "data": data_formatada,
+            "localizacao": f"{lat},{lng}" if lat and lng else None
+        })
         
     except Exception as e:
+        print(f"❌ Erro no alerta: {str(e)}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
 # ============================================
@@ -146,7 +167,7 @@ def get_contacts():
         return jsonify([])
 
 # ============================================
-# ROTAS DE GERENCIAMENTO DE CONTATOS (NOVAS)
+# ROTAS DE GERENCIAMENTO DE CONTATOS
 # ============================================
 
 @app.route("/gerenciar-contatos")
@@ -266,15 +287,6 @@ def gerenciar_contatos():
             .back-link:hover {
                 background: #7a00ff40;
             }
-            .success {
-                background: rgba(0,255,0,0.1);
-                border: 1px solid #00ff88;
-                color: #00ff88;
-                padding: 10px;
-                border-radius: 8px;
-                margin-bottom: 20px;
-                display: none;
-            }
         </style>
     </head>
     <body>
@@ -330,19 +342,7 @@ def gerenciar_contatos():
                     <a href="/confidant" class="back-link" style="margin-left: 10px;">👥 IR PARA CONFIDANTE</a>
                 </div>
             </div>
-            
-            <div style="text-align: center; margin-top: 20px; opacity: 0.7; font-size: 12px;">
-                Total de contatos cadastrados: """ + str(len(contacts)) + """
-            </div>
         </div>
-        
-        <script>
-            // Mostrar mensagem se houver parâmetro na URL
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('success') === '1') {
-                alert('Operação realizada com sucesso!');
-            }
-        </script>
     </body>
     </html>
     """
@@ -448,13 +448,15 @@ if __name__ == "__main__":
     print("   • Página inicial: /")
     print("   • Mulher (direto): /mulher")
     print("   • Confidante (público): /confidant")
-    print("   • Gerenciar contatos: /gerenciar-contatos  ← NOVO!")
+    print("   • Gerenciar contatos: /gerenciar-contatos")
     print("   • Diagnóstico: /diagnostico")
     print("\n👥 Contatos demo:")
     print("   • CLECI (Irmã)")
     print("   • MARIA (Mãe)")
     print("   • JOÃO (Pai)")
-    print("\n✅ Todas as rotas estão funcionando!")
+    print("\n✅ API do botão de pânico corrigida:")
+    print("   • Data/hora: formato brasileiro")
+    print("   • Localização: salva corretamente")
     print("="*70)
     
     port = int(os.environ.get('PORT', 5000))
