@@ -12,10 +12,10 @@
         }
 
         body {
-            background: radial-gradient(circle at top, #3a0057, #0a0015);
+            background: radial-gradient(circle at top, #2a0040, #080012);
             min-height: 100vh;
             font-family: 'Segoe UI', Arial, sans-serif;
-            color: white;
+            color: #f0f0f0;
             padding: 20px;
         }
 
@@ -29,12 +29,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(20, 0, 34, 0.9);
+            background: rgba(25, 0, 35, 0.85);
             padding: 20px;
             border-radius: 20px;
             margin-bottom: 20px;
             backdrop-filter: blur(10px);
-            border: 1px solid #7a00ff;
+            border: 1px solid #a259ff;
         }
 
         .logo {
@@ -47,64 +47,67 @@
             width: 45px;
             height: 45px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #ff2fd4, #7a00ff);
+            background: linear-gradient(135deg, #ff7ab0, #a259ff);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 22px;
             font-weight: bold;
+            color: white;
         }
 
         .status {
-            background: #1d0030;
+            background: #1a0025;
             padding: 8px 16px;
             border-radius: 20px;
-            border: 1px solid #7a00ff;
+            border: 1px solid #a259ff;
             font-size: 14px;
             font-weight: bold;
+            color: #d0b0ff;
         }
 
         .status.ativo {
-            background: #ff2fd4;
-            color: #0a0015;
+            background: #ff4d7a;
+            color: white;
+            border-color: #ffb0c0;
             animation: pulse 1.5s infinite;
         }
 
         @keyframes pulse {
             0% { opacity: 1; }
-            50% { opacity: 0.7; }
+            50% { opacity: 0.8; }
             100% { opacity: 1; }
         }
 
         /* ========== CARDS ========== */
         .card {
-            background: rgba(20, 0, 34, 0.95);
+            background: rgba(25, 0, 35, 0.9);
             backdrop-filter: blur(10px);
             padding: 25px;
             border-radius: 25px;
-            box-shadow: 0 0 40px rgba(122, 0, 255, 0.3);
-            border: 1px solid rgba(255, 47, 212, 0.2);
+            box-shadow: 0 0 30px rgba(162, 89, 255, 0.3);
+            border: 1px solid rgba(255, 122, 176, 0.2);
             margin-bottom: 20px;
         }
 
         .card-title {
-            color: #ff2fd4;
+            color: #ff9ec0;
             font-size: 22px;
             margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
-            border-bottom: 2px solid #7a00ff;
+            border-bottom: 2px solid #a259ff;
             padding-bottom: 10px;
         }
 
         /* ========== SEÇÃO DA SIRENE ========== */
         .sirene-section {
-            background: linear-gradient(145deg, #1d0030, #0a0015);
+            background: linear-gradient(145deg, #1f0030, #100020);
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 25px;
-            border: 2px solid #7a00ff;
+            border: 2px solid #a259ff;
         }
 
         .sirene-status {
@@ -124,13 +127,13 @@
             width: 12px;
             height: 12px;
             border-radius: 50%;
-            background: #ff2fd4;
-            box-shadow: 0 0 10px #ff2fd4;
+            background: #a259ff;
+            box-shadow: 0 0 10px #a259ff;
         }
 
         .sirene-led.ativa {
-            background: #00ff88;
-            box-shadow: 0 0 10px #00ff88;
+            background: #66ff99;
+            box-shadow: 0 0 10px #66ff99;
         }
 
         .sirene-buttons {
@@ -152,48 +155,50 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            font-size: 15px;
         }
 
         .btn-sirene.ativar {
-            background: linear-gradient(45deg, #ff2fd4, #7a00ff);
+            background: linear-gradient(135deg, #ff7ab0, #a259ff);
             color: white;
         }
 
         .btn-sirene.ativar.ativa {
-            background: #00ff88;
+            background: #66cc88;
             color: #0a0015;
         }
 
         .btn-sirene.testar {
-            background: #00ff88;
+            background: #66cc88;
             color: #0a0015;
         }
 
         .btn-sirene:hover {
             transform: scale(1.02);
-            box-shadow: 0 0 20px currentColor;
+            box-shadow: 0 0 15px currentColor;
         }
 
         /* ========== SEÇÃO DO ALERTA ========== */
         .alert-section {
-            background: #1d0030;
+            background: #1a0025;
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 25px;
-            border-left: 5px solid #7a00ff;
+            border-left: 5px solid #a259ff;
             transition: 0.3s;
         }
 
         .alert-section.ativo {
-            background: #ff2fd4;
-            border-left-color: #7a00ff;
+            background: #ff4d7a;
+            border-left-color: #ffb0c0;
             animation: alertaPulse 1.5s infinite;
+            color: white;
         }
 
         @keyframes alertaPulse {
-            0% { box-shadow: 0 0 20px #ff2fd4; }
-            50% { box-shadow: 0 0 40px #ff2fd4; }
-            100% { box-shadow: 0 0 20px #ff2fd4; }
+            0% { box-shadow: 0 0 15px #ff7ab0; }
+            50% { box-shadow: 0 0 30px #ff7ab0; }
+            100% { box-shadow: 0 0 15px #ff7ab0; }
         }
 
         .alert-header {
@@ -218,22 +223,34 @@
         }
 
         .info-box {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.2);
             padding: 15px;
             border-radius: 12px;
-            border: 1px solid #7a00ff40;
+            border: 1px solid rgba(162, 89, 255, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .alert-section.ativo .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .info-label {
             font-size: 12px;
-            color: #b366ff;
+            color: #ffb0d0;
             margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .alert-section.ativo .info-label {
+            color: #ffe0f0;
         }
 
         .info-value {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             word-break: break-word;
+            color: white;
         }
 
         /* ========== MAPA ========== */
@@ -241,7 +258,7 @@
             height: 300px;
             border-radius: 15px;
             overflow: hidden;
-            border: 3px solid #7a00ff;
+            border: 3px solid #a259ff;
             margin: 20px 0;
             position: relative;
         }
@@ -259,8 +276,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #1d0030;
-            color: rgba(255,255,255,0.5);
+            background: #1a0025;
+            color: #b0b0b0;
             flex-direction: column;
             gap: 10px;
         }
@@ -271,24 +288,25 @@
         }
 
         .map-link a {
-            color: #ff2fd4;
+            color: #ff9ec0;
             text-decoration: none;
             padding: 8px 15px;
-            border: 1px solid #ff2fd4;
+            border: 1px solid #ff9ec0;
             border-radius: 8px;
             font-size: 14px;
             display: inline-block;
+            background: rgba(0,0,0,0.2);
         }
 
         .map-link a:hover {
-            background: #ff2fd4;
+            background: #ff9ec0;
             color: #0a0015;
         }
 
         .coordenadas {
             text-align: center;
-            font-size: 12px;
-            color: #b366ff;
+            font-size: 13px;
+            color: #b0b0ff;
             margin-top: 5px;
         }
 
@@ -303,9 +321,9 @@
         .btn-action {
             flex: 1;
             min-width: 100px;
-            padding: 12px;
-            border: 2px solid #7a00ff;
-            border-radius: 10px;
+            padding: 14px;
+            border: 2px solid #a259ff;
+            border-radius: 12px;
             background: transparent;
             color: white;
             font-weight: bold;
@@ -314,44 +332,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 8px;
+            font-size: 16px;
         }
 
         .btn-action:hover {
-            background: #7a00ff40;
+            background: rgba(162, 89, 255, 0.2);
             transform: scale(1.02);
-        }
-
-        /* ========== HISTÓRICO ========== */
-        .history-section {
-            background: #1d0030;
-            border-radius: 15px;
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        .history-title {
-            color: #b366ff;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .history-list {
-            max-height: 120px;
-            overflow-y: auto;
-        }
-
-        .history-item {
-            padding: 8px;
-            border-bottom: 1px solid #7a00ff40;
-            font-size: 12px;
         }
 
         /* ========== UTILITÁRIOS ========== */
         .text-center { text-align: center; }
         .mt-10 { margin-top: 10px; }
         .mb-10 { margin-bottom: 10px; }
-        .opacity-5 { opacity: 0.5; }
+        .opacity-5 { opacity: 0.7; }
     </style>
 </head>
 <body>
@@ -361,8 +355,8 @@
             <div class="logo">
                 <div class="logo-circle">🛡️</div>
                 <div>
-                    <div style="font-weight: bold;">AURORA SHIELD</div>
-                    <div style="font-size: 12px;">Pessoa de Confiança</div>
+                    <div style="font-weight: bold; color: #ffb0d0;">AURORA SHIELD</div>
+                    <div style="font-size: 12px; color: #b0b0ff;">Pessoa de Confiança</div>
                 </div>
             </div>
             <div class="status" id="statusPill">🟢 Monitorando</div>
@@ -379,24 +373,23 @@
                 <div class="sirene-status">
                     <div class="sirene-indicator">
                         <span class="sirene-led" id="sireneLed"></span>
-                        <span id="sireneStatusText">Sirene desativada</span>
+                        <span id="sireneStatusText" style="color: #d0b0ff;">Sirene desativada</span>
                     </div>
-                    <span id="sireneInfo" style="font-size: 12px;"></span>
                 </div>
                 
                 <div class="sirene-buttons">
                     <button id="btnAtivarSirene" class="btn-sirene ativar" onclick="ativarSirene()">
-                        <span>🔇</span> ATIVAR
+                        <span>🔇</span> ATIVAR SIRENE
                     </button>
                     <button class="btn-sirene testar" onclick="testarSom()">
-                        <span>🔊</span> TESTAR
+                        <span>🔊</span> TESTAR SOM
                     </button>
                 </div>
             </div>
 
             <!-- LINK TESTE EXTERNO -->
             <div class="text-center mb-10">
-                <a href="/testar-sirene" target="_blank" style="color: #b366ff; font-size: 13px;">
+                <a href="/testar-sirene" target="_blank" style="color: #b0b0ff; font-size: 13px;">
                     🔗 Abrir página de teste da sirene
                 </a>
             </div>
@@ -405,7 +398,7 @@
             <div id="alertSection" class="alert-section">
                 <div class="alert-header">
                     <span class="alert-icon">⏳</span>
-                    <span id="alertTitle">Aguardando alertas...</span>
+                    <span id="alertTitle" style="color: white;">Aguardando alertas...</span>
                 </div>
 
                 <!-- INFO GRID -->
@@ -455,17 +448,11 @@
                     <span>🔄</span> REINICIAR
                 </button>
             </div>
-
-            <!-- HISTÓRICO -->
-            <div class="history-section">
-                <div class="history-title">📋 ÚLTIMOS ALERTAS</div>
-                <div class="history-list" id="historyItems"></div>
-            </div>
         </div>
 
-        <!-- TESTE RÁPIDO (opcional) -->
+        <!-- RODAPÉ -->
         <div class="text-center mt-10 opacity-5">
-            <small>Clique em ATIVAR e depois TESTAR para verificar o som</small>
+            <small style="color: #b0b0b0;">Clique em ATIVAR SIRENE e depois TESTAR SOM para verificar</small>
         </div>
     </div>
 
@@ -490,6 +477,7 @@
         const alertSection = document.getElementById('alertSection');
         const alertTitle = document.getElementById('alertTitle');
         const infoGrid = document.getElementById('infoGrid');
+        const statusPill = document.getElementById('statusPill');
 
         // ============================================
         // FUNÇÕES DA SIRENE
@@ -505,8 +493,9 @@
                     // Atualizar UI
                     sireneLed.className = 'sirene-led ativa';
                     sireneStatusText.textContent = 'Sirene ativada';
+                    sireneStatusText.style.color = '#aaffaa';
                     btnAtivarSirene.classList.add('ativa');
-                    btnAtivarSirene.innerHTML = '<span>🔊</span> ATIVADA';
+                    btnAtivarSirene.innerHTML = '<span>🔊</span> SIRENE ATIVA';
                     
                     console.log('✅ Sirene ativada!');
                 })
@@ -564,8 +553,8 @@
             // Resetar UI
             alertSection.className = 'alert-section';
             alertTitle.innerHTML = '⏳ Aguardando alertas...';
-            document.getElementById('statusPill').className = 'status';
-            document.getElementById('statusPill').textContent = '🟢 Monitorando';
+            statusPill.className = 'status';
+            statusPill.textContent = '🟢 Monitorando';
             
             // Esconder informações
             infoGrid.style.display = 'none';
@@ -624,8 +613,8 @@
             // Atualizar UI
             alertSection.className = 'alert-section ativo';
             alertTitle.innerHTML = '🚨 ALERTA DE EMERGÊNCIA!';
-            document.getElementById('statusPill').className = 'status ativo';
-            document.getElementById('statusPill').textContent = '🔴 ALERTA ATIVO';
+            statusPill.className = 'status ativo';
+            statusPill.textContent = '🔴 ALERTA ATIVO';
             
             // Mostrar informações
             infoGrid.style.display = 'grid';
@@ -652,6 +641,11 @@
                     
                     document.getElementById('coordenadas').textContent = `📍 ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
                 }
+            } else {
+                document.getElementById('map').style.display = 'none';
+                document.getElementById('noLocation').style.display = 'flex';
+                document.getElementById('mapLink').style.display = 'none';
+                document.getElementById('coordenadas').textContent = '';
             }
             
             tocarSirene();
@@ -674,12 +668,6 @@
                 const dados = await resposta.json();
                 
                 if (dados && dados.length > 0) {
-                    let historicoHtml = '';
-                    for (let i = 0; i < Math.min(dados.length, 5); i++) {
-                        historicoHtml += `<div class="history-item">📢 ${dados[i].date || ''} - ${dados[i].name || 'Alerta'}</div>`;
-                    }
-                    document.getElementById('historyItems').innerHTML = historicoHtml;
-                    
                     const ultimo = dados[0];
                     if (ultimo.id !== ultimoAlertaId) {
                         ultimoAlertaId = ultimo.id;
