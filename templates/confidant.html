@@ -195,6 +195,13 @@
             box-shadow: 0 1px 0 #731f26;
         }
 
+        .sirene-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 0 #7B5BA7;
+        }
+
         .map-section {
             background: #f4ede7;
             border-radius: 24px;
@@ -221,9 +228,10 @@
 
         .map-placeholder {
             background: #a48d7c;
-            height: 120px;
+            min-height: 120px;
             border-radius: 16px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             color: white;
@@ -233,6 +241,7 @@
             background-image: radial-gradient(circle at 20px 20px, #8b6f5e 2px, transparent 2px), 
                               radial-gradient(circle at 60px 80px, #8b6f5e 2px, transparent 2px);
             background-size: 40px 40px;
+            padding: 20px;
         }
 
         .coordinates {
@@ -325,11 +334,6 @@
             font-size: 11px;
             color: #aa8877;
         }
-
-        .sirene-btn:disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
@@ -370,7 +374,7 @@
             <div id="sireneStatus" class="sirene-status inactive">⚫ SIRENE DESATIVADA</div>
             <div class="sirene-buttons">
                 <button id="ativarSirene" class="sirene-btn emergency">ATIVAR SIRENE</button>
-                <button id="desativarSirene" class="sirene-btn">DESATIVAR</button>
+                <button id="desativarSirene" class="sirene-btn" disabled>DESATIVAR</button>
                 <button id="testarSom" class="sirene-btn">TESTAR</button>
             </div>
         </div>
@@ -426,49 +430,92 @@
 
         // Variáveis de áudio
         let audioContext = null;
-        let oscilador = null;
-        let ganho = null;
         let sireneAtiva = false;
         let efeitoVisual = null;
+        let osciladores = [];
+        let ganhos = [];
         let monitorInterval = null;
 
-        // Funções de áudio
-        async function iniciarAudio() {
+        // Função para criar som de sirene realista (alternando entre duas frequências)
+        function criarSomSirene() {
             try {
                 if (!audioContext) {
                     audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 }
                 
                 if (audioContext.state === 'suspended') {
-                    await audioContext.resume();
+                    audioContext.resume();
                 }
+
+                // Limpar osciladores anteriores
+                pararAudio();
+
+                // Criar dois osciladores para efeito mais realista
+                const osc1 = audioContext.createOscillator();
+                const osc2 = audioContext.createOscillator();
+                const gain1 = audioContext.createGain();
+                const gain2 = audioContext.createGain();
+                const masterGain = audioContext.createGain();
+
+                // Configurar osciladores
+                osc1.type = 'sawtooth';
+                osc2.type = 'square';
                 
-                oscilador = audioContext.createOscillator();
-                ganho = audioContext.createGain();
-                
-                oscilador.type = 'sawtooth';
-                oscilador.frequency.value = 620;
-                ganho.gain.value = 0.3;
-                
-                oscilador.connect(ganho);
-                ganho.connect(audioContext.destination);
-                
-                oscilador.start();
-                
-                return true;
+                // Configurar ganhos
+                gain1.gain.value = 0.15;
+                gain2.gain.value = 0.1;
+                masterGain.gain.value = 0.3;
+
+                // Conectar
+                osc1.connect(gain1);
+                osc2.connect(gain2);
+                gain1.connect(masterGain);
+                gain2.connect(masterGain);
+                masterGain.connect(audioContext.destination);
+
+                // Iniciar osciladores
+                osc1.start();
+                osc2.start();
+
+                // Salvar referências
+                osciladores = [osc1, osc2];
+                ganhos = [gain1, gain2];
+
+                // Criar efeito de sirene (alternância de frequência)
+                let frequenciaAlta = true;
+                const efeitoSirene = setInterval(() => {
+                    if (sireneAtiva && audioContext) {
+                        const now = audioContext.currentTime;
+                        
+                        if (frequenciaAlta) {
+                            osc1.frequency.linearRampToValueAtTime(880, now + 0.1);
+                            osc2.frequency.linearRampToValueAtTime(440, now + 0.1);
+                        } else {
+                            osc1.frequency.linearRampToValueAtTime(620, now + 0.1);
+                            osc2.frequency.linearRampToValueAtTime(310, now + 0.1);
+                        }
+                        
+                        frequenciaAlta = !frequenciaAlta;
+                    }
+                }, 300);
+
+                return efeitoSirene;
+
             } catch (e) {
-                console.error('Erro ao iniciar áudio:', e);
-                return false;
+                console.error('Erro ao criar som:', e);
+                return null;
             }
         }
 
         function pararAudio() {
-            if (oscilador) {
+            // Parar todos os osciladores
+            osciladores.forEach(osc => {
                 try {
-                    oscilador.stop();
+                    osc.stop();
                 } catch (e) {}
-                oscilador = null;
-            }
+            });
+            osciladores = [];
+            ganhos = [];
             
             if (audioContext) {
                 try {
@@ -481,12 +528,17 @@
         function iniciarEfeitoVisual() {
             if (efeitoVisual) clearInterval(efeitoVisual);
             
-            let corAlternada = false;
             efeitoVisual = setInterval(() => {
                 if (sireneAtiva) {
-                    sireneStatus.style.background = corAlternada ? '#c32f3b' : '#ff0000';
-                    emergencyAlert.style.background = corAlternada ? '#c32f3b' : '#ff0000';
-                    corAlternada = !corAlternada;
+                    // Alternar cores para efeito visual
+                    const corAtual = sireneStatus.style.background;
+                    if (corAtual === 'rgb(195, 47, 59)' || corAtual === '#c32f3b') {
+                        sireneStatus.style.background = '#ff0000';
+                        emergencyAlert.style.background = '#ff0000';
+                    } else {
+                        sireneStatus.style.background = '#c32f3b';
+                        emergencyAlert.style.background = '#c32f3b';
+                    }
                 }
             }, 300);
         }
@@ -504,9 +556,26 @@
             if (sireneAtiva) return;
             
             sireneAtiva = true;
-            const audioOk = await iniciarAudio();
             
-            if (audioOk) {
+            try {
+                // Solicitar interação do usuário com o áudio
+                if (audioContext && audioContext.state === 'suspended') {
+                    await audioContext.resume();
+                }
+                
+                const efeitoSirene = criarSomSirene();
+                
+                // Iniciar efeitos visuais
+                iniciarEfeitoVisual();
+                
+                // Feedback tátil (vibração) se disponível
+                if (navigator.vibrate) {
+                    navigator.vibrate([500, 200, 500]);
+                }
+                
+            } catch (e) {
+                console.error('Erro ao ativar sirene:', e);
+                // Fallback: apenas efeito visual
                 iniciarEfeitoVisual();
             }
             
@@ -518,44 +587,67 @@
             pararAudio();
             pararEfeitoVisual();
             atualizarInterfaceSirene();
+            
+            // Parar vibração
+            if (navigator.vibrate) {
+                navigator.vibrate(0);
+            }
         }
 
         function testarSirene() {
             if (sireneAtiva) {
-                alert('Sirene já está ativada!');
+                alert('Sirene já está ativada! Desative primeiro para testar.');
                 return;
             }
 
             // Teste rápido de 2 segundos
             const testContext = new (window.AudioContext || window.webkitAudioContext)();
-            const testOsc = testContext.createOscillator();
+            
+            const testOsc1 = testContext.createOscillator();
+            const testOsc2 = testContext.createOscillator();
             const testGain = testContext.createGain();
             
-            testOsc.type = 'sawtooth';
-            testOsc.frequency.value = 620;
+            testOsc1.type = 'sawtooth';
+            testOsc2.type = 'square';
+            testOsc1.frequency.value = 880;
+            testOsc2.frequency.value = 440;
+            
             testGain.gain.value = 0.2;
             
-            testOsc.connect(testGain);
+            testOsc1.connect(testGain);
+            testOsc2.connect(testGain);
             testGain.connect(testContext.destination);
             
-            testOsc.start();
+            testOsc1.start();
+            testOsc2.start();
             
             // Efeito visual do teste
-            const originalColor = sireneStatus.style.background;
+            const originalColor1 = sireneStatus.style.background;
+            const originalColor2 = emergencyAlert.style.background;
+            
             let testFlash = true;
             const testInterval = setInterval(() => {
-                sireneStatus.style.background = testFlash ? '#c32f3b' : '#ff0000';
-                emergencyAlert.style.background = testFlash ? '#c32f3b' : '#ff0000';
+                const cor = testFlash ? '#c32f3b' : '#ff0000';
+                sireneStatus.style.background = cor;
+                emergencyAlert.style.background = cor;
                 testFlash = !testFlash;
             }, 200);
             
+            // Parar após 2 segundos
             setTimeout(() => {
-                testOsc.stop();
+                testOsc1.stop();
+                testOsc2.stop();
                 testContext.close();
                 clearInterval(testInterval);
-                sireneStatus.style.background = originalColor;
-                emergencyAlert.style.background = originalColor;
+                sireneStatus.style.background = originalColor1;
+                emergencyAlert.style.background = originalColor2;
             }, 2000);
+            
+            // Feedback do botão
+            btnTestar.style.background = '#B39DDB';
+            setTimeout(() => {
+                btnTestar.style.background = 'white';
+            }, 200);
         }
 
         function atualizarInterfaceSirene() {
@@ -588,7 +680,7 @@
                     const lat = alerta.localizacao.lat.toFixed(6);
                     const lng = alerta.localizacao.lng.toFixed(6);
                     coordenadas.textContent = `${lat}, ${lng}`;
-                    mapPlaceholder.innerHTML = `📍 SANTA MARIA<br><small>${lat}, ${lng}</small>`;
+                    mapPlaceholder.innerHTML = `📍 LOCALIZAÇÃO ATUAL<br><small>${lat}, ${lng}</small>`;
                     mapLink.href = `https://www.google.com/maps?q=${lat},${lng}`;
                     mapLink.classList.remove('disabled');
                 } else {
@@ -597,10 +689,12 @@
                     mapLink.classList.add('disabled');
                 }
                 
-                // Ativar sirene automaticamente
-                if (!sireneAtiva) {
-                    ativarSirene();
-                }
+                // Ativar sirene automaticamente (com delay para garantir interação do usuário)
+                setTimeout(() => {
+                    if (!sireneAtiva) {
+                        ativarSirene();
+                    }
+                }, 500);
             } else {
                 // Sem alerta ativo
                 emergencyAlert.classList.add('inactive');
@@ -640,13 +734,12 @@
                 } catch (e) {
                     console.error('Erro no monitoramento:', e);
                 }
-            }, 500); // Verificar a cada 500ms
+            }, 500);
         }
 
         // Limpar alerta
         function limparAlerta() {
             localStorage.removeItem('aurora_alerta_ativo');
-            // Manter último alerta no histórico mas marcar como inativo
             const ultimoAlerta = localStorage.getItem('aurora_ultimo_alerta');
             if (ultimoAlerta) {
                 try {
@@ -656,6 +749,14 @@
                 } catch (e) {}
             }
             atualizarAlerta(null);
+            
+            // Feedback visual
+            btnLimpar.style.background = '#8b6f5e';
+            btnLimpar.style.color = 'white';
+            setTimeout(() => {
+                btnLimpar.style.background = '#d0b9ab';
+                btnLimpar.style.color = '#352217';
+            }, 200);
         }
 
         // Reiniciar (simular novo alerta para teste)
@@ -678,6 +779,14 @@
             localStorage.setItem('aurora_alerta_ativo', 'true');
             localStorage.setItem('aurora_ultimo_alerta', JSON.stringify(alertaTeste));
             atualizarAlerta(alertaTeste);
+            
+            // Feedback visual
+            btnReiniciar.style.background = '#4f7960';
+            btnReiniciar.style.color = 'white';
+            setTimeout(() => {
+                btnReiniciar.style.background = '#e6d5ca';
+                btnReiniciar.style.color = '#352217';
+            }, 200);
         }
 
         // Event listeners
@@ -702,10 +811,18 @@
             } catch (e) {}
         }
 
+        // Garantir que o áudio possa ser iniciado após interação do usuário
+        document.addEventListener('click', function iniciarAudioContext() {
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }, { once: true });
+
         // Limpeza ao sair
         window.addEventListener('beforeunload', () => {
             if (monitorInterval) clearInterval(monitorInterval);
             pararAudio();
+            pararEfeitoVisual();
         });
     </script>
 </body>
