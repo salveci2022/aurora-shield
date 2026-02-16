@@ -85,7 +85,6 @@
             margin-bottom: 20px;
         }
 
-        /* ÁREA DA SIRENE */
         .sirene-area {
             background: linear-gradient(45deg, #ff2fd4, #7a00ff);
             border-radius: 20px;
@@ -119,7 +118,6 @@
             opacity: 0.9;
         }
 
-        /* BOTÃO DE TESTE */
         .test-audio {
             background: #00ff88;
             color: #0a0015;
@@ -390,14 +388,9 @@
         </div>
     </div>
 
-    <!-- CORREÇÃO: ÁUDIO DA SIRENE COM FONTES CONFIÁVEIS E FUNCIONAIS -->
+    <!-- ÁUDIO DA SIRENE REAL - ARQUIVO LOCAL -->
     <audio id="sirene" loop preload="auto">
-        <!-- Fonte principal que deve funcionar -->
-        <source src="https://www.soundjay.com/misc/sounds/siren-1.mp3" type="audio/mpeg">
-        <!-- Fallback com som de alerta do Google (curto, mas funcional) -->
-        <source src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg" type="audio/ogg">
-        <!-- Último fallback com um som diferente, também do SoundJay -->
-        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
+        <source src="/static/sounds/sirene-real.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -431,7 +424,7 @@
                     console.log('✅ Sirene ativada!');
                 })
                 .catch(() => {
-                    alert('⚠️ Clique novamente para ativar a sirene. Verifique se o navegador não está bloqueando o som.');
+                    alert('⚠️ Clique novamente para ativar a sirene');
                 });
         }
 
@@ -448,7 +441,7 @@
             sireneElement.currentTime = 0;
             sireneElement.play()
                 .then(() => {
-                    console.log('🚨 SIRENE TOCANDO!');
+                    console.log('🚨 SIRENE REAL TOCANDO!');
                     timeoutSirene = setTimeout(() => {
                         sireneElement.pause();
                         sireneElement.currentTime = 0;
@@ -457,8 +450,6 @@
                 })
                 .catch(erro => {
                     console.log('Erro na sirene:', erro);
-                    // Se falhar, tenta reativar o contexto de áudio ou notifica o usuário
-                    alert('Não foi possível tocar a sirene. Tente clicar em "ATIVAR SIRENE" novamente.');
                 });
         }
 
@@ -472,7 +463,7 @@
 
         function testarSom() {
             if (!sireneAtiva) {
-                alert('⚠️ Ative a sirene primeiro clicando no botão "ATIVAR SIRENE"!');
+                alert('⚠️ Ative a sirene primeiro!');
                 return;
             }
             tocarSirene();
@@ -567,9 +558,6 @@
                     
                     document.getElementById('coordenadas').textContent = `📍 ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
                 }
-            } else {
-                 document.getElementById('map').style.display = 'none';
-                 document.getElementById('noLocation').style.display = 'flex';
             }
             
             tocarSirene();
@@ -605,7 +593,7 @@
                     }
                 }
             } catch (erro) {
-                console.log('Erro ao buscar alertas:', erro);
+                console.log('Erro:', erro);
             }
         }
 
@@ -622,7 +610,8 @@
         
         console.log('✅ Painel Confidante carregado');
     </script>
-    <!-- BOTÃO DE TESTE DIRETO (ÚTIL PARA VERIFICAR O SOM RAPIDAMENTE) -->
+    
+    <!-- BOTÃO DE TESTE DIRETO (SEM PRECISAR ATIVAR) -->
     <div style="background: #ff2fd4; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center;">
         <h3 style="margin-bottom: 15px;">🔊 TESTE RÁPIDO DE SOM</h3>
         <button onclick="testarSomDireto()" style="background: white; color: #0a0015; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 18px;">
@@ -637,7 +626,7 @@
         audio.currentTime = 0;
         audio.play()
             .then(() => {
-                alert('✅ Sirene está tocando!');
+                alert('✅ Sirene REAL está tocando!');
                 setTimeout(() => {
                     audio.pause();
                     audio.currentTime = 0;

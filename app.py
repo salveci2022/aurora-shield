@@ -399,17 +399,17 @@ def adicionar_contato():
         return f"<h1 style='color:red'>Erro ao adicionar: {str(e)}</h1><p><a href='/gerenciar-contatos'>Voltar</a></p>"
 
 # ============================================
-# ROTA DE TESTE DA SIRENE - CORRIGIDA COM SIRENES REAIS
+# ROTA DE TESTE DA SIRENE - VERSÃO COM SOM REAL
 # ============================================
 
 @app.route("/testar-sirene")
 def testar_sirene_direto():
-    """Página para testar a sirene manualmente"""
+    """Página para testar a sirene real manualmente"""
     return """
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Teste de Sirene - Aurora Shield</title>
+        <title>Teste de Sirene Real - Aurora Shield</title>
         <style>
             body { 
                 background: #0a0015; 
@@ -480,34 +480,46 @@ def testar_sirene_direto():
                 font-size: 18px;
                 margin: 20px 0;
             }
+            .status-audio {
+                margin: 15px 0;
+                padding: 10px;
+                border-radius: 8px;
+                font-weight: bold;
+            }
+            .sucesso {
+                background: rgba(0,255,0,0.2);
+                border: 1px solid #00ff88;
+                color: #00ff88;
+            }
+            .erro {
+                background: rgba(255,0,0,0.2);
+                border: 1px solid #ff2fd4;
+                color: #ff2fd4;
+            }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1>🔊 TESTE DE SIRENE</h1>
+            <h1>🔊 TESTE DE SIRENE REAL</h1>
             
             <div class="data-hora" id="dataHora"></div>
             
-            <button onclick="tocarSirene()" class="sirene-btn">🔊 TOCAR</button>
+            <div id="statusAudio" class="status-audio"></div>
+            
+            <button onclick="tocarSirene()" class="sirene-btn">🔊 TOCAR SIRENE REAL</button>
             <button onclick="pararSirene()" class="sirene-btn stop-btn">⏹️ PARAR</button>
             
-            <!-- MÚLTIPLAS FONTES DE ÁUDIO - SIRENES REAIS -->
-            <audio id="sirene1" loop preload="auto">
-                <source src="https://www.soundjay.com/misc/sounds/siren-1.mp3" type="audio/mpeg">
-            </audio>
-            <audio id="sirene2" loop preload="auto">
-                <source src="https://www.soundjay.com/misc/sounds/police-siren-1.mp3" type="audio/mpeg">
-            </audio>
-            <audio id="sirene3" loop preload="auto">
-                <source src="https://www.soundjay.com/misc/sounds/fire-truck-siren-1.mp3" type="audio/mpeg">
+            <!-- ÁUDIO DA SIRENE REAL - ARQUIVO LOCAL -->
+            <audio id="sirene" loop preload="auto">
+                <source src="/static/sounds/sirene-real.mp3" type="audio/mpeg">
             </audio>
             
             <div class="info">
                 <p>✅ <strong>Instruções:</strong></p>
-                <p>1. Clique em "TOCAR" - se ouvir o som, a sirene está funcionando!</p>
-                <p>2. Se não ouvir, clique no botão "PARAR" e tente novamente</p>
+                <p>1. Clique em "TOCAR SIRENE REAL" - você deve ouvir uma SIRENE DE VERDADE</p>
+                <p>2. Se não ouvir, clique em "PARAR" e tente novamente</p>
                 <p>3. Verifique se o volume do computador está ativado</p>
-                <p>4. Se ainda assim não funcionar, tente em outro navegador (Chrome, Edge)</p>
+                <p>4. O arquivo de áudio está no servidor: /static/sounds/sirene-real.mp3</p>
             </div>
             
             <div style="margin-top: 30px;">
@@ -534,70 +546,59 @@ def testar_sirene_direto():
             setInterval(atualizarDataHora, 1000);
             atualizarDataHora();
             
-            // Áudios
-            let audios = [
-                document.getElementById('sirene1'),
-                document.getElementById('sirene2'),
-                document.getElementById('sirene3')
-            ];
-            let audioAtual = 0;
+            // Áudio da sirene real
+            let audio = document.getElementById('sirene');
             let timeoutSirene = null;
+            let statusDiv = document.getElementById('statusAudio');
             
             function tocarSirene() {
-                // Para qualquer som anterior
                 if (timeoutSirene) {
                     clearTimeout(timeoutSirene);
                 }
                 
-                // Pausa todos
-                audios.forEach(a => {
-                    a.pause();
-                    a.currentTime = 0;
-                });
-                
-                // Tenta cada áudio até um funcionar
-                function tentarProximo(index) {
-                    if (index >= audios.length) {
-                        alert('❌ Nenhuma fonte de áudio funcionou. Tente em outro navegador.');
-                        return;
-                    }
-                    
-                    let audio = audios[index];
-                    audio.currentTime = 0;
-                    
-                    audio.play()
-                        .then(() => {
-                            console.log('✅ Áudio tocando:', index);
-                            audioAtual = index;
-                            // Para após 5 segundos
-                            timeoutSirene = setTimeout(() => {
-                                audio.pause();
-                                audio.currentTime = 0;
-                                alert('🔇 Sirene parada automaticamente');
-                            }, 5000);
-                        })
-                        .catch(() => {
-                            console.log('❌ Áudio falhou:', index);
-                            tentarProximo(index + 1);
-                        });
-                }
-                
-                tentarProximo(0);
+                audio.currentTime = 0;
+                audio.play()
+                    .then(() => {
+                        statusDiv.innerHTML = '🔊 SIRENE REAL TOCANDO!';
+                        statusDiv.className = 'status-audio sucesso';
+                        
+                        timeoutSirene = setTimeout(() => {
+                            audio.pause();
+                            audio.currentTime = 0;
+                            statusDiv.innerHTML = '🔇 Sirene parada automaticamente';
+                            statusDiv.className = 'status-audio';
+                        }, 5000);
+                    })
+                    .catch(erro => {
+                        console.error('Erro:', erro);
+                        statusDiv.innerHTML = '❌ ERRO: ' + erro.message + '. Verifique se o arquivo sirene-real.mp3 existe na pasta /static/sounds/';
+                        statusDiv.className = 'status-audio erro';
+                    });
             }
             
             function pararSirene() {
-                audios.forEach(a => {
-                    a.pause();
-                    a.currentTime = 0;
-                });
+                audio.pause();
+                audio.currentTime = 0;
                 if (timeoutSirene) {
                     clearTimeout(timeoutSirene);
                 }
-                alert('🔇 Sirene parada');
+                statusDiv.innerHTML = '🔇 Sirene parada';
+                statusDiv.className = 'status-audio';
             }
             
-            // Pré-carregar áudios
-            audios.forEach(a => a.load());
+            // Verificar se o áudio carregou
+            audio.addEventListener('loadeddata', function() {
+                statusDiv.innerHTML = '✅ Arquivo de sirene carregado com sucesso!';
+                statusDiv.className = 'status-audio sucesso';
+            });
+            
+            audio.addEventListener('error', function() {
+                statusDiv.innerHTML = '❌ ERRO: Arquivo de áudio não encontrado. Coloque sirene-real.mp3 na pasta /static/sounds/';
+                statusDiv.className = 'status-audio erro';
+            });
+            
+            // Pré-carregar áudio
+            audio.load();
         </script>
     </body>
     </html>
@@ -662,10 +663,7 @@ if __name__ == "__main__":
     print("   • CLECI (Irmã)")
     print("   • MARIA (Mãe)")
     print("   • JOÃO (Pai)")
-    print("\n✅ Sistema completo com:")
-    print("   • Fuso horário brasileiro corrigido")
-    print("   • SIRENES REAIS: polícia, bombeiro e ambulância")
-    print("   • Localização funcionando")
+    print("\n✅ Sistema completo com SIRENE REAL!")
     print("="*70)
     
     port = int(os.environ.get('PORT', 5000))
