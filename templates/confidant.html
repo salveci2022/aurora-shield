@@ -1,696 +1,669 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aurora Shield - Pessoa de Confiança</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Aurora-Shield · Painel do Confidente</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background: radial-gradient(circle at top, #2a0040, #080012);
-            min-height: 100vh;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            color: #f0f0f0;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 650px;
-            margin: 0 auto;
-        }
-
-        /* ========== HEADER ========== */
-        .header {
+            background: #1a1e2b;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(25, 0, 35, 0.85);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid #a259ff;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-circle {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff7ab0, #a259ff);
-            display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 22px;
-            font-weight: bold;
-            color: white;
+            align-items: center;
+            min-height: 100vh;
+            padding: 12px;
         }
 
-        .status {
-            background: #1a0025;
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid #a259ff;
+        /* painel celular - MESMO ESTILO DO PAINEL DA MULHER */
+        .phone-panel {
+            max-width: 400px;
+            width: 100%;
+            background: #f8f5f2;
+            border-radius: 40px;
+            padding: 24px 20px 32px 20px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 10px #3a2e28;
+            border: 2px solid #b7a08b;
+        }
+
+        /* cabeçalho */
+        .header-protected {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 24px;
+        }
+
+        .main-title {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #231f1b;
+            line-height: 1;
+        }
+
+        .main-title span {
+            font-weight: 400;
+            font-size: 16px;
+            color: #b3597a;
+            margin-left: 8px;
+        }
+
+        .aurora-badge {
             font-size: 14px;
-            font-weight: bold;
-            color: #d0b0ff;
+            font-weight: 500;
+            color: #b3597a;
+            background: #f2dfe8;
+            padding: 6px 14px;
+            border-radius: 40px;
+            align-self: flex-start;
+            margin-top: 6px;
+            border: 1px solid #dbb2c5;
         }
 
-        .status.ativo {
-            background: #ff4d7a;
+        /* ALERTA DE EMERGÊNCIA - DESTAQUE */
+        .emergency-alert {
+            background: #c32f3b;
+            border-radius: 28px;
+            padding: 18px;
+            margin-bottom: 20px;
+            border: 3px solid #ffb3aa;
+            box-shadow: 0 8px 0 #731f26, 0 10px 20px rgba(190, 40, 50, 0.3);
             color: white;
-            border-color: #ffb0c0;
-            animation: pulse 1.5s infinite;
         }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.8; }
-            100% { opacity: 1; }
+        .emergency-title {
+            font-size: 24px;
+            font-weight: 900;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0 #540f16;
+            margin-bottom: 16px;
         }
 
-        /* ========== CARDS ========== */
-        .card {
-            background: rgba(25, 0, 35, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 25px;
-            box-shadow: 0 0 30px rgba(162, 89, 255, 0.3);
-            border: 1px solid rgba(255, 122, 176, 0.2);
+        .emergency-detail {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border: 1px solid #ffb3aa;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            width: 90px;
+            color: #ffe6e3;
+        }
+
+        .detail-value {
+            font-weight: 800;
+            color: white;
+            flex: 1;
+        }
+
+        /* seção de sirene */
+        .sirene-section {
+            background: linear-gradient(145deg, #F8F3FF 0%, #F0E8FF 100%);
+            border-radius: 28px;
+            padding: 18px 16px;
             margin-bottom: 20px;
+            border: 1px solid #D8C5FF;
+            box-shadow: 0 8px 20px rgba(106, 27, 154, 0.15);
         }
 
-        .card-title {
-            color: #ff9ec0;
-            font-size: 22px;
-            margin-bottom: 20px;
+        .sirene-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #4A148C;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-bottom: 2px solid #a259ff;
-            padding-bottom: 10px;
-        }
-
-        /* ========== SEÇÃO DA SIRENE ========== */
-        .sirene-section {
-            background: linear-gradient(145deg, #1f0030, #100020);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 2px solid #a259ff;
+            gap: 6px;
         }
 
         .sirene-status {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .sirene-indicator {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sirene-led {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #a259ff;
-            box-shadow: 0 0 10px #a259ff;
-        }
-
-        .sirene-led.ativa {
-            background: #66ff99;
-            box-shadow: 0 0 10px #66ff99;
+            background: #4A148C;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 12px;
+            border: 2px solid #B39DDB;
+            letter-spacing: 1px;
         }
 
         .sirene-buttons {
             display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .btn-sirene {
+        .sirene-btn {
             flex: 1;
-            min-width: 120px;
-            padding: 12px;
+            background: white;
             border: none;
-            border-radius: 12px;
-            font-weight: bold;
+            padding: 14px 0;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 16px;
+            color: #4A148C;
+            box-shadow: 0 4px 0 #7B5BA7;
+            border: 2px solid #B39DDB;
+            text-align: center;
             cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            transition: 0.05s linear;
+            text-transform: uppercase;
+        }
+
+        .sirene-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #7B5BA7;
+        }
+
+        .sirene-btn.emergency {
+            background: #c32f3b;
+            color: white;
+            box-shadow: 0 4px 0 #731f26;
+            border: 2px solid #ffb3aa;
+        }
+
+        /* mapa/localização */
+        .map-section {
+            background: #f4ede7;
+            border-radius: 24px;
+            padding: 16px;
+            border: 1px solid #d8c3b6;
+            margin-bottom: 20px;
+        }
+
+        .map-title {
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #3e2c21;
             font-size: 15px;
-        }
-
-        .btn-sirene.ativar {
-            background: linear-gradient(135deg, #ff7ab0, #a259ff);
-            color: white;
-        }
-
-        .btn-sirene.ativar.ativa {
-            background: #66cc88;
-            color: #0a0015;
-        }
-
-        .btn-sirene.testar {
-            background: #66cc88;
-            color: #0a0015;
-        }
-
-        .btn-sirene:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 15px currentColor;
-        }
-
-        /* ========== SEÇÃO DO ALERTA ========== */
-        .alert-section {
-            background: #1a0025;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            border-left: 5px solid #a259ff;
-            transition: 0.3s;
-        }
-
-        .alert-section.ativo {
-            background: #ff4d7a;
-            border-left-color: #ffb0c0;
-            animation: alertaPulse 1.5s infinite;
-            color: white;
-        }
-
-        @keyframes alertaPulse {
-            0% { box-shadow: 0 0 15px #ff7ab0; }
-            50% { box-shadow: 0 0 30px #ff7ab0; }
-            100% { box-shadow: 0 0 15px #ff7ab0; }
-        }
-
-        .alert-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            font-size: 18px;
-            font-weight: bold;
+            gap: 6px;
         }
 
-        .alert-icon {
-            font-size: 24px;
-        }
-
-        /* ========== INFO GRID ========== */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .info-box {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(162, 89, 255, 0.3);
-            backdrop-filter: blur(5px);
-        }
-
-        .alert-section.ativo .info-box {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .info-label {
-            font-size: 12px;
-            color: #ffb0d0;
-            margin-bottom: 5px;
-            letter-spacing: 0.5px;
-        }
-
-        .alert-section.ativo .info-label {
-            color: #ffe0f0;
-        }
-
-        .info-value {
-            font-size: 18px;
-            font-weight: bold;
-            word-break: break-word;
-            color: white;
-        }
-
-        /* ========== MAPA ========== */
         .map-container {
-            height: 300px;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 3px solid #a259ff;
-            margin: 20px 0;
-            position: relative;
+            background: #dac2b2;
+            border-radius: 20px;
+            padding: 16px;
+            border: 1px solid #b5947e;
+            margin-bottom: 12px;
+            text-align: center;
         }
 
-        .map {
-            width: 100%;
-            height: 100%;
-            border: none;
-            display: none;
-        }
-
-        .no-location {
-            width: 100%;
-            height: 100%;
+        .map-placeholder {
+            background: #a48d7c;
+            height: 120px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #1a0025;
-            color: #b0b0b0;
-            flex-direction: column;
-            gap: 10px;
+            color: white;
+            font-weight: 600;
+            border: 2px solid #6b4f3f;
+            margin-bottom: 12px;
+            background-image: radial-gradient(circle at 20px 20px, #8b6f5e 2px, transparent 2px), 
+                              radial-gradient(circle at 60px 80px, #8b6f5e 2px, transparent 2px);
+            background-size: 40px 40px;
+        }
+
+        .coordinates {
+            background: #f1e1d6;
+            padding: 10px;
+            border-radius: 30px;
+            font-family: monospace;
+            font-weight: 700;
+            color: #1f130c;
+            border: 1px solid #b5947e;
+            margin-bottom: 12px;
         }
 
         .map-link {
+            background: #4f7960;
+            color: white;
+            padding: 12px;
+            border-radius: 40px;
             text-align: center;
-            margin: 10px 0;
-        }
-
-        .map-link a {
-            color: #ff9ec0;
+            font-weight: 700;
             text-decoration: none;
-            padding: 8px 15px;
-            border: 1px solid #ff9ec0;
-            border-radius: 8px;
-            font-size: 14px;
-            display: inline-block;
-            background: rgba(0,0,0,0.2);
+            display: block;
+            border: 2px solid #89b78a;
+            box-shadow: 0 4px 0 #2d5a3a;
+            cursor: pointer;
         }
 
-        .map-link a:hover {
-            background: #ff9ec0;
-            color: #0a0015;
+        .map-link:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #2d5a3a;
         }
 
-        .coordenadas {
+        .map-credit {
+            font-size: 11px;
+            color: #8b6f5e;
             text-align: center;
-            font-size: 13px;
-            color: #b0b0ff;
-            margin-top: 5px;
+            margin-top: 12px;
         }
 
-        /* ========== BOTÕES DE AÇÃO ========== */
+        /* botões de ação */
         .action-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .btn-action {
-            flex: 1;
-            min-width: 100px;
-            padding: 14px;
-            border: 2px solid #a259ff;
-            border-radius: 12px;
-            background: transparent;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
+            gap: 12px;
             justify-content: center;
-            gap: 8px;
+            margin: 28px 0 10px;
+        }
+
+        .action-btn {
+            background: #e6d5ca;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-weight: 800;
             font-size: 16px;
+            color: #352217;
+            box-shadow: 0 4px 0 #b19482;
+            border: 1px solid #ccb5a6;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.05s linear;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .btn-action:hover {
-            background: rgba(162, 89, 255, 0.2);
-            transform: scale(1.02);
+        .action-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #b19482;
         }
 
-        /* ========== UTILITÁRIOS ========== */
-        .text-center { text-align: center; }
-        .mt-10 { margin-top: 10px; }
-        .mb-10 { margin-bottom: 10px; }
-        .opacity-5 { opacity: 0.7; }
+        .action-btn.limpar {
+            background: #d0b9ab;
+        }
+
+        /* informações adicionais */
+        .footer-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #8b6f5e;
+            border-top: 1px dashed #cbb5a7;
+            padding-top: 16px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- HEADER -->
-        <div class="header">
-            <div class="logo">
-                <div class="logo-circle">🛡️</div>
-                <div>
-                    <div style="font-weight: bold; color: #ffb0d0;">AURORA SHIELD</div>
-                    <div style="font-size: 12px; color: #b0b0ff;">Pessoa de Confiança</div>
-                </div>
+    <div class="phone-panel">
+        <!-- cabeçalho -->
+        <div class="header-protected">
+            <div class="main-title">
+                AURORA-SHIELD <span>· confidente</span>
             </div>
-            <div class="status" id="statusPill">🟢 Monitorando</div>
+            <div class="aurora-badge">
+                ✦ Painel de Emergência ✦
+            </div>
         </div>
 
-        <!-- CARD PRINCIPAL -->
-        <div class="card">
-            <div class="card-title">
-                <span>🚨</span> PAINEL DE EMERGÊNCIA
-            </div>
-
-            <!-- SEÇÃO DA SIRENE -->
-            <div class="sirene-section">
-                <div class="sirene-status">
-                    <div class="sirene-indicator">
-                        <span class="sirene-led" id="sireneLed"></span>
-                        <span id="sireneStatusText" style="color: #d0b0ff;">Sirene desativada</span>
-                    </div>
+        <!-- ALERTA DE EMERGÊNCIA (dados vindos do painel da mulher) -->
+        <div class="emergency-alert">
+            <div class="emergency-title">🚨 ALERTA DE EMERGÊNCIA!</div>
+            <div class="emergency-detail">
+                <div class="detail-row">
+                    <span class="detail-label">NOME:</span>
+                    <span class="detail-value">MARISA</span>
                 </div>
-                
-                <div class="sirene-buttons">
-                    <button id="btnAtivarSirene" class="btn-sirene ativar" onclick="ativarSirene()">
-                        <span>🔇</span> ATIVAR SIRENE
-                    </button>
-                    <button class="btn-sirene testar" onclick="testarSom()">
-                        <span>🔊</span> TESTAR SOM
-                    </button>
+                <div class="detail-row">
+                    <span class="detail-label">SITUAÇÃO:</span>
+                    <span class="detail-value">Violência física</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">DATA/HORA:</span>
+                    <span class="detail-value">16/02/2026 16:00:44</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">MENSAGEM:</span>
+                    <span class="detail-value">Socorro, preciso de ajuda!</span>
                 </div>
             </div>
+        </div>
 
-            <!-- LINK TESTE EXTERNO -->
-            <div class="text-center mb-10">
-                <a href="/testar-sirene" target="_blank" style="color: #b0b0ff; font-size: 13px;">
-                    🔗 Abrir página de teste da sirene
+        <!-- SEÇÃO DA SIRENE - AGORA SÓ PARA QUANDO CONFIDENTE DESLIGAR -->
+        <div class="sirene-section">
+            <div class="sirene-title">🔊 CONTROLE DA SIRENE</div>
+            <div id="sireneStatus" class="sirene-status">🔴 SIRENE ATIVADA</div>
+            <div class="sirene-buttons">
+                <div id="ativarSirene" class="sirene-btn emergency">ATIVAR SIRENE</div>
+                <div id="desativarSirene" class="sirene-btn">DESATIVAR</div>
+                <div id="testarSom" class="sirene-btn">TESTAR</div>
+            </div>
+        </div>
+
+        <!-- LOCALIZAÇÃO (igual ao print) -->
+        <div class="map-section">
+            <div class="map-title">📍 LOCALIZAÇÃO DA VÍTIMA</div>
+            <div class="map-container">
+                <div class="map-placeholder">
+                    🗺️ MAPA
+                </div>
+                <div class="coordinates">
+                    -16.020084, -48.020784
+                </div>
+                <a href="https://www.google.com/maps?q=-16.020084,-48.020784" target="_blank" class="map-link">
+                    📱 ABRIR NO GOOGLE MAPS
                 </a>
             </div>
-
-            <!-- SEÇÃO DO ALERTA -->
-            <div id="alertSection" class="alert-section">
-                <div class="alert-header">
-                    <span class="alert-icon">⏳</span>
-                    <span id="alertTitle" style="color: white;">Aguardando alertas...</span>
-                </div>
-
-                <!-- INFO GRID -->
-                <div class="info-grid" id="infoGrid" style="display: none;">
-                    <div class="info-box">
-                        <div class="info-label">👤 NOME</div>
-                        <div class="info-value" id="infoNome">—</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="info-label">⚠️ SITUAÇÃO</div>
-                        <div class="info-value" id="infoSit">—</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="info-label">💬 MENSAGEM</div>
-                        <div class="info-value" id="infoMsg">—</div>
-                    </div>
-                    <div class="info-box">
-                        <div class="info-label">📅 DATA/HORA</div>
-                        <div class="info-value" id="infoData">—</div>
-                    </div>
-                </div>
-
-                <!-- MAPA -->
-                <div class="map-container">
-                    <iframe id="map" class="map"></iframe>
-                    <div id="noLocation" class="no-location">
-                        <div style="font-size: 40px;">📍</div>
-                        <div>Nenhuma localização disponível</div>
-                    </div>
-                </div>
-
-                <!-- LINK DO MAPA -->
-                <div id="mapLink" class="map-link" style="display: none;">
-                    <a id="directMapLink" href="#" target="_blank">📍 Abrir no Google Maps</a>
-                </div>
-
-                <!-- COORDENADAS -->
-                <div id="coordenadas" class="coordenadas"></div>
-            </div>
-
-            <!-- BOTÕES DE AÇÃO -->
-            <div class="action-buttons">
-                <button class="btn-action" onclick="limparAlerta()">
-                    <span>🗑️</span> LIMPAR
-                </button>
-                <button class="btn-action" onclick="reiniciar()">
-                    <span>🔄</span> REINICIAR
-                </button>
+            <div class="map-credit">
+                Santa Maria • Reportar um problema | © OpenStreetMap contributors
             </div>
         </div>
 
-        <!-- RODAPÉ -->
-        <div class="text-center mt-10 opacity-5">
-            <small style="color: #b0b0b0;">Clique em ATIVAR SIRENE e depois TESTAR SOM para verificar</small>
+        <!-- BOTÕES DE AÇÃO (LIMPAR e REINICIAR) -->
+        <div class="action-buttons">
+            <div id="limparAlerta" class="action-btn limpar">🧹 LIMPAR</div>
+            <div id="reiniciarAlerta" class="action-btn">🔄 REINICIAR</div>
+        </div>
+
+        <!-- rodapé -->
+        <div class="footer-info">
+            <span>Aurora-Shield v1.0</span>
+            <span>16/02/2026 16:05</span>
         </div>
     </div>
 
-    <!-- ÁUDIO DA SIRENE REAL -->
-    <audio id="sirene" loop preload="auto">
-        <source src="/static/sounds/sirene-real.mp3" type="audio/mpeg">
-    </audio>
-
     <script>
-        // ============================================
-        // VARIÁVEIS GLOBAIS
-        // ============================================
-        let ultimoAlertaId = 0;
-        let sireneAtiva = false;
-        let sireneElement = document.getElementById('sirene');
-        let timeoutSirene = null;
-
+        // SIMULAÇÃO DA SIRENE
+        // A SIRENE SÓ PARA QUANDO O CONFIDENTE DESLIGAR MANUALMENTE
+        
+        let sireneAtiva = true; // Começa ativa (recebeu o alerta)
+        let somSirene = null;
+        let contextoAudio = null;
+        
         // Elementos DOM
-        const sireneLed = document.getElementById('sireneLed');
-        const sireneStatusText = document.getElementById('sireneStatusText');
-        const btnAtivarSirene = document.getElementById('btnAtivarSirene');
-        const alertSection = document.getElementById('alertSection');
-        const alertTitle = document.getElementById('alertTitle');
-        const infoGrid = document.getElementById('infoGrid');
-        const statusPill = document.getElementById('statusPill');
-
-        // ============================================
-        // FUNÇÕES DA SIRENE
-        // ============================================
+        const sireneStatus = document.getElementById('sireneStatus');
+        const btnAtivar = document.getElementById('ativarSirene');
+        const btnDesativar = document.getElementById('desativarSirene');
+        const btnTestar = document.getElementById('testarSom');
+        const btnLimpar = document.getElementById('limparAlerta');
+        const btnReiniciar = document.getElementById('reiniciarAlerta');
         
-        function ativarSirene() {
-            sireneElement.play()
-                .then(() => {
-                    sireneElement.pause();
-                    sireneElement.currentTime = 0;
-                    sireneAtiva = true;
-                    
-                    // Atualizar UI
-                    sireneLed.className = 'sirene-led ativa';
-                    sireneStatusText.textContent = 'Sirene ativada';
-                    sireneStatusText.style.color = '#aaffaa';
-                    btnAtivarSirene.classList.add('ativa');
-                    btnAtivarSirene.innerHTML = '<span>🔊</span> SIRENE ATIVA';
-                    
-                    console.log('✅ Sirene ativada!');
-                })
-                .catch(() => {
-                    alert('⚠️ Clique novamente para ativar a sirene');
-                });
-        }
-
-        function tocarSirene() {
-            if (!sireneAtiva) {
-                console.log('Sirene não ativada');
-                return;
-            }
-            
-            if (timeoutSirene) {
-                clearTimeout(timeoutSirene);
-            }
-            
-            sireneElement.currentTime = 0;
-            sireneElement.play()
-                .then(() => {
-                    console.log('🚨 SIRENE REAL TOCANDO!');
-                    timeoutSirene = setTimeout(() => {
-                        sireneElement.pause();
-                        sireneElement.currentTime = 0;
-                        console.log('🔇 Sirene parada');
-                    }, 5000);
-                })
-                .catch(erro => {
-                    console.log('Erro na sirene:', erro);
-                });
-        }
-
-        function pararSirene() {
-            if (timeoutSirene) {
-                clearTimeout(timeoutSirene);
-            }
-            sireneElement.pause();
-            sireneElement.currentTime = 0;
-        }
-
-        function testarSom() {
-            if (!sireneAtiva) {
-                alert('⚠️ Ative a sirene primeiro!');
-                return;
-            }
-            tocarSirene();
-        }
-
-        // ============================================
-        // FUNÇÕES DO PAINEL
-        // ============================================
-        
-        function limparAlerta() {
-            // Resetar UI
-            alertSection.className = 'alert-section';
-            alertTitle.innerHTML = '⏳ Aguardando alertas...';
-            statusPill.className = 'status';
-            statusPill.textContent = '🟢 Monitorando';
-            
-            // Esconder informações
-            infoGrid.style.display = 'none';
-            document.getElementById('map').style.display = 'none';
-            document.getElementById('noLocation').style.display = 'flex';
-            document.getElementById('mapLink').style.display = 'none';
-            document.getElementById('coordenadas').textContent = '';
-            
-            // Limpar valores
-            document.getElementById('infoNome').textContent = '—';
-            document.getElementById('infoSit').textContent = '—';
-            document.getElementById('infoMsg').textContent = '—';
-            document.getElementById('infoData').textContent = '—';
-            
-            pararSirene();
-        }
-
-        function reiniciar() {
-            ultimoAlertaId = 0;
-            limparAlerta();
-            buscarAlertas();
-        }
-
-        // ============================================
-        // FORMATAR DATA/HORA
-        // ============================================
-        
-        function formatarData(dataString) {
-            if (!dataString || dataString === '—') return '—';
-            if (dataString.match(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/)) {
-                return dataString;
-            }
-            try {
-                let data = new Date(dataString);
-                if (!isNaN(data.getTime())) {
-                    return data.toLocaleString('pt-BR', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-                }
-            } catch (e) {}
-            return dataString;
-        }
-
-        // ============================================
-        // ATUALIZAR ALERTA
-        // ============================================
-        
-        function atualizarAlerta(alerta) {
-            console.log('🚨 NOVO ALERTA:', alerta);
-            
-            // Atualizar UI
-            alertSection.className = 'alert-section ativo';
-            alertTitle.innerHTML = '🚨 ALERTA DE EMERGÊNCIA!';
-            statusPill.className = 'status ativo';
-            statusPill.textContent = '🔴 ALERTA ATIVO';
-            
-            // Mostrar informações
-            infoGrid.style.display = 'grid';
-            document.getElementById('infoNome').textContent = alerta.name || 'Anônimo';
-            document.getElementById('infoSit').textContent = alerta.situation || 'Emergência';
-            document.getElementById('infoMsg').textContent = alerta.message || '—';
-            document.getElementById('infoData').textContent = formatarData(alerta.date) || '—';
-            
-            // Mapa
-            if (alerta.lat && alerta.lng && alerta.lat !== 'null' && alerta.lng !== 'null' && alerta.lat !== '' && alerta.lng !== '') {
-                const lat = parseFloat(alerta.lat);
-                const lng = parseFloat(alerta.lng);
-                
-                if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
-                    const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${lng-0.01},${lat-0.01},${lng+0.01},${lat+0.01}&layer=mapnik&marker=${lat},${lng}`;
-                    const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
-                    
-                    document.getElementById('map').src = mapUrl;
-                    document.getElementById('map').style.display = 'block';
-                    document.getElementById('noLocation').style.display = 'none';
-                    
-                    document.getElementById('directMapLink').href = googleMapsUrl;
-                    document.getElementById('mapLink').style.display = 'block';
-                    
-                    document.getElementById('coordenadas').textContent = `📍 ${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-                }
+        // Função para atualizar o status visual da sirene
+        function atualizarStatusSirene() {
+            if (sireneAtiva) {
+                sireneStatus.innerHTML = '🔴 SIRENE ATIVADA';
+                sireneStatus.style.background = '#c32f3b';
+                sireneStatus.style.color = 'white';
+                sireneStatus.style.border = '2px solid #ffb3aa';
             } else {
-                document.getElementById('map').style.display = 'none';
-                document.getElementById('noLocation').style.display = 'flex';
-                document.getElementById('mapLink').style.display = 'none';
-                document.getElementById('coordenadas').textContent = '';
+                sireneStatus.innerHTML = '⚫ SIRENE DESATIVADA';
+                sireneStatus.style.background = '#4A148C';
+                sireneStatus.style.color = 'white';
+                sireneStatus.style.border = '2px solid #B39DDB';
+            }
+        }
+        
+        // Função para tocar a sirene (simulada)
+        function tocarSirene() {
+            if (!sireneAtiva) return;
+            
+            // Simulação visual - piscar o status
+            let contador = 0;
+            const intervalo = setInterval(() => {
+                if (!sireneAtiva) {
+                    clearInterval(intervalo);
+                    return;
+                }
+                
+                // Efeito visual de sirene piscando
+                if (contador % 2 === 0) {
+                    sireneStatus.style.background = '#ff0000';
+                    sireneStatus.style.transform = 'scale(1.02)';
+                } else {
+                    sireneStatus.style.background = '#c32f3b';
+                    sireneStatus.style.transform = 'scale(1)';
+                }
+                contador++;
+            }, 300);
+            
+            // Tentar tocar som real (se o navegador permitir)
+            try {
+                if (!contextoAudio) {
+                    contextoAudio = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                if (contextoAudio.state === 'suspended') {
+                    contextoAudio.resume();
+                }
+                
+                // Criar um oscilador para simular sirene
+                const oscilador = contextoAudio.createOscillator();
+                const ganho = contextoAudio.createGain();
+                
+                oscilador.type = 'sawtooth';
+                oscilador.frequency.value = 440; // Lá
+                
+                ganho.gain.value = 0.1; // Volume baixo para não assustar
+                
+                oscilador.connect(ganho);
+                ganho.connect(contextoAudio.destination);
+                
+                oscilador.start();
+                
+                // Efeito de sobe e desce (sirene)
+                let tempo = 0;
+                const efeitoSirene = setInterval(() => {
+                    if (!sireneAtiva) {
+                        oscilador.stop();
+                        clearInterval(efeitoSirene);
+                        return;
+                    }
+                    
+                    // Alterna entre 440Hz e 880Hz
+                    if (Math.floor(tempo / 500) % 2 === 0) {
+                        oscilador.frequency.value = 440;
+                    } else {
+                        oscilador.frequency.value = 880;
+                    }
+                    tempo += 500;
+                }, 500);
+                
+                // Parar após 10 segundos se ainda estiver ativa (para não ficar infinito)
+                setTimeout(() => {
+                    if (sireneAtiva) {
+                        oscilador.stop();
+                        clearInterval(efeitoSirene);
+                    }
+                }, 10000);
+                
+            } catch (e) {
+                console.log('Áudio não disponível:', e);
+                // Se não conseguir áudio, mantém só o visual
             }
             
-            tocarSirene();
+            return intervalo; // retorna o intervalo visual
         }
-
-        // ============================================
-        // BUSCAR ALERTAS
-        // ============================================
         
-        async function buscarAlertas() {
-            try {
-                const resposta = await fetch('/history_json', {
-                    cache: 'no-store',
-                    headers: { 
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache'
-                    }
-                });
+        // Iniciar sirene automaticamente (recebeu alerta)
+        let sireneVisual = null;
+        if (sireneAtiva) {
+            sireneVisual = tocarSirene();
+        }
+        
+        // BOTÃO ATIVAR SIRENE
+        btnAtivar.addEventListener('click', function() {
+            if (!sireneAtiva) {
+                sireneAtiva = true;
+                atualizarStatusSirene();
+                sireneVisual = tocarSirene();
                 
-                const dados = await resposta.json();
-                
-                if (dados && dados.length > 0) {
-                    const ultimo = dados[0];
-                    if (ultimo.id !== ultimoAlertaId) {
-                        ultimoAlertaId = ultimo.id;
-                        atualizarAlerta(ultimo);
-                    }
-                }
-            } catch (erro) {
-                console.log('Erro:', erro);
+                // Feedback visual
+                this.style.background = '#c32f3b';
+                setTimeout(() => {
+                    this.style.background = 'white';
+                }, 200);
             }
-        }
-
-        // ============================================
-        // INICIAR
-        // ============================================
+        });
         
-        setInterval(buscarAlertas, 2000);
-        buscarAlertas();
+        // BOTÃO DESATIVAR SIRENE (SÓ AQUI QUE PARA!)
+        btnDesativar.addEventListener('click', function() {
+            if (sireneAtiva) {
+                sireneAtiva = false;
+                atualizarStatusSirene();
+                
+                // Parar todos os sons (simulado)
+                if (sireneVisual) {
+                    clearInterval(sireneVisual);
+                    sireneVisual = null;
+                }
+                
+                // Resetar cor do status
+                sireneStatus.style.background = '#4A148C';
+                sireneStatus.style.transform = 'scale(1)';
+                
+                // Parar áudio
+                if (contextoAudio) {
+                    contextoAudio.close();
+                    contextoAudio = null;
+                }
+                
+                // Feedback visual
+                this.style.background = '#4A148C';
+                this.style.color = 'white';
+                setTimeout(() => {
+                    this.style.background = 'white';
+                    this.style.color = '#4A148C';
+                }, 200);
+            }
+        });
         
-        // Pré-carregar áudio
-        sireneElement.load();
-        sireneElement.volume = 0.8;
+        // BOTÃO TESTAR SOM (toca por 2 segundos)
+        btnTestar.addEventListener('click', function() {
+            // Salvar estado atual
+            const estadoAnterior = sireneAtiva;
+            
+            // Ativar temporariamente para teste
+            sireneAtiva = true;
+            const testeVisual = setInterval(() => {
+                sireneStatus.style.background = sireneStatus.style.background === '#ff0000' ? '#c32f3b' : '#ff0000';
+            }, 200);
+            
+            // Tocar som de teste
+            try {
+                const audioTeste = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioTeste.createOscillator();
+                const ganhoTeste = audioTeste.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.value = 660;
+                ganhoTeste.gain.value = 0.1;
+                
+                osc.connect(ganhoTeste);
+                ganhoTeste.connect(audioTeste.destination);
+                
+                osc.start();
+                
+                setTimeout(() => {
+                    osc.stop();
+                    audioTeste.close();
+                    clearInterval(testeVisual);
+                    sireneStatus.style.background = estadoAnterior ? '#c32f3b' : '#4A148C';
+                }, 1500);
+                
+            } catch (e) {
+                console.log('Áudio de teste não disponível');
+                setTimeout(() => {
+                    clearInterval(testeVisual);
+                    sireneStatus.style.background = estadoAnterior ? '#c32f3b' : '#4A148C';
+                }, 1500);
+            }
+            
+            // Feedback visual do botão
+            this.style.background = '#B39DDB';
+            setTimeout(() => {
+                this.style.background = 'white';
+            }, 200);
+        });
         
-        console.log('✅ Painel Confidante carregado');
+        // BOTÃO LIMPAR (encerra alerta)
+        btnLimpar.addEventListener('click', function() {
+            // Desativar sirene
+            if (sireneAtiva) {
+                sireneAtiva = false;
+                atualizarStatusSirene();
+                
+                if (sireneVisual) {
+                    clearInterval(sireneVisual);
+                    sireneVisual = null;
+                }
+                
+                if (contextoAudio) {
+                    contextoAudio.close();
+                    contextoAudio = null;
+                }
+            }
+            
+            // Mudar cor do alerta para "finalizado"
+            document.querySelector('.emergency-alert').style.background = '#4A148C';
+            document.querySelector('.emergency-alert').style.border = '3px solid #B39DDB';
+            document.querySelector('.emergency-title').innerHTML = '✅ ALERTA FINALIZADO';
+            
+            // Feedback visual
+            this.style.background = '#8b6f5e';
+            this.style.color = 'white';
+            setTimeout(() => {
+                this.style.background = '#d0b9ab';
+                this.style.color = '#352217';
+            }, 200);
+            
+            alert('Alerta encerrado. A vítima foi notificada.');
+        });
+        
+        // BOTÃO REINICIAR (simula novo alerta)
+        btnReiniciar.addEventListener('click', function() {
+            // Reativar sirene
+            sireneAtiva = true;
+            atualizarStatusSirene();
+            
+            if (sireneVisual) {
+                clearInterval(sireneVisual);
+            }
+            sireneVisual = tocarSirene();
+            
+            // Restaurar alerta
+            document.querySelector('.emergency-alert').style.background = '#c32f3b';
+            document.querySelector('.emergency-alert').style.border = '3px solid #ffb3aa';
+            document.querySelector('.emergency-title').innerHTML = '🚨 ALERTA DE EMERGÊNCIA!';
+            
+            // Feedback visual
+            this.style.background = '#4f7960';
+            this.style.color = 'white';
+            setTimeout(() => {
+                this.style.background = '#e6d5ca';
+                this.style.color = '#352217';
+            }, 200);
+            
+            alert('🔄 Simulando novo alerta de emergência');
+        });
+        
+        // Inicializar status
+        atualizarStatusSirene();
     </script>
 </body>
 </html>

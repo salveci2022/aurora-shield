@@ -491,7 +491,7 @@
             <div class="logo">
                 <div class="logo-circle">🛡️</div>
                 <div class="user-info">
-                    <div class="user-name" id="userNameDisplay">MARISA</div>
+                    <div class="user-name" id="userNameDisplay">AURORA SHIELD</div>
                     <div class="user-role">Protegida por Aurora</div>
                 </div>
             </div>
@@ -523,7 +523,7 @@
             <div class="form-section">
                 <div class="form-group">
                     <label class="form-label">SEU NOME</label>
-                    <input type="text" id="name" class="form-input" placeholder="Como deseja ser identificada" value="MARISA">
+                    <input type="text" id="name" class="form-input" placeholder="Como deseja ser identificada" value="AURORA SHIELD">
                 </div>
 
                 <div class="form-group">
@@ -722,7 +722,7 @@
             btn.innerHTML = 'ENVIANDO...';
             btn.disabled = true;
             
-            const name = document.getElementById('name').value || 'MARISA';
+            const name = document.getElementById('name').value || 'AURORA SHIELD';
             const situation = document.querySelector('.tag.active')?.getAttribute('data-situacao') || 'Emergência';
             const message = document.getElementById('message').value;
             const shareLocation = document.getElementById('shareLocation').checked;
@@ -784,7 +784,7 @@
         // FUNÇÕES DE FORMULÁRIO
         // ============================================
         function clearForm() {
-            document.getElementById('name').value = 'MARISA';
+            document.getElementById('name').value = 'AURORA SHIELD';
             document.getElementById('message').value = '';
             document.getElementById('shareLocation').checked = true;
             
@@ -841,7 +841,7 @@
             // Informações do usuário
             doc.setTextColor(0, 0, 0);
             doc.setFontSize(12);
-            doc.text(`Usuária: ${document.getElementById('name').value || 'MARISA'}`, 15, 40);
+            doc.text(`Usuária: ${document.getElementById('name').value || 'AURORA SHIELD'}`, 15, 40);
             doc.text(`Data de emissão: ${new Date().toLocaleString('pt-BR')}`, 15, 47);
             
             // Preparar dados da tabela
@@ -905,7 +905,7 @@
             
             // Atualizar nome do usuário
             const urlParams = new URLSearchParams(window.location.search);
-            const userName = urlParams.get('nome') || 'MARISA';
+            const userName = urlParams.get('nome') || 'AURORA SHIELD';
             document.getElementById('name').value = userName;
             document.getElementById('userNameDisplay').textContent = userName;
         });
