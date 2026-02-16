@@ -614,5 +614,31 @@
         
         console.log('✅ Painel Confidante carregado');
     </script>
+	<!-- BOTÃO DE TESTE DIRETO (SEM PRECISAR ATIVAR) -->
+<div style="background: #ff2fd4; padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center;">
+    <h3 style="margin-bottom: 15px;">🔊 TESTE RÁPIDO DE SOM</h3>
+    <button onclick="testarSomDireto()" style="background: white; color: #0a0015; border: none; padding: 15px 30px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 18px;">
+        🔊 CLIQUE AQUI PARA TESTAR A SIRENE AGORA
+    </button>
+    <p style="margin-top: 10px; font-size: 12px;">Se ouvir o som, a sirene está funcionando!</p>
+</div>
+
+<script>
+function testarSomDireto() {
+    let audio = document.getElementById('sirene');
+    audio.currentTime = 0;
+    audio.play()
+        .then(() => {
+            alert('✅ Sirene está tocando!');
+            setTimeout(() => {
+                audio.pause();
+                audio.currentTime = 0;
+            }, 3000);
+        })
+        .catch(erro => {
+            alert('❌ Erro: ' + erro.message + '\n\nClique em "ATIVAR SIRENE" primeiro!');
+        });
+}
+</script>
 </body>
 </html>
