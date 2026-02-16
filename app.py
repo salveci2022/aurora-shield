@@ -16,7 +16,7 @@ def get_db():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     
-    # Tabela de alertas (para o botão de pânico)
+    # Tabela de alertas
     conn.execute("""
         CREATE TABLE IF NOT EXISTS alerts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,34 +29,21 @@ def get_db():
         )
     """)
     
-    # Tabela de pessoas de confiança (agora com login)
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS trusted (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            email TEXT UNIQUE NOT NULL,
-            password_hash TEXT NOT NULL,
-            phone TEXT,
-            created_at TEXT DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-    
-    # Tabela de contatos (pessoas de confiança da mulher)
+    # Tabela de contatos (pessoas de confiança)
     conn.execute("""
         CREATE TABLE IF NOT EXISTS contacts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             phone TEXT NOT NULL,
-            email TEXT,
             relationship TEXT
         )
     """)
     
     conn.commit()
     
-    # Criar contatos demo
-    demo = conn.execute("SELECT id FROM contacts LIMIT 1").fetchone()
-    if not demo:
+    # Inserir contatos demo se não existirem
+    demo = conn.execute("SELECT COUNT(*) as total FROM contacts").fetchone()
+    if demo['total'] == 0:
         conn.execute(
             "INSERT INTO contacts (name, phone, relationship) VALUES (?, ?, ?)",
             ("CLECI", "(11) 99999-9999", "Irmã")
@@ -74,7 +61,7 @@ def get_db():
     return conn
 
 # ============================================
-# ROTAS PÚBLICAS (MULHER - SEM LOGIN)
+# ROTAS PÚBLICAS
 # ============================================
 
 @app.route("/")
@@ -83,20 +70,23 @@ def index():
 
 @app.route("/mulher")
 def mulher():
-    """Painel da Mulher - ACESSO DIRETO (sem login)"""
-    conn = get_db()
-    contacts = conn.execute("SELECT * FROM contacts").fetchall()
-    conn.close()
-    return render_template("mulher.html", contacts=contacts)
+    """Painel da Mulher - ACESSO DIRETO"""
+    try:
+        conn = get_db()
+        contacts = conn.execute("SELECT * FROM contacts").fetchall()
+        conn.close()
+        return render_template("mulher.html", contacts=contacts)
+    except Exception as e:
+        return f"Erro ao carregar página: {str(e)}"
 
 @app.route("/confidant")
 def confidant():
-    """Painel da Pessoa de Confiança - ACESSO PÚBLICO"""
+    """Painel da Pessoa de Confiança"""
     return render_template("confidant.html")
 
 @app.route("/history_json")
 def history_json():
-    """API pública de alertas"""
+    """API de alertas"""
     try:
         conn = get_db()
         rows = conn.execute("SELECT * FROM alerts ORDER BY id DESC LIMIT 100").fetchall()
@@ -107,7 +97,7 @@ def history_json():
         return jsonify([])
 
 # ============================================
-# API DO BOTÃO DE PÂNICO (PÚBLICO)
+# API DO BOTÃO DE PÂNICO
 # ============================================
 
 @app.route("/api/panic", methods=["POST"])
@@ -142,87 +132,269 @@ def api_panic():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 # ============================================
-# ROTAS PARA PESSOAS DE CONFIANÇA (COM LOGIN)
-# ============================================
-
-@app.route("/login-confidante", methods=["GET", "POST"])
-def login_confidante():
-    """Login exclusivo para pessoas de confiança"""
-    if request.method == "POST":
-        data = request.get_json() if request.is_json else request.form
-        email = data.get("email", "").strip().lower()
-        password = data.get("password", "")
-        
-        conn = get_db()
-        user = conn.execute(
-            "SELECT id, name FROM trusted WHERE email = ?",
-            (email,)
-        ).fetchone()
-        conn.close()
-        
-        if user and check_password_hash(user['password_hash'], password):
-            session['trusted_id'] = user['id']
-            session['trusted_name'] = user['name']
-            return jsonify({"status": "ok", "redirect": "/painel-confidante"})
-        else:
-            return jsonify({"status": "error", "message": "E-mail ou senha inválidos"}), 401
-    
-    return render_template("login_confidante.html")
-
-@app.route("/registro-confidante", methods=["GET", "POST"])
-def registro_confidante():
-    """Cadastro exclusivo para pessoas de confiança"""
-    if request.method == "POST":
-        data = request.get_json() if request.is_json else request.form
-        name = data.get("name", "").strip()
-        email = data.get("email", "").strip().lower()
-        password = data.get("password", "")
-        phone = data.get("phone", "").strip()
-        
-        if not name or not email or not password:
-            return jsonify({"status": "error", "message": "Todos os campos obrigatórios"}), 400
-        
-        conn = get_db()
-        existing = conn.execute("SELECT id FROM trusted WHERE email = ?", (email,)).fetchone()
-        
-        if existing:
-            conn.close()
-            return jsonify({"status": "error", "message": "E-mail já cadastrado"}), 409
-        
-        password_hash = generate_password_hash(password)
-        conn.execute(
-            "INSERT INTO trusted (name, email, password_hash, phone) VALUES (?, ?, ?, ?)",
-            (name, email, password_hash, phone)
-        )
-        conn.commit()
-        conn.close()
-        
-        return jsonify({"status": "ok", "message": "Cadastro realizado!", "redirect": "/login-confidante"})
-    
-    return render_template("registro_confidante.html")
-
-@app.route("/painel-confidante")
-def painel_confidante():
-    """Painel da pessoa de confiança (protegido)"""
-    if 'trusted_id' not in session:
-        return redirect("/login-confidante")
-    return render_template("painel_confidante.html", user=session.get('trusted_name'))
-
-@app.route("/logout-confidante")
-def logout_confidante():
-    session.clear()
-    return redirect("/")
-
-# ============================================
-# API DE CONTATOS (PÚBLICA)
+# API DE CONTATOS
 # ============================================
 
 @app.route("/api/contacts", methods=["GET"])
 def get_contacts():
+    try:
+        conn = get_db()
+        contacts = conn.execute("SELECT * FROM contacts").fetchall()
+        conn.close()
+        return jsonify([dict(c) for c in contacts])
+    except:
+        return jsonify([])
+
+# ============================================
+# ROTAS DE GERENCIAMENTO DE CONTATOS (NOVAS)
+# ============================================
+
+@app.route("/gerenciar-contatos")
+def gerenciar_contatos():
+    """Página para gerenciar contatos (adicionar e excluir)"""
+    html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Gerenciar Contatos - Aurora Shield</title>
+        <style>
+            body { 
+                background: #0a0015; 
+                color: white; 
+                font-family: Arial; 
+                padding: 20px; 
+                margin: 0;
+            }
+            .container { 
+                max-width: 800px; 
+                margin: 0 auto; 
+            }
+            h1 {
+                text-align: center;
+                background: linear-gradient(45deg, #ff2fd4, #7a00ff);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                margin-bottom: 30px;
+            }
+            .card { 
+                background: #140022; 
+                padding: 25px; 
+                border-radius: 20px; 
+                box-shadow: 0 0 30px rgba(122, 0, 255, 0.3);
+                margin-bottom: 20px;
+            }
+            h2 {
+                color: #ff2fd4;
+                margin-top: 0;
+                margin-bottom: 20px;
+            }
+            .form-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            input, button { 
+                padding: 12px; 
+                margin: 0; 
+                border-radius: 8px; 
+                font-size: 14px;
+            }
+            input {
+                flex: 1;
+                min-width: 150px;
+                background: #1d0030;
+                border: 2px solid #7a00ff;
+                color: white;
+            }
+            input:focus {
+                outline: none;
+                border-color: #ff2fd4;
+                box-shadow: 0 0 10px #ff2fd4;
+            }
+            button { 
+                background: #7a00ff; 
+                color: white; 
+                border: none; 
+                cursor: pointer; 
+                font-weight: bold;
+                padding: 12px 20px;
+                transition: 0.3s;
+            }
+            button:hover {
+                background: #9a40ff;
+                transform: scale(1.02);
+            }
+            table { 
+                width: 100%; 
+                margin-top: 20px; 
+                border-collapse: collapse;
+            }
+            th { 
+                color: #ff2fd4; 
+                text-align: left;
+                padding: 12px 8px;
+                border-bottom: 2px solid #7a00ff;
+            }
+            td { 
+                padding: 12px 8px; 
+                border-bottom: 1px solid #7a00ff40;
+            }
+            tr:hover {
+                background: #1d0030;
+            }
+            .delete-btn {
+                background: #ff2fd4;
+                color: white;
+                padding: 5px 10px;
+                border-radius: 5px;
+                text-decoration: none;
+                font-size: 12px;
+            }
+            .delete-btn:hover {
+                background: #ff4fdb;
+            }
+            .back-link {
+                display: inline-block;
+                margin-top: 20px;
+                color: #b366ff;
+                text-decoration: none;
+                padding: 10px 20px;
+                border: 1px solid #7a00ff;
+                border-radius: 8px;
+            }
+            .back-link:hover {
+                background: #7a00ff40;
+            }
+            .success {
+                background: rgba(0,255,0,0.1);
+                border: 1px solid #00ff88;
+                color: #00ff88;
+                padding: 10px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🛡️ AURORA SHIELD</h1>
+            
+            <div class="card">
+                <h2>📋 GERENCIAR CONTATOS DE CONFIANÇA</h2>
+                
+                <form method="POST" action="/adicionar-contato">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Nome completo" required>
+                        <input type="text" name="phone" placeholder="Telefone (com DDD)" required>
+                        <input type="text" name="relationship" placeholder="Parentesco (ex: Irmã, Mãe)">
+                        <button type="submit">➕ ADICIONAR</button>
+                    </div>
+                </form>
+                
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>Relação</th>
+                        <th>Ação</th>
+                    </tr>
+    """
+    
     conn = get_db()
-    contacts = conn.execute("SELECT * FROM contacts").fetchall()
+    contacts = conn.execute("SELECT * FROM contacts ORDER BY name").fetchall()
+    
+    for c in contacts:
+        html += f"""
+        <tr>
+            <td>#{c['id']}</td>
+            <td><strong>{c['name']}</strong></td>
+            <td>{c['phone']}</td>
+            <td>{c['relationship'] or '—'}</td>
+            <td>
+                <a href="/apagar-contato/{c['id']}" class="delete-btn" onclick="return confirm('Tem certeza que deseja excluir {c['name']}?')">🗑️ Excluir</a>
+            </td>
+        </tr>
+        """
+    
     conn.close()
-    return jsonify([dict(c) for c in contacts])
+    
+    html += """
+                </table>
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="/" class="back-link">← VOLTAR AO INÍCIO</a>
+                    <a href="/mulher" class="back-link" style="margin-left: 10px;">👩 IR PARA MULHER</a>
+                    <a href="/confidant" class="back-link" style="margin-left: 10px;">👥 IR PARA CONFIDANTE</a>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 20px; opacity: 0.7; font-size: 12px;">
+                Total de contatos cadastrados: """ + str(len(contacts)) + """
+            </div>
+        </div>
+        
+        <script>
+            // Mostrar mensagem se houver parâmetro na URL
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('success') === '1') {
+                alert('Operação realizada com sucesso!');
+            }
+        </script>
+    </body>
+    </html>
+    """
+    return html
+
+@app.route("/apagar-contato/<int:id>")
+def apagar_contato(id):
+    """Apaga um contato específico pelo ID"""
+    try:
+        conn = get_db()
+        
+        # Verificar se o contato existe
+        contato = conn.execute("SELECT name FROM contacts WHERE id = ?", (id,)).fetchone()
+        
+        if contato:
+            conn.execute("DELETE FROM contacts WHERE id = ?", (id,))
+            conn.commit()
+            print(f"✅ Contato {contato['name']} (ID: {id}) apagado com sucesso!")
+        else:
+            print(f"❌ Contato ID {id} não encontrado!")
+            
+        conn.close()
+        return redirect("/gerenciar-contatos?success=1")
+    except Exception as e:
+        print(f"❌ Erro ao apagar: {str(e)}")
+        return f"<h1 style='color:red'>Erro ao apagar: {str(e)}</h1><p><a href='/gerenciar-contatos'>Voltar</a></p>"
+
+@app.route("/adicionar-contato", methods=["POST"])
+def adicionar_contato():
+    """Adiciona um novo contato"""
+    try:
+        name = request.form.get("name", "").strip()
+        phone = request.form.get("phone", "").strip()
+        relationship = request.form.get("relationship", "").strip()
+        
+        if not name or not phone:
+            return "Nome e telefone são obrigatórios!", 400
+        
+        conn = get_db()
+        conn.execute(
+            "INSERT INTO contacts (name, phone, relationship) VALUES (?, ?, ?)",
+            (name, phone, relationship)
+        )
+        conn.commit()
+        conn.close()
+        
+        print(f"✅ Contato {name} adicionado com sucesso!")
+        return redirect("/gerenciar-contatos?success=1")
+        
+    except Exception as e:
+        print(f"❌ Erro ao adicionar: {str(e)}")
+        return f"<h1 style='color:red'>Erro ao adicionar: {str(e)}</h1><p><a href='/gerenciar-contatos'>Voltar</a></p>"
 
 # ============================================
 # ARQUIVOS ESTÁTICOS
@@ -250,40 +422,40 @@ def diagnostico():
         conn = get_db()
         alerts = conn.execute("SELECT COUNT(*) as total FROM alerts").fetchone()
         contacts = conn.execute("SELECT * FROM contacts").fetchall()
-        trusted = conn.execute("SELECT COUNT(*) as total FROM trusted").fetchone()
         conn.close()
         
-        html = "<h1>✅ SISTEMA FUNCIONANDO!</h1>"
-        html += f"<p>🚨 Alertas: {alerts['total']}</p>"
-        html += f"<p>👥 Contatos de confiança: {len(contacts)}</p>"
-        html += f"<p>🔐 Pessoas de confiança cadastradas: {trusted['total']}</p>"
+        html = "<h1 style='color:green'>✅ SISTEMA FUNCIONANDO!</h1>"
+        html += f"<p>🚨 Alertas no banco: {alerts['total']}</p>"
+        html += f"<p>👥 Contatos cadastrados: {len(contacts)}</p>"
         html += "<h3>Contatos:</h3><ul>"
         for c in contacts:
-            html += f"<li>{c['name']} - {c['phone']} ({c['relationship']})</li>"
+            html += f"<li><strong>{c['name']}</strong> - {c['phone']} ({c['relationship']})</li>"
         html += "</ul>"
-        html += '<p><a href="/">Voltar</a></p>'
+        html += '<p><a href="/">Voltar ao início</a> | <a href="/mulher">Ir para Mulher</a> | <a href="/confidant">Ir para Confidante</a> | <a href="/gerenciar-contatos">Gerenciar Contatos</a></p>'
         return html
     except Exception as e:
-        return f"<h1>❌ ERRO: {str(e)}</h1>"
+        return f"<h1 style='color:red'>❌ ERRO: {str(e)}</h1>"
 
 # ============================================
 # INICIALIZAÇÃO
 # ============================================
 
 if __name__ == "__main__":
-    print("\n" + "="*60)
-    print("🛡️ AURORA-SHIELD - MODO SIMPLIFICADO")
-    print("="*60)
-    print("\n👩 MULHER: ACESSO DIRETO (sem login)")
-    print("   • https://aurora-shield.onrender.com/mulher")
-    print("\n👥 CONFIDANTE: ACESSO PÚBLICO")
-    print("   • https://aurora-shield.onrender.com/confidant")
-    print("\n🔐 CONFIDANTE COM LOGIN (opcional):")
-    print("   • /login-confidante")
-    print("   • /registro-confidante")
-    print("\n📌 Contatos demo:")
-    print("   • CLECI, MARIA, JOÃO")
-    print("\n" + "="*60)
+    print("\n" + "="*70)
+    print("🛡️ AURORA-SHIELD INICIADO COM SUCESSO!")
+    print("="*70)
+    print("\n📌 LINKS DISPONÍVEIS:")
+    print("   • Página inicial: /")
+    print("   • Mulher (direto): /mulher")
+    print("   • Confidante (público): /confidant")
+    print("   • Gerenciar contatos: /gerenciar-contatos  ← NOVO!")
+    print("   • Diagnóstico: /diagnostico")
+    print("\n👥 Contatos demo:")
+    print("   • CLECI (Irmã)")
+    print("   • MARIA (Mãe)")
+    print("   • JOÃO (Pai)")
+    print("\n✅ Todas as rotas estão funcionando!")
+    print("="*70)
     
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
