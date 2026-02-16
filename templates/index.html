@@ -1,142 +1,416 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aurora Shield - Segurança Feminina</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Aurora Shield · Segurança Feminina</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
         body {
-            background: radial-gradient(circle at top, #3a0057, #0a0015);
+            background: linear-gradient(145deg, #1a1e2b 0%, #2a2533 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: Arial;
-            margin: 0;
-            color: white;
+            padding: 16px;
         }
+
         .container {
-            max-width: 500px;
+            max-width: 400px;
             width: 100%;
-            padding: 20px;
         }
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
+
+        /* CARDS PRINCIPAIS */
+        .welcome-card {
+            background: #f8f5f2;
+            border-radius: 48px 48px 48px 48px;
+            padding: 32px 24px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 8px #3a2e28, 0 0 0 10px #b7a08b;
+            border: 2px solid #e5d5c8;
+            position: relative;
+            overflow: hidden;
         }
-        .logo-circle {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #ff2fd4, #7a00ff);
+
+        /* Efeito de luz suave */
+        .welcome-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 215, 200, 0.2), transparent 50%);
+            pointer-events: none;
+        }
+
+        /* LOGO GRANDE */
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .shield-logo {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(145deg, #c32f3b 0%, #8e2c3a 100%);
+            border-radius: 40px 40px 60px 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 0 #4f1a22, 0 20px 30px rgba(190, 40, 50, 0.5);
+            border: 4px solid #ffd7c0;
+            transform: rotate(0deg);
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .shield-logo::before {
+            content: "🛡️";
+            font-size: 70px;
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.3));
+        }
+
+        .shield-logo::after {
+            content: "✦";
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            color: #ffe6b0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .logo-text {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            color: #231f1b;
+            text-shadow: 2px 2px 0 #dbb2c5;
+            margin-top: 8px;
+        }
+
+        .logo-sub {
+            font-size: 18px;
+            font-weight: 600;
+            color: #b3597a;
+            background: #f2dfe8;
+            padding: 8px 24px;
+            border-radius: 40px;
+            border: 2px solid #dbb2c5;
+            box-shadow: 0 4px 0 #aa6885;
+            letter-spacing: 1px;
+        }
+
+        /* MODO DE USO - DESTAQUE */
+        .info-box {
+            background: linear-gradient(145deg, #F8F3FF 0%, #F0E8FF 100%);
+            border-radius: 28px;
+            padding: 18px 16px;
+            margin-bottom: 24px;
+            border: 2px solid #D8C5FF;
+            box-shadow: 0 8px 20px rgba(106, 27, 154, 0.2);
+        }
+
+        .info-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #4A148C;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px dashed #B39DDB;
+            padding-bottom: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 16px;
+            background: white;
+            padding: 14px 18px;
+            border-radius: 40px;
+            border: 1px solid #B39DDB;
+            box-shadow: 0 4px 0 #7B5BA7;
+        }
+
+        .info-icon {
+            font-size: 28px;
+            min-width: 48px;
+            height: 48px;
+            background: #c32f3b;
+            border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 50px;
-            font-weight: bold;
-            margin: 0 auto 20px;
-            box-shadow: 0 0 30px #ff2fd4;
+            color: white;
+            border: 2px solid #ffb3aa;
+            box-shadow: 0 3px 0 #731f26;
         }
-        h1 {
-            font-size: 32px;
-            margin: 0;
-            background: linear-gradient(45deg, #ff2fd4, #7a00ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        .info-text {
+            flex: 1;
         }
-        .subtitle {
-            color: #b366ff;
-            margin-top: 5px;
-        }
-        .card {
-            background: rgba(20, 0, 34, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 0 0 50px rgba(122, 0, 255, 0.3);
-        }
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 18px;
-            margin: 15px 0;
-            border: none;
-            border-radius: 15px;
+
+        .info-text strong {
             font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            transition: 0.3s;
+            color: #2a1c14;
+            display: block;
+            margin-bottom: 2px;
         }
-        .btn-primary {
-            background: linear-gradient(45deg, #ff2fd4, #7a00ff);
-            color: white;
-        }
-        .btn-primary:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 30px #ff2fd4;
-        }
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid #7a00ff;
-            color: white;
-        }
-        .btn-secondary:hover {
-            background: #7a00ff40;
-        }
-        .btn-success {
-            background: #00ff88;
-            color: #0a0015;
-        }
-        .btn-success:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 30px #00ff88;
-        }
-        .info-box {
-            background: #1d0030;
-            border: 1px solid #7a00ff;
-            border-radius: 15px;
-            padding: 15px;
-            margin: 20px 0;
+
+        .info-text span {
             font-size: 14px;
+            color: #7B5BA7;
+            font-weight: 500;
         }
-        .info-box strong {
-            color: #ff2fd4;
+
+        /* BOTÕES DE ACESSO */
+        .access-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 24px;
         }
-        .footer {
+
+        .btn-primary {
+            background: #c32f3b;
+            border: none;
+            padding: 20px 24px;
+            border-radius: 60px;
+            font-weight: 900;
+            font-size: 20px;
+            color: white;
+            box-shadow: 0 8px 0 #731f26, 0 10px 20px rgba(190, 40, 50, 0.3);
+            border: 3px solid #ffb3aa;
             text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
-            opacity: 0.7;
+            cursor: pointer;
+            transition: 0.05s linear;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-primary:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #731f26, 0 8px 15px rgba(190, 40, 50, 0.3);
+        }
+
+        .btn-primary span {
+            font-size: 28px;
+        }
+
+        .btn-secondary {
+            background: #4A148C;
+            border: none;
+            padding: 18px 24px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 18px;
+            color: white;
+            box-shadow: 0 6px 0 #2a0a4a, 0 10px 20px rgba(106, 27, 154, 0.3);
+            border: 3px solid #B39DDB;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.05s linear;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-secondary:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #2a0a4a, 0 8px 15px rgba(106, 27, 154, 0.3);
+        }
+
+        .btn-secondary span {
+            font-size: 24px;
+        }
+
+        .btn-outline {
+            background: #f0e7e0;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 18px;
+            color: #352217;
+            box-shadow: 0 5px 0 #b19482;
+            border: 2px solid #ccb5a6;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.05s linear;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .btn-outline:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #b19482;
+        }
+
+        .btn-outline span {
+            font-size: 22px;
+        }
+
+        /* DIVISORES */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #b7a08b, transparent);
+        }
+
+        .divider-text {
+            color: #8b6f5e;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        /* RODAPÉ */
+        .footer-info {
+            text-align: center;
+            margin-top: 24px;
+            color: #b7a08b;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 0 16px;
+        }
+
+        .footer-info strong {
+            color: #c32f3b;
+        }
+
+        /* EFEITO DE BRILHO */
+        .glow-effect {
+            position: relative;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">
-            <div class="logo-circle">🛡️</div>
-            <h1>AURORA SHIELD</h1>
-            <div class="subtitle">Segurança Feminina</div>
-        </div>
-        
-        <div class="card">
-            <a href="/mulher" class="btn btn-primary">👩 ACESSAR COMO MULHER</a>
-            <a href="/confidant" class="btn btn-success">👥 ACESSO RÁPIDO - PESSOA DE CONFIANÇA</a>
-            <a href="/login-confidante" class="btn btn-secondary">🔐 LOGIN PARA CONFIDENTES</a>
-            <a href="/registro-confidante" class="btn btn-secondary">📝 CADASTRO PARA CONFIDENTES</a>
-            
+        <div class="welcome-card">
+            <!-- LOGO GRANDE -->
+            <div class="logo-container">
+                <div class="shield-logo"></div>
+                <div class="logo-text">AURORA SHIELD</div>
+                <div class="logo-sub">Segurança Feminina</div>
+            </div>
+
+            <!-- MODO DE USO (INFO) -->
             <div class="info-box">
-                <strong>📌 MODO DE USO:</strong><br>
-                • Mulher: acesso direto (sem cadastro)<br>
-                • Confidante: acesso público (sem login)<br>
-                • Cadastro opcional para confidantes
+                <div class="info-title">
+                    <span>✨</span> MODO DE USO <span>✨</span>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon">👩</div>
+                    <div class="info-text">
+                        <strong>Mulher</strong>
+                        <span>Acesso direto · sem cadastro</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">👥</div>
+                    <div class="info-text">
+                        <strong>Confidente</strong>
+                        <span>Acesso público · sem login</span>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">📝</div>
+                    <div class="info-text">
+                        <strong>Cadastro opcional</strong>
+                        <span>Para confidantes fixos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTÕES DE ACESSO -->
+            <div class="access-buttons">
+                <button class="btn-primary" onclick="window.location.href='painel-mulher.html'">
+                    <span>👩</span> ACESSAR COMO MULHER
+                </button>
+
+                <button class="btn-secondary" onclick="window.location.href='painel-confidente.html'">
+                    <span>⚡</span> ACESSO RÁPIDO · CONFIDENTE
+                </button>
+
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <div class="divider-text">ou</div>
+                    <div class="divider-line"></div>
+                </div>
+
+                <button class="btn-outline" onclick="alert('Redirecionando para cadastro de confidantes...')">
+                    <span>📋</span> CADASTRO PARA CONFIDENTES
+                </button>
+            </div>
+
+            <!-- MENSAGEM DE SEGURANÇA -->
+            <div class="footer-info">
+                <strong>🛡️ Aurora Shield</strong> · Proteção ativa 24/7 para mulheres em situação de risco
+                <br><br>
+                <span style="font-size: 11px;">Botão de pânico · Alerta imediato · Localização em tempo real</span>
             </div>
         </div>
         
-        <div class="footer">
-            © 2026 Aurora Shield - Proteção 24h
+        <!-- ASSINATURA -->
+        <div style="text-align: center; margin-top: 16px; color: #aa8877; font-size: 12px;">
+            ✦ Toque no botão correspondente ao seu perfil ✦
         </div>
     </div>
+
+    <script>
+        // Redirecionamentos simulados (você pode ajustar os caminhos depois)
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Se já tem onclick definido, não interfere
+                if (this.getAttribute('onclick')) return;
+                
+                // Fallback para botões sem onclick
+                const text = this.innerText;
+                if (text.includes('MULHER')) {
+                    window.location.href = 'painel-mulher.html';
+                } else if (text.includes('CONFIDENTE') && !text.includes('CADASTRO')) {
+                    window.location.href = 'painel-confidente.html';
+                } else if (text.includes('CADASTRO')) {
+                    alert('📝 Área de cadastro para confidantes (em desenvolvimento)');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
