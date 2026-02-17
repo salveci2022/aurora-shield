@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aurora Shield - Painel da Mulher</title>
+    <title>Aurora Mulher Segura</title>
     <style>
         * {
             margin: 0;
@@ -12,242 +12,229 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a0025 0%, #2d0040 100%);
+            background: #0a0a0a;
             min-height: 100vh;
             font-family: 'Segoe UI', Arial, sans-serif;
-            color: #f0f0f0;
-            padding: 20px;
+            color: #ffffff;
+            padding: 15px;
         }
 
         .container {
             max-width: 700px;
             margin: 0 auto;
+            background: #111111;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 1px solid #333333;
         }
 
-        /* ========== HEADER ========== */
-        .header {
+        /* ========== TOP BAR ========== */
+        .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(162, 89, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 15px 20px;
+            background: #000000;
+            border-bottom: 1px solid #333333;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff7ab0, #a259ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: white;
-            box-shadow: 0 5px 15px rgba(162, 89, 255, 0.4);
-        }
-
-        .user-info {
-            line-height: 1.4;
-        }
-
-        .user-name {
-            font-size: 18px;
-            font-weight: bold;
-            color: #ffb0d0;
-        }
-
-        .user-role {
-            font-size: 12px;
-            color: #b0b0ff;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-sair {
-            background: rgba(255, 122, 176, 0.2);
-            border: 2px solid #ff7ab0;
-            color: #ffb0d0;
-            padding: 10px 25px;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 15px;
-        }
-
-        .btn-sair:hover {
-            background: #ff7ab0;
-            color: #0a0015;
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px #ff7ab0;
-        }
-
-        /* ========== CARD PRINCIPAL ========== */
-        .main-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 30px;
-            padding: 30px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(162, 89, 255, 0.3);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .card-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 25px;
+        .logo-area {
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #ff9ec0;
-            border-bottom: 2px solid #a259ff;
-            padding-bottom: 15px;
         }
 
-        /* ========== SEÇÃO DE CONTATOS ========== */
-        .contacts-section {
-            background: rgba(0, 0, 0, 0.2);
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #8a2be2;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #ff69b4;
+            line-height: 1.2;
+        }
+
+        .logo-text small {
+            display: block;
+            font-size: 10px;
+            color: #888888;
+            font-weight: normal;
+        }
+
+        .action-buttons-top {
+            display: flex;
+            gap: 8px;
+        }
+
+        .top-btn {
+            background: #222222;
+            border: none;
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            border: 1px solid #444444;
+        }
+
+        .top-btn:hover {
+            background: #333333;
+        }
+
+        .top-btn.sair {
+            background: #8b0000;
+            border-color: #ff0000;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            padding: 20px;
+        }
+
+        /* ========== TITLE SECTION ========== */
+        .title-section {
+            margin-bottom: 25px;
+        }
+
+        .main-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff69b4;
+            margin-bottom: 5px;
+        }
+
+        .sub-title {
+            font-size: 14px;
+            color: #888888;
+            border-left: 3px solid #8a2be2;
+            padding-left: 10px;
+        }
+
+        /* ========== CARD ========== */
+        .card {
+            background: #1a1a1a;
             border-radius: 20px;
             padding: 20px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(162, 89, 255, 0.3);
+            margin-bottom: 20px;
+            border: 1px solid #333333;
         }
 
-        .section-subtitle {
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff69b4;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #b0b0ff;
-            font-size: 16px;
-            margin-bottom: 15px;
         }
 
-        .contacts-grid {
+        /* ========== CONTATOS LADO A LADO ========== */
+        .contatos-container {
+            margin-bottom: 20px;
+        }
+
+        .contato-label {
+            font-size: 14px;
+            color: #888888;
+            margin-bottom: 10px;
+        }
+
+        .contatos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 12px;
+            gap: 10px;
         }
 
-        .contact-badge {
-            background: linear-gradient(135deg, rgba(255, 122, 176, 0.2), rgba(162, 89, 255, 0.2));
-            border: 1px solid rgba(255, 122, 176, 0.4);
-            border-radius: 15px;
+        .contato-card {
+            background: #222222;
+            border-radius: 10px;
             padding: 12px;
+            border-left: 4px solid #ff69b4;
             text-align: center;
-            transition: 0.3s;
         }
 
-        .contact-badge:hover {
-            transform: translateY(-2px);
-            border-color: #ff7ab0;
-            box-shadow: 0 5px 15px rgba(255, 122, 176, 0.2);
-        }
-
-        .contact-name {
+        .contato-card .nome {
             font-weight: bold;
-            color: #ffb0d0;
+            color: #ff69b4;
             font-size: 16px;
             margin-bottom: 4px;
         }
 
-        .contact-phone {
+        .contato-card .telefone {
             font-size: 12px;
-            color: #b0b0ff;
+            color: #cccccc;
         }
 
-        .contact-relation {
-            font-size: 10px;
-            color: #8888aa;
+        .contato-card .parentesco {
+            font-size: 11px;
+            color: #888888;
             margin-top: 4px;
         }
 
-        /* ========== FORMULÁRIO ========== */
-        .form-section {
-            margin-bottom: 30px;
-        }
-
+        /* ========== FORM ========== */
         .form-group {
             margin-bottom: 20px;
         }
 
         .form-label {
             display: block;
-            margin-bottom: 8px;
-            color: #b0b0ff;
             font-size: 14px;
-            font-weight: 500;
-            letter-spacing: 0.3px;
+            color: #888888;
+            margin-bottom: 5px;
         }
 
-        .form-input, .form-textarea {
+        .form-input {
             width: 100%;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(162, 89, 255, 0.4);
-            border-radius: 15px;
+            padding: 12px 15px;
+            background: #222222;
+            border: 1px solid #444444;
+            border-radius: 10px;
             color: white;
             font-size: 16px;
-            transition: 0.3s;
         }
 
-        .form-input:focus, .form-textarea:focus {
+        .form-input:focus {
             outline: none;
-            border-color: #ff7ab0;
-            box-shadow: 0 0 0 3px rgba(255, 122, 176, 0.2);
-            background: rgba(0, 0, 0, 0.4);
+            border-color: #8a2be2;
         }
 
-        .form-input::placeholder, .form-textarea::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* ========== TAGS DE SITUAÇÃO ========== */
+        /* ========== TAGS ========== */
         .tags-container {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin: 15px 0;
+            margin: 10px 0;
         }
 
         .tag {
-            flex: 1 0 auto;
-            min-width: 120px;
-            padding: 12px 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(162, 89, 255, 0.4);
-            border-radius: 15px;
-            color: #b0b0ff;
-            font-weight: 600;
+            padding: 8px 16px;
+            background: #222222;
+            border: 1px solid #444444;
+            border-radius: 20px;
+            color: #cccccc;
+            font-size: 14px;
             cursor: pointer;
-            transition: 0.3s;
-            text-align: center;
+            transition: 0.2s;
         }
 
         .tag:hover {
-            border-color: #ff7ab0;
-            background: rgba(255, 122, 176, 0.1);
+            background: #333333;
         }
 
         .tag.active {
-            background: linear-gradient(135deg, #ff7ab0, #a259ff);
-            border-color: #ff7ab0;
+            background: #8a2be2;
+            border-color: #ff69b4;
             color: white;
-            box-shadow: 0 5px 15px rgba(255, 122, 176, 0.4);
         }
 
         /* ========== CHECKBOX ========== */
@@ -255,434 +242,541 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            margin: 20px 0;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
+            margin: 15px 0;
+            padding: 10px;
+            background: #222222;
+            border-radius: 10px;
         }
 
-        .checkbox-wrapper input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: #ff7ab0;
-            cursor: pointer;
+        .checkbox-wrapper input {
+            width: 18px;
+            height: 18px;
+            accent-color: #ff69b4;
         }
 
         .checkbox-wrapper label {
-            color: #b0b0ff;
-            font-size: 15px;
-            cursor: pointer;
+            color: #cccccc;
+            font-size: 14px;
         }
 
-        /* ========== BOTÃO SOS ========== */
+        .checkbox-wrapper small {
+            color: #888888;
+            font-size: 12px;
+            margin-left: auto;
+        }
+
+        /* ========== SOS BUTTON ========== */
         .sos-wrapper {
             text-align: center;
             margin: 30px 0;
         }
 
         .sos-button {
-            width: 250px;
-            height: 250px;
+            width: 280px;
+            height: 280px;
             border-radius: 50%;
-            border: none;
-            background: radial-gradient(circle at 30% 30%, #ff4d7a, #a259ff);
+            background: radial-gradient(circle at 30% 30%, #ff0000, #8b0000);
+            border: 4px solid #ff69b4;
             color: white;
             font-size: 48px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 0 50px rgba(255, 77, 122, 0.5);
-            transition: 0.3s;
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             margin: 0 auto;
-            border: 4px solid rgba(255, 255, 255, 0.3);
+            animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
             0% {
                 transform: scale(1);
-                box-shadow: 0 0 50px rgba(255, 77, 122, 0.5);
+                box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
             }
             50% {
                 transform: scale(1.05);
-                box-shadow: 0 0 80px rgba(255, 77, 122, 0.8);
+                box-shadow: 0 0 80px rgba(255, 0, 0, 0.8);
             }
             100% {
                 transform: scale(1);
-                box-shadow: 0 0 50px rgba(255, 77, 122, 0.5);
+                box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
             }
-        }
-
-        .sos-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            animation: none;
-        }
-
-        .sos-button:not(:disabled):hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 100px #ff4d7a;
         }
 
         .sos-subtitle {
             font-size: 16px;
-            margin-top: 15px;
             font-weight: normal;
-            opacity: 0.9;
+            margin-top: 10px;
         }
 
-        /* ========== BOTÕES DE AÇÃO ========== */
-        .action-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin: 30px 0 20px;
-        }
-
-        .action-btn {
+        /* ========== BOTTOM NAV ========== */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: #000000;
             padding: 15px;
-            border: none;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 16px;
+            border-top: 1px solid #333333;
+            margin-top: 20px;
         }
 
-        .btn-reenviar {
-            background: linear-gradient(135deg, #a259ff, #7a3fb0);
-            color: white;
-        }
-
-        .btn-limpar {
-            background: linear-gradient(135deg, #ff7ab0, #b05a80);
-            color: white;
-        }
-
-        .btn-sair-2 {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid #ff7ab0;
-            color: #ffb0d0;
-        }
-
-        .action-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* ========== SEÇÃO DE RELATÓRIOS ========== */
-        .reports-section {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-            padding: 20px;
-            margin-top: 30px;
-            border: 1px solid rgba(162, 89, 255, 0.3);
-        }
-
-        .reports-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .reports-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #b0b0ff;
-            font-size: 18px;
-        }
-
-        .btn-pdf {
-            background: linear-gradient(135deg, #ff4d7a, #a259ff);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-pdf:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 20px rgba(255, 77, 122, 0.5);
-        }
-
-        .alerts-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .alerts-table th {
-            text-align: left;
-            padding: 12px;
-            color: #b0b0ff;
-            font-size: 13px;
-            border-bottom: 2px solid rgba(162, 89, 255, 0.4);
-        }
-
-        .alerts-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid rgba(162, 89, 255, 0.2);
-            color: #e0e0e0;
+        .nav-item {
+            text-align: center;
+            color: #888888;
             font-size: 14px;
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 20px;
         }
 
-        .alerts-table tr:hover {
-            background: rgba(255, 122, 176, 0.05);
+        .nav-item:hover {
+            color: #ff69b4;
+            background: #1a1a1a;
+        }
+
+        .nav-item.active {
+            color: #ff69b4;
+            font-weight: bold;
+        }
+
+        .nav-item span {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 5px;
         }
 
         /* ========== STATUS MESSAGE ========== */
         .status-message {
-            padding: 15px;
-            border-radius: 15px;
+            padding: 12px;
+            border-radius: 10px;
             margin: 15px 0;
             display: none;
-            font-weight: 500;
+            text-align: center;
         }
 
         .status-message.success {
-            background: rgba(0, 255, 0, 0.1);
-            border: 1px solid #66ff99;
+            background: #1a4d1a;
+            border: 1px solid #00ff00;
             color: #aaffaa;
             display: block;
         }
 
         .status-message.error {
-            background: rgba(255, 0, 0, 0.1);
-            border: 1px solid #ff4d7a;
-            color: #ffb0b0;
+            background: #4d1a1a;
+            border: 1px solid #ff0000;
+            color: #ffaaaa;
             display: block;
         }
 
         .status-message.info {
-            background: rgba(162, 89, 255, 0.1);
-            border: 1px solid #a259ff;
-            color: #b0b0ff;
+            background: #1a1a4d;
+            border: 1px solid #8a2be2;
+            color: #aaaaff;
             display: block;
         }
 
-        /* ========== UTILITÁRIOS ========== */
-        .text-center { text-align: center; }
-        .mt-20 { margin-top: 20px; }
-        .mb-20 { margin-bottom: 20px; }
-        .opacity-7 { opacity: 0.7; }
+        /* ========== MODAL ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #8a2be2;
+        }
+
+        .modal-title {
+            color: #ff69b4;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ========== LISTA DE CONTATOS NO MODAL ========== */
+        .contato-item {
+            background: #222222;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 3px solid #ff69b4;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .contato-info h4 {
+            color: #ff69b4;
+            margin-bottom: 5px;
+        }
+
+        .contato-info p {
+            color: #888888;
+            font-size: 13px;
+            margin: 2px 0;
+        }
+
+        .contato-acoes {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-editar, .btn-excluir {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .btn-editar {
+            background: #4a4a4a;
+            color: white;
+        }
+
+        .btn-editar:hover {
+            background: #666666;
+        }
+
+        .btn-excluir {
+            background: #8b0000;
+            color: white;
+        }
+
+        .btn-excluir:hover {
+            background: #a00000;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-btn.save {
+            background: #8a2be2;
+            color: white;
+        }
+
+        .modal-btn.cancel {
+            background: #333333;
+            color: white;
+        }
+
+        .modal-btn.danger {
+            background: #8b0000;
+            color: white;
+        }
+
+        /* ========== CONFIRMAÇÃO ========== */
+        .confirm-box {
+            background: #222222;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .confirm-box p {
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- HEADER -->
-        <div class="header">
-            <div class="logo">
-                <div class="logo-circle">🛡️</div>
-                <div class="user-info">
-                    <div class="user-name" id="userNameDisplay">MARISA</div>
-                    <div class="user-role">Protegida por Aurora</div>
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <div class="logo-area">
+                <div class="logo-icon">🛡️</div>
+                <div class="logo-text">
+                    AURORA MULHER SEGURA
+                    <small>Spy Life - Proteção Feminina 24h</small>
                 </div>
             </div>
-            <button class="btn-sair" onclick="logout()">
-                <span>🚪</span> SAIR
-            </button>
+            <div class="action-buttons-top">
+                <button class="top-btn" onclick="reiniciar()">Reiniciar</button>
+                <button class="top-btn" onclick="limpar()">Limpar</button>
+                <button class="top-btn sair" onclick="sair()">Sair</button>
+            </div>
         </div>
 
-        <!-- CARD PRINCIPAL -->
-        <div class="main-card">
-            <div class="card-title">
-                <span>🚨</span> BOTÃO DE PÂNICO
-            </div>
-
-            <!-- SEÇÃO DE CONTATOS DE CONFIANÇA -->
-            <div class="contacts-section">
-                <div class="section-subtitle">
-                    <span>👥</span> PESSOAS DE CONFIANÇA
-                </div>
-                <div class="contacts-grid" id="contactsGrid">
-                    <!-- Contatos serão inseridos aqui via JavaScript -->
-                </div>
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- TITLE SECTION -->
+            <div class="title-section">
+                <h1 class="main-title">BOTÃO DE PÂNICO</h1>
+                <div class="sub-title">Versão demonstrativa — treino e fluxo de emergência.</div>
             </div>
 
             <!-- STATUS MESSAGE -->
             <div id="statusMessage" class="status-message"></div>
 
-            <!-- FORMULÁRIO -->
-            <div class="form-section">
+            <!-- CARD PRINCIPAL -->
+            <div class="card">
+                <!-- PESSOAS DE CONFIANÇA - LADO A LADO -->
+                <div class="contatos-container">
+                    <div class="contato-label">Pessoas de confiança cadastradas:</div>
+                    <div class="contatos-grid" id="contatosGrid">
+                        <!-- Contatos serão inseridos aqui via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- FORMULÁRIO -->
                 <div class="form-group">
-                    <label class="form-label">SEU NOME</label>
-                    <input type="text" id="name" class="form-input" placeholder="Como deseja ser identificada" value="MARISA">
+                    <label class="form-label">Seu nome</label>
+                    <input type="text" id="nome" class="form-input" value="SALVECI">
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">TIPO DE SITUAÇÃO</label>
+                    <label class="form-label">Tipo de situação:</label>
                     <div class="tags-container" id="situationTags">
                         <div class="tag active" data-situacao="Violência física">🔴 Violência física</div>
                         <div class="tag" data-situacao="Agressão verbal">🗣️ Agressão verbal</div>
                         <div class="tag" data-situacao="Perseguição">👁️ Perseguição</div>
-                        <div class="tag" data-situacao="Risco iminente">⚠️ Risco iminente</div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">MENSAGEM (OPCIONAL)</label>
-                    <textarea id="message" class="form-textarea" rows="3" placeholder="Descreva rapidamente o que está acontecendo..."></textarea>
+                    <label class="form-label">Situação de risco:</label>
+                    <label class="form-label" style="font-size: 12px; color: #666;">Mensagem (opcional)</label>
+                    <textarea id="mensagem" class="form-input" rows="2" placeholder="Descreva rapidamente o que está acontecendo (opcional)"></textarea>
                 </div>
 
                 <div class="checkbox-wrapper">
                     <input type="checkbox" id="shareLocation" checked>
-                    <label for="shareLocation">📍 Compartilhar localização exata (GPS)</label>
+                    <label for="shareLocation">✔ Compartilhar localização exata (GPS)</label>
+                    <small>— será pedida permissão</small>
                 </div>
-            </div>
 
-            <!-- BOTÃO SOS -->
-            <div class="sos-wrapper">
-                <button class="sos-button" id="sosBtn" onmousedown="startPress()" onmouseup="cancelPress()" onmouseleave="cancelPress()" ontouchstart="startPress()" ontouchend="cancelPress()" ontouchcancel="cancelPress()">
-                    SOS
-                    <span class="sos-subtitle">TOQUE E SEGURE</span>
-                </button>
-            </div>
+                <div style="color: #888888; font-size: 13px; margin: 10px 0; text-align: center;">
+                    Pronto. Toque e segure no SOS para enviar.
+                </div>
 
-            <!-- BOTÕES DE AÇÃO -->
-            <div class="action-buttons">
-                <button class="action-btn btn-reenviar" onclick="reenviarAlerta()">
-                    <span>🔄</span> REENVIAR
-                </button>
-                <button class="action-btn btn-limpar" onclick="clearForm()">
-                    <span>🗑️</span> LIMPAR
-                </button>
-                <button class="action-btn btn-sair-2" onclick="logout()">
-                    <span>🚪</span> SAIR
-                </button>
-            </div>
-
-            <!-- SEÇÃO DE RELATÓRIOS -->
-            <div class="reports-section">
-                <div class="reports-header">
-                    <div class="reports-title">
-                        <span>📊</span> ÚLTIMOS ALERTAS
-                    </div>
-                    <button class="btn-pdf" onclick="gerarPDF()">
-                        <span>📥</span> BAIXAR RELATÓRIO PDF
+                <!-- BOTÃO SOS -->
+                <div class="sos-wrapper">
+                    <button class="sos-button" id="sosBtn" onmousedown="startPress()" onmouseup="cancelPress()" onmouseleave="cancelPress()" ontouchstart="startPress()" ontouchend="cancelPress()">
+                        SOS
+                        <span class="sos-subtitle">TOQUE E SEGURE</span>
                     </button>
                 </div>
+            </div>
 
-                <div style="max-height: 200px; overflow-y: auto;">
-                    <table class="alerts-table" id="alertsTable">
-                        <thead>
-                            <tr>
-                                <th>DATA/HORA</th>
-                                <th>SITUAÇÃO</th>
-                                <th>LOCALIZAÇÃO</th>
-                            </tr>
-                        </thead>
-                        <tbody id="alertsTableBody">
-                            <tr>
-                                <td colspan="3" class="text-center opacity-7">Carregando alertas...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- BOTTOM NAVIGATION -->
+            <div class="bottom-nav">
+                <div class="nav-item active">
+                    <span>🆘</span>
+                    SOS
+                </div>
+                <div class="nav-item" onclick="mostrarGerenciarContatos()">
+                    <span>👥</span>
+                    Gerenciar Contatos
+                </div>
+                <div class="nav-item" onclick="mostrarAdmin()">
+                    <span>⚙️</span>
+                    Admin
+                </div>
+                <div class="nav-item" onclick="mostrarHistorico()">
+                    <span>📊</span>
+                    Histórico
                 </div>
             </div>
-        </div>
-
-        <!-- RODAPÉ -->
-        <div class="text-center mt-20 opacity-7">
-            <small>Aurora Shield - Proteção 24 horas</small>
         </div>
     </div>
 
-    <!-- INCLUSÃO DA BIBLIOTECA jsPDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <!-- MODAL GERENCIAR CONTATOS -->
+    <div class="modal" id="modalGerenciarContatos">
+        <div class="modal-content">
+            <h3 class="modal-title">👥 GERENCIAR CONTATOS</h3>
+            <div id="listaContatosGerenciar" style="margin-bottom: 20px;">
+                <!-- Contatos serão inseridos aqui -->
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn save" onclick="mostrarModalAdicionar()">➕ ADICIONAR NOVO</button>
+                <button class="modal-btn cancel" onclick="fecharModal('modalGerenciarContatos')">FECHAR</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- MODAL ADICIONAR CONTATO -->
+    <div class="modal" id="modalAdicionarContato">
+        <div class="modal-content">
+            <h3 class="modal-title">➕ ADICIONAR CONTATO</h3>
+            <div class="form-group">
+                <label class="form-label">Nome</label>
+                <input type="text" id="novoNome" class="form-input" placeholder="Nome completo">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Telefone</label>
+                <input type="text" id="novoTelefone" class="form-input" placeholder="(11) 99999-9999">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Parentesco</label>
+                <input type="text" id="novoParentesco" class="form-input" placeholder="Ex: Mãe, Irmã, Amiga">
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn save" onclick="salvarNovoContato()">SALVAR</button>
+                <button class="modal-btn cancel" onclick="fecharModal('modalAdicionarContato')">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDITAR CONTATO -->
+    <div class="modal" id="modalEditarContato">
+        <div class="modal-content">
+            <h3 class="modal-title">✏️ EDITAR CONTATO</h3>
+            <input type="hidden" id="editandoIndex">
+            <div class="form-group">
+                <label class="form-label">Nome</label>
+                <input type="text" id="editNome" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Telefone</label>
+                <input type="text" id="editTelefone" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Parentesco</label>
+                <input type="text" id="editParentesco" class="form-input">
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn save" onclick="salvarEdicao()">SALVAR</button>
+                <button class="modal-btn cancel" onclick="fecharModal('modalEditarContato')">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIRMAR EXCLUSÃO -->
+    <div class="modal" id="modalConfirmarExclusao">
+        <div class="modal-content">
+            <h3 class="modal-title">⚠️ CONFIRMAR EXCLUSÃO</h3>
+            <div class="confirm-box">
+                <p>Tem certeza que deseja excluir <span id="excluirNome"></span>?</p>
+                <div class="modal-buttons">
+                    <button class="modal-btn danger" onclick="confirmarExclusao()">SIM, EXCLUIR</button>
+                    <button class="modal-btn cancel" onclick="fecharModal('modalConfirmarExclusao')">CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ADMIN -->
+    <div class="modal" id="modalAdmin">
+        <div class="modal-content">
+            <h3 class="modal-title">⚙️ ADMIN</h3>
+            <p style="color: #888; margin-bottom: 15px;">Configurações do sistema</p>
+            <div style="margin-bottom: 15px;">
+                <label style="color: #ff69b4; display: block; margin-bottom: 5px;">Tempo de pressionar SOS</label>
+                <input type="range" id="tempoSOS" min="1" max="5" value="2" step="0.5" style="width: 100%;">
+                <small style="color: #888;"><span id="tempoDisplay">2</span> segundos</small>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn save" onclick="salvarConfig()">SALVAR</button>
+                <button class="modal-btn cancel" onclick="fecharModal('modalAdmin')">FECHAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL HISTÓRICO -->
+    <div class="modal" id="modalHistorico">
+        <div class="modal-content">
+            <h3 class="modal-title">📊 HISTÓRICO DE ALERTAS</h3>
+            <div id="listaAlertas" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;">
+                <!-- Alertas serão inseridos aqui -->
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn save" onclick="gerarPDF()">📥 PDF</button>
+                <button class="modal-btn cancel" onclick="fecharModal('modalHistorico')">FECHAR</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
     <script>
         // ============================================
         // VARIÁVEIS GLOBAIS
         // ============================================
         let pressTimer = null;
         let isPressing = false;
-        let alertas = [];
+        let tempoPressionar = 2; // segundos
+        
+        // Contatos iniciais
+        let contatos = [
+            { nome: "CLECI", telefone: "(11) 99999-9999", parentesco: "Mãe" },
+            { nome: "MARIA", telefone: "(11) 98888-8888", parentesco: "Irmã" },
+            { nome: "JOÃO", telefone: "(11) 97777-7777", parentesco: "Marido" }
+        ];
+        
+        let alertas = [
+            { data: new Date().toLocaleString(), situacao: "Violência física", localizacao: true },
+            { data: new Date(Date.now() - 86400000).toLocaleString(), situacao: "Agressão verbal", localizacao: true }
+        ];
+        
+        let contatoParaExcluir = null;
 
         // ============================================
-        // CARREGAR CONTATOS
+        // CARREGAR CONTATOS DO LOCALSTORAGE
         // ============================================
-        async function carregarContatos() {
-            try {
-                const response = await fetch('/api/contacts');
-                const contatos = await response.json();
-                
-                const contactsGrid = document.getElementById('contactsGrid');
-                contactsGrid.innerHTML = '';
-                
-                if (contatos && contatos.length > 0) {
-                    contatos.forEach(contato => {
-                        const badge = document.createElement('div');
-                        badge.className = 'contact-badge';
-                        badge.innerHTML = `
-                            <div class="contact-name">${contato.name}</div>
-                            <div class="contact-phone">${contato.phone}</div>
-                            <div class="contact-relation">${contato.relationship || 'Contato'}</div>
-                        `;
-                        contactsGrid.appendChild(badge);
-                    });
-                } else {
-                    contactsGrid.innerHTML = '<div class="contact-badge">Nenhum contato cadastrado</div>';
-                }
-            } catch (error) {
-                console.error('Erro ao carregar contatos:', error);
+        function carregarContatos() {
+            const contatosSalvos = localStorage.getItem('aurora_contatos');
+            if (contatosSalvos) {
+                contatos = JSON.parse(contatosSalvos);
+            } else {
+                // Salvar contatos iniciais no localStorage
+                localStorage.setItem('aurora_contatos', JSON.stringify(contatos));
             }
+            atualizarGridContatos();
         }
 
         // ============================================
-        // CARREGAR ALERTAS
+        // ATUALIZAR GRID DE CONTATOS (PAINEL PRINCIPAL)
         // ============================================
-        async function carregarAlertas() {
-            try {
-                const response = await fetch('/history_json');
-                alertas = await response.json();
-                
-                const tbody = document.getElementById('alertsTableBody');
-                
-                if (alertas && alertas.length > 0) {
-                    let html = '';
-                    alertas.slice(0, 10).forEach(alerta => {
-                        const temLocalizacao = alerta.lat && alerta.lng && alerta.lat !== 'null' && alerta.lat !== '';
-                        html += `
-                            <tr>
-                                <td>${alerta.date || '—'}</td>
-                                <td>${alerta.situation || 'Emergência'}</td>
-                                <td>${temLocalizacao ? '📍 Disponível' : '—'}</td>
-                            </tr>
-                        `;
-                    });
-                    tbody.innerHTML = html;
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="3" class="text-center opacity-7">Nenhum alerta registrado</td></tr>';
-                }
-            } catch (error) {
-                console.error('Erro ao carregar alertas:', error);
+        function atualizarGridContatos() {
+            const grid = document.getElementById('contatosGrid');
+            
+            if (contatos && contatos.length > 0) {
+                let html = '';
+                contatos.forEach(contato => {
+                    html += `
+                        <div class="contato-card">
+                            <div class="nome">${contato.nome}</div>
+                            <div class="telefone">${contato.telefone}</div>
+                            <div class="parentesco">${contato.parentesco}</div>
+                        </div>
+                    `;
+                });
+                grid.innerHTML = html;
+            } else {
+                grid.innerHTML = '<div class="contato-card">Nenhum contato cadastrado</div>';
             }
-        }
-
-        // ============================================
-        // FUNÇÕES DAS TAGS
-        // ============================================
-        function selectTag(element) {
-            document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
-            element.classList.add('active');
         }
 
         // ============================================
@@ -700,7 +794,7 @@
                 if (isPressing) {
                     enviarAlerta();
                 }
-            }, 1000);
+            }, tempoPressionar * 1000);
         }
 
         function cancelPress() {
@@ -713,94 +807,304 @@
         }
 
         // ============================================
-        // FUNÇÃO PARA ENVIAR ALERTA
+        // ENVIAR ALERTA
         // ============================================
-        async function enviarAlerta() {
+        function enviarAlerta() {
             const btn = document.getElementById('sosBtn');
             const originalHTML = btn.innerHTML;
             
             btn.innerHTML = 'ENVIANDO...';
             btn.disabled = true;
             
-            const name = document.getElementById('name').value || 'MARISA';
-            const situation = document.querySelector('.tag.active')?.getAttribute('data-situacao') || 'Emergência';
-            const message = document.getElementById('message').value;
+            const nome = document.getElementById('nome').value;
+            const situacao = document.querySelector('.tag.active')?.getAttribute('data-situacao') || 'Emergência';
+            const mensagem = document.getElementById('mensagem').value;
             const shareLocation = document.getElementById('shareLocation').checked;
             
-            showStatus('Enviando alerta...', 'info');
+            showStatus('🚨 Enviando alerta...', 'info');
             
-            try {
-                let lat = null;
-                let lng = null;
-                
-                if (shareLocation && navigator.geolocation) {
-                    try {
-                        const position = await new Promise((resolve, reject) => {
-                            navigator.geolocation.getCurrentPosition(resolve, reject, {
-                                enableHighAccuracy: true,
-                                timeout: 10000
-                            });
-                        });
-                        lat = position.coords.latitude;
-                        lng = position.coords.longitude;
-                    } catch (geoError) {
-                        console.warn('Erro ao obter localização:', geoError);
-                        showStatus('Não foi possível obter localização. Enviando sem GPS.', 'error');
-                    }
-                }
-                
-                const response = await fetch('/api/panic', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, situation, message, lat, lng })
+            // Simular envio
+            setTimeout(() => {
+                // Adicionar ao histórico
+                alertas.unshift({
+                    data: new Date().toLocaleString(),
+                    situacao: situacao,
+                    localizacao: shareLocation
                 });
                 
-                const data = await response.json();
-                
-                if (data.status === 'ok') {
-                    showStatus('✅ ALERTA ENVIADO COM SUCESSO!', 'success');
-                    if (navigator.vibrate) navigator.vibrate([500, 200, 500]);
-                    await carregarAlertas(); // Recarregar a lista
+                // Mostrar para quais contatos foi enviado
+                if (contatos.length > 0) {
+                    const nomesContatos = contatos.map(c => c.nome).join(', ');
+                    showStatus(`✅ ALERTA ENVIADO para: ${nomesContatos}`, 'success');
+                    
+                    // Mostrar detalhes no console
+                    console.log('🚨 ALERTA ENVIADO:');
+                    console.log('Nome:', nome);
+                    console.log('Situação:', situacao);
+                    console.log('Mensagem:', mensagem);
+                    console.log('Localização:', shareLocation ? 'Compartilhada' : 'Não compartilhada');
+                    console.log('Contatos notificados:', contatos);
                 } else {
-                    throw new Error(data.message || 'Erro ao enviar');
+                    showStatus('✅ ALERTA ENVIADO (sem contatos cadastrados)', 'success');
                 }
-            } catch (error) {
-                console.error('Erro:', error);
-                showStatus('❌ Erro ao enviar alerta. Tente novamente.', 'error');
-            } finally {
+                
+                if (navigator.vibrate) navigator.vibrate(500);
+                
                 btn.innerHTML = originalHTML;
                 btn.disabled = false;
-            }
+            }, 2000);
         }
 
         // ============================================
-        // FUNÇÃO PARA REENVIAR ALERTA
+        // FUNÇÕES DAS TAGS
         // ============================================
-        function reenviarAlerta() {
-            enviarAlerta();
+        function selectTag(element) {
+            document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
+            element.classList.add('active');
         }
 
         // ============================================
-        // FUNÇÕES DE FORMULÁRIO
+        // FUNÇÕES DOS BOTÕES SUPERIORES
         // ============================================
-        function clearForm() {
-            document.getElementById('name').value = 'MARISA';
-            document.getElementById('message').value = '';
+        function reiniciar() {
+            document.getElementById('nome').value = 'SALVECI';
+            document.getElementById('mensagem').value = '';
             document.getElementById('shareLocation').checked = true;
             
             // Resetar tags
             document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
             document.querySelector('.tag').classList.add('active');
             
-            showStatus('Formulário limpo', 'success');
+            showStatus('Sistema reiniciado', 'success');
         }
 
-        function logout() {
-            window.location.href = '/';
+        function limpar() {
+            document.getElementById('mensagem').value = '';
+            showStatus('Campos limpos', 'success');
+        }
+
+        function sair() {
+            if (confirm('Deseja realmente sair?')) {
+                window.location.href = '/';
+            }
         }
 
         // ============================================
-        // FUNÇÃO PARA MOSTRAR STATUS
+        // FUNÇÕES DE NAVEGAÇÃO
+        // ============================================
+        function mostrarGerenciarContatos() {
+            const modal = document.getElementById('modalGerenciarContatos');
+            const lista = document.getElementById('listaContatosGerenciar');
+            
+            let html = '';
+            contatos.forEach((contato, index) => {
+                html += `
+                    <div class="contato-item">
+                        <div class="contato-info">
+                            <h4>${contato.nome}</h4>
+                            <p>📞 ${contato.telefone}</p>
+                            <p>👤 ${contato.parentesco}</p>
+                        </div>
+                        <div class="contato-acoes">
+                            <button class="btn-editar" onclick="editarContato(${index})">✏️ Editar</button>
+                            <button class="btn-excluir" onclick="confirmarExclusaoContato(${index})">🗑️ Excluir</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            lista.innerHTML = html || '<p style="color: #888; text-align: center;">Nenhum contato cadastrado</p>';
+            modal.style.display = 'flex';
+        }
+
+        function mostrarAdmin() {
+            document.getElementById('modalAdmin').style.display = 'flex';
+            document.getElementById('tempoDisplay').textContent = tempoPressionar;
+            document.getElementById('tempoSOS').value = tempoPressionar;
+        }
+
+        function mostrarHistorico() {
+            const modal = document.getElementById('modalHistorico');
+            const lista = document.getElementById('listaAlertas');
+            
+            let html = '';
+            alertas.slice(0, 10).forEach(alerta => {
+                html += `
+                    <div style="background: #222; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: #ff69b4;">${alerta.situacao}</span>
+                            <span style="color: #888; font-size: 12px;">${alerta.data}</span>
+                        </div>
+                        <div style="color: #666; font-size: 12px; margin-top: 5px;">
+                            ${alerta.localizacao ? '📍 Localização compartilhada' : '📍 Sem localização'}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            lista.innerHTML = html || '<p style="color: #888; text-align: center;">Nenhum alerta registrado</p>';
+            modal.style.display = 'flex';
+        }
+
+        function fecharModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // ============================================
+        // FUNÇÕES DE CONTATOS (CRUD COMPLETO)
+        // ============================================
+        
+        // Mostrar modal para adicionar
+        function mostrarModalAdicionar() {
+            fecharModal('modalGerenciarContatos');
+            document.getElementById('modalAdicionarContato').style.display = 'flex';
+        }
+
+        // Salvar novo contato
+        function salvarNovoContato() {
+            const nome = document.getElementById('novoNome').value.trim();
+            const telefone = document.getElementById('novoTelefone').value.trim();
+            const parentesco = document.getElementById('novoParentesco').value.trim();
+            
+            if (!nome || !telefone) {
+                showStatus('Preencha nome e telefone!', 'error');
+                return;
+            }
+            
+            contatos.push({
+                nome: nome,
+                telefone: telefone,
+                parentesco: parentesco || 'Contato'
+            });
+            
+            // Salvar no localStorage
+            localStorage.setItem('aurora_contatos', JSON.stringify(contatos));
+            
+            // Limpar campos
+            document.getElementById('novoNome').value = '';
+            document.getElementById('novoTelefone').value = '';
+            document.getElementById('novoParentesco').value = '';
+            
+            fecharModal('modalAdicionarContato');
+            atualizarGridContatos(); // Atualiza o grid do painel principal
+            showStatus('✅ Contato adicionado com sucesso!', 'success');
+        }
+
+        // Editar contato
+        function editarContato(index) {
+            const contato = contatos[index];
+            
+            document.getElementById('editandoIndex').value = index;
+            document.getElementById('editNome').value = contato.nome;
+            document.getElementById('editTelefone').value = contato.telefone;
+            document.getElementById('editParentesco').value = contato.parentesco;
+            
+            fecharModal('modalGerenciarContatos');
+            document.getElementById('modalEditarContato').style.display = 'flex';
+        }
+
+        // Salvar edição
+        function salvarEdicao() {
+            const index = document.getElementById('editandoIndex').value;
+            const nome = document.getElementById('editNome').value.trim();
+            const telefone = document.getElementById('editTelefone').value.trim();
+            const parentesco = document.getElementById('editParentesco').value.trim();
+            
+            if (!nome || !telefone) {
+                showStatus('Preencha nome e telefone!', 'error');
+                return;
+            }
+            
+            contatos[index] = {
+                nome: nome,
+                telefone: telefone,
+                parentesco: parentesco || 'Contato'
+            };
+            
+            // Salvar no localStorage
+            localStorage.setItem('aurora_contatos', JSON.stringify(contatos));
+            
+            fecharModal('modalEditarContato');
+            atualizarGridContatos(); // Atualiza o grid do painel principal
+            showStatus('✅ Contato editado com sucesso!', 'success');
+        }
+
+        // Confirmar exclusão
+        function confirmarExclusaoContato(index) {
+            contatoParaExcluir = index;
+            document.getElementById('excluirNome').textContent = contatos[index].nome;
+            fecharModal('modalGerenciarContatos');
+            document.getElementById('modalConfirmarExclusao').style.display = 'flex';
+        }
+
+        // Executar exclusão
+        function confirmarExclusao() {
+            if (contatoParaExcluir !== null) {
+                contatos.splice(contatoParaExcluir, 1);
+                
+                // Salvar no localStorage
+                localStorage.setItem('aurora_contatos', JSON.stringify(contatos));
+                
+                contatoParaExcluir = null;
+                
+                fecharModal('modalConfirmarExclusao');
+                atualizarGridContatos(); // Atualiza o grid do painel principal
+                showStatus('✅ Contato excluído com sucesso!', 'success');
+            }
+        }
+
+        // ============================================
+        // CONFIGURAÇÕES
+        // ============================================
+        document.getElementById('tempoSOS')?.addEventListener('input', function(e) {
+            tempoPressionar = parseFloat(e.target.value);
+            document.getElementById('tempoDisplay').textContent = tempoPressionar;
+        });
+
+        function salvarConfig() {
+            showStatus(`⏱️ Tempo alterado para ${tempoPressionar} segundos`, 'success');
+            fecharModal('modalAdmin');
+        }
+
+        // ============================================
+        // GERAR PDF
+        // ============================================
+        function gerarPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Título
+            doc.setFontSize(20);
+            doc.setTextColor(255, 105, 180);
+            doc.text('RELATÓRIO DE ALERTAS', 20, 20);
+            
+            // Data
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Gerado em: ${new Date().toLocaleString()}`, 20, 30);
+            
+            // Lista de alertas
+            let y = 40;
+            alertas.slice(0, 10).forEach((alerta, index) => {
+                doc.setFontSize(12);
+                doc.setTextColor(255, 105, 180);
+                doc.text(`${index + 1}. ${alerta.situacao}`, 20, y);
+                
+                doc.setFontSize(10);
+                doc.setTextColor(100, 100, 100);
+                doc.text(`Data: ${alerta.data}`, 25, y + 5);
+                doc.text(`Localização: ${alerta.localizacao ? 'Compartilhada' : 'Não compartilhada'}`, 25, y + 10);
+                
+                y += 20;
+            });
+            
+            doc.save('historico-alertas.pdf');
+            showStatus('📥 PDF gerado com sucesso!', 'success');
+            fecharModal('modalHistorico');
+        }
+
+        // ============================================
+        // STATUS MESSAGE
         // ============================================
         function showStatus(message, type) {
             const statusDiv = document.getElementById('statusMessage');
@@ -813,88 +1117,11 @@
         }
 
         // ============================================
-        // FUNÇÃO PARA GERAR PDF
-        // ============================================
-        function gerarPDF() {
-            const { jsPDF } = window.jspdf;
-            
-            // Criar documento PDF
-            const doc = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4'
-            });
-            
-            // Configurar cores
-            const primaryColor = [162, 89, 255]; // Roxo
-            const secondaryColor = [255, 122, 176]; // Rosa
-            
-            // Título
-            doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-            doc.rect(0, 0, 210, 30, 'F');
-            
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(20);
-            doc.setFont('helvetica', 'bold');
-            doc.text('RELATÓRIO DE ALERTAS - AURORA SHIELD', 15, 18);
-            
-            // Informações do usuário
-            doc.setTextColor(0, 0, 0);
-            doc.setFontSize(12);
-            doc.text(`Usuária: ${document.getElementById('name').value || 'MARISA'}`, 15, 40);
-            doc.text(`Data de emissão: ${new Date().toLocaleString('pt-BR')}`, 15, 47);
-            
-            // Preparar dados da tabela
-            const tableData = alertas.map(alerta => [
-                alerta.date || '—',
-                alerta.situation || 'Emergência',
-                alerta.lat && alerta.lng ? '📍 Com localização' : '—'
-            ]);
-            
-            // Adicionar tabela
-            doc.autoTable({
-                head: [['DATA/HORA', 'SITUAÇÃO', 'LOCALIZAÇÃO']],
-                body: tableData,
-                startY: 55,
-                theme: 'grid',
-                headStyles: {
-                    fillColor: secondaryColor,
-                    textColor: [255, 255, 255],
-                    fontStyle: 'bold'
-                },
-                alternateRowStyles: {
-                    fillColor: [240, 240, 240]
-                }
-            });
-            
-            // Rodapé
-            const pageCount = doc.internal.getNumberOfPages();
-            for (let i = 1; i <= pageCount; i++) {
-                doc.setPage(i);
-                doc.setFontSize(10);
-                doc.setTextColor(150, 150, 150);
-                doc.text(
-                    `Aurora Shield - Página ${i} de ${pageCount}`,
-                    105,
-                    285,
-                    { align: 'center' }
-                );
-            }
-            
-            // Salvar PDF
-            const dataAtual = new Date().toISOString().slice(0, 10);
-            doc.save(`aurora-alertas-${dataAtual}.pdf`);
-        }
-
-        // ============================================
         // INICIALIZAÇÃO
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
+            // Carregar contatos do localStorage
             carregarContatos();
-            carregarAlertas();
-            
-            // Atualizar alertas a cada 30 segundos
-            setInterval(carregarAlertas, 30000);
             
             // Adicionar eventos às tags
             document.querySelectorAll('.tag').forEach(tag => {
@@ -903,17 +1130,11 @@
                 });
             });
             
-            // Atualizar nome do usuário
-            const urlParams = new URLSearchParams(window.location.search);
-            const userName = urlParams.get('nome') || 'MARISA';
-            document.getElementById('name').value = userName;
-            document.getElementById('userNameDisplay').textContent = userName;
-        });
-
-        // Prevenir comportamento padrão em dispositivos touch
-        document.addEventListener('touchstart', (e) => {
-            if (e.target.classList.contains('sos-button')) {
-                e.preventDefault();
+            // Fechar modais clicando fora
+            window.onclick = function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
             }
         });
     </script>
