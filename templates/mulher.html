@@ -288,6 +288,7 @@
             justify-content: center;
             margin: 0 auto;
             animation: pulse 2s infinite;
+            transition: transform 0.1s;
         }
 
         @keyframes pulse {
@@ -374,6 +375,13 @@
             background: #1a1a4d;
             border: 1px solid #8a2be2;
             color: #aaaaff;
+            display: block;
+        }
+
+        .status-message.warning {
+            background: #4d4d1a;
+            border: 1px solid #ffff00;
+            color: #ffffaa;
             display: block;
         }
 
@@ -735,11 +743,7 @@
             { nome: "JOÃO", telefone: "(11) 97777-7777", parentesco: "Marido" }
         ];
         
-        let alertas = [
-            { data: new Date().toLocaleString(), situacao: "Violência física", localizacao: true },
-            { data: new Date(Date.now() - 86400000).toLocaleString(), situacao: "Agressão verbal", localizacao: true }
-        ];
-        
+        let alertas = [];
         let contatoParaExcluir = null;
 
         // ============================================
@@ -750,7 +754,6 @@
             if (contatosSalvos) {
                 contatos = JSON.parse(contatosSalvos);
             } else {
-                // Salvar contatos iniciais no localStorage
                 localStorage.setItem('aurora_contatos', JSON.stringify(contatos));
             }
             atualizarGridContatos();
@@ -777,6 +780,54 @@
             } else {
                 grid.innerHTML = '<div class="contato-card">Nenhum contato cadastrado</div>';
             }
+        }
+
+        // ============================================
+        // FUNÇÃO PARA OBTER LOCALIZAÇÃO REAL
+        // ============================================
+        function obterLocalizacao() {
+            return new Promise((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject('Geolocalização não suportada pelo navegador');
+                    return;
+                }
+                
+                showStatus('📍 Solicitando permissão de localização...', 'info');
+                
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const coords = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                            accuracy: position.coords.accuracy
+                        };
+                        console.log('📍 Localização obtida:', coords);
+                        resolve(coords);
+                    },
+                    (error) => {
+                        let mensagemErro = 'Erro ao obter localização: ';
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                mensagemErro += 'Permissão negada. Clique em "Permitir" nas configurações do navegador.';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                mensagemErro += 'Localização indisponível.';
+                                break;
+                            case error.TIMEOUT:
+                                mensagemErro += 'Tempo esgotado. Tente novamente.';
+                                break;
+                            default:
+                                mensagemErro += error.message;
+                        }
+                        reject(mensagemErro);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            });
         }
 
         // ============================================
@@ -807,9 +858,9 @@
         }
 
         // ============================================
-        // ENVIAR ALERTA
+        // ENVIAR ALERTA COM LOCALIZAÇÃO REAL
         // ============================================
-        function enviarAlerta() {
+        async function enviarAlerta() {
             const btn = document.getElementById('sosBtn');
             const originalHTML = btn.innerHTML;
             
@@ -821,38 +872,80 @@
             const mensagem = document.getElementById('mensagem').value;
             const shareLocation = document.getElementById('shareLocation').checked;
             
-            showStatus('🚨 Enviando alerta...', 'info');
+            showStatus('🚨 Preparando alerta...', 'info');
             
-            // Simular envio
-            setTimeout(() => {
-                // Adicionar ao histórico
-                alertas.unshift({
-                    data: new Date().toLocaleString(),
-                    situacao: situacao,
-                    localizacao: shareLocation
-                });
+            let lat = null;
+            let lng = null;
+            let localizacaoObtida = false;
+            
+            // Obter localização se marcado
+            if (shareLocation) {
+                try {
+                    showStatus('📍 Obtendo localização...', 'info');
+                    const pos = await obterLocalizacao();
+                    lat = pos.lat;
+                    lng = pos.lng;
+                    localizacaoObtida = true;
+                    showStatus('✅ Localização obtida com sucesso!', 'success');
+                } catch (error) {
+                    console.error('Erro GPS:', error);
+                    showStatus('⚠️ ' + error, 'warning');
+                }
+            }
+            
+            // Criar objeto do alerta
+            const alerta = {
+                id: Date.now(),
+                name: nome || 'Anônimo',
+                situation: situacao,
+                message: mensagem || 'Alerta de emergência',
+                lat: lat,
+                lng: lng,
+                date: new Date().toISOString()
+            };
+            
+            // Salvar no histórico local
+            alertas.unshift({
+                data: new Date().toLocaleString(),
+                situacao: situacao,
+                localizacao: localizacaoObtida
+            });
+            
+            // Enviar para o servidor (simulação com localStorage)
+            try {
+                // Recuperar alertas existentes
+                const alertasExistentes = JSON.parse(localStorage.getItem('aurora_alertas') || '[]');
+                alertasExistentes.unshift(alerta);
+                localStorage.setItem('aurora_alertas', JSON.stringify(alertasExistentes));
                 
-                // Mostrar para quais contatos foi enviado
+                // Mostrar mensagem de sucesso
                 if (contatos.length > 0) {
                     const nomesContatos = contatos.map(c => c.nome).join(', ');
                     showStatus(`✅ ALERTA ENVIADO para: ${nomesContatos}`, 'success');
                     
-                    // Mostrar detalhes no console
+                    // Log detalhado
                     console.log('🚨 ALERTA ENVIADO:');
                     console.log('Nome:', nome);
                     console.log('Situação:', situacao);
                     console.log('Mensagem:', mensagem);
-                    console.log('Localização:', shareLocation ? 'Compartilhada' : 'Não compartilhada');
+                    console.log('Localização:', localizacaoObtida ? `Lat: ${lat}, Lng: ${lng}` : 'Não compartilhada');
                     console.log('Contatos notificados:', contatos);
+                    
+                    // Vibrar se suportado
+                    if (navigator.vibrate) {
+                        navigator.vibrate([500, 200, 500]);
+                    }
                 } else {
                     showStatus('✅ ALERTA ENVIADO (sem contatos cadastrados)', 'success');
                 }
                 
-                if (navigator.vibrate) navigator.vibrate(500);
-                
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-            }, 2000);
+            } catch (error) {
+                console.error('Erro ao salvar alerta:', error);
+                showStatus('❌ Erro ao enviar alerta', 'error');
+            }
+            
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
         }
 
         // ============================================
@@ -871,7 +964,6 @@
             document.getElementById('mensagem').value = '';
             document.getElementById('shareLocation').checked = true;
             
-            // Resetar tags
             document.querySelectorAll('.tag').forEach(tag => tag.classList.remove('active'));
             document.querySelector('.tag').classList.add('active');
             
@@ -927,16 +1019,24 @@
             const modal = document.getElementById('modalHistorico');
             const lista = document.getElementById('listaAlertas');
             
+            // Carregar alertas do localStorage
+            const alertasSalvos = JSON.parse(localStorage.getItem('aurora_alertas') || '[]');
+            
             let html = '';
-            alertas.slice(0, 10).forEach(alerta => {
+            alertasSalvos.slice(0, 10).forEach(alerta => {
+                const data = new Date(alerta.date).toLocaleString('pt-BR');
                 html += `
                     <div style="background: #222; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
                         <div style="display: flex; justify-content: space-between;">
-                            <span style="color: #ff69b4;">${alerta.situacao}</span>
-                            <span style="color: #888; font-size: 12px;">${alerta.data}</span>
+                            <span style="color: #ff69b4;">${alerta.situation}</span>
+                            <span style="color: #888; font-size: 12px;">${data}</span>
                         </div>
                         <div style="color: #666; font-size: 12px; margin-top: 5px;">
-                            ${alerta.localizacao ? '📍 Localização compartilhada' : '📍 Sem localização'}
+                            ${alerta.lat && alerta.lng ? '📍 Localização compartilhada' : '📍 Sem localização'}
+                            ${alerta.lat ? `<br>📌 ${alerta.lat.toFixed(6)}, ${alerta.lng.toFixed(6)}` : ''}
+                        </div>
+                        <div style="color: #ff69b4; font-size: 11px; margin-top: 5px;">
+                            👤 ${alerta.name}
                         </div>
                     </div>
                 `;
@@ -954,13 +1054,11 @@
         // FUNÇÕES DE CONTATOS (CRUD COMPLETO)
         // ============================================
         
-        // Mostrar modal para adicionar
         function mostrarModalAdicionar() {
             fecharModal('modalGerenciarContatos');
             document.getElementById('modalAdicionarContato').style.display = 'flex';
         }
 
-        // Salvar novo contato
         function salvarNovoContato() {
             const nome = document.getElementById('novoNome').value.trim();
             const telefone = document.getElementById('novoTelefone').value.trim();
@@ -977,20 +1075,17 @@
                 parentesco: parentesco || 'Contato'
             });
             
-            // Salvar no localStorage
             localStorage.setItem('aurora_contatos', JSON.stringify(contatos));
             
-            // Limpar campos
             document.getElementById('novoNome').value = '';
             document.getElementById('novoTelefone').value = '';
             document.getElementById('novoParentesco').value = '';
             
             fecharModal('modalAdicionarContato');
-            atualizarGridContatos(); // Atualiza o grid do painel principal
+            atualizarGridContatos();
             showStatus('✅ Contato adicionado com sucesso!', 'success');
         }
 
-        // Editar contato
         function editarContato(index) {
             const contato = contatos[index];
             
@@ -1003,7 +1098,6 @@
             document.getElementById('modalEditarContato').style.display = 'flex';
         }
 
-        // Salvar edição
         function salvarEdicao() {
             const index = document.getElementById('editandoIndex').value;
             const nome = document.getElementById('editNome').value.trim();
@@ -1021,15 +1115,13 @@
                 parentesco: parentesco || 'Contato'
             };
             
-            // Salvar no localStorage
             localStorage.setItem('aurora_contatos', JSON.stringify(contatos));
             
             fecharModal('modalEditarContato');
-            atualizarGridContatos(); // Atualiza o grid do painel principal
+            atualizarGridContatos();
             showStatus('✅ Contato editado com sucesso!', 'success');
         }
 
-        // Confirmar exclusão
         function confirmarExclusaoContato(index) {
             contatoParaExcluir = index;
             document.getElementById('excluirNome').textContent = contatos[index].nome;
@@ -1037,18 +1129,13 @@
             document.getElementById('modalConfirmarExclusao').style.display = 'flex';
         }
 
-        // Executar exclusão
         function confirmarExclusao() {
             if (contatoParaExcluir !== null) {
                 contatos.splice(contatoParaExcluir, 1);
-                
-                // Salvar no localStorage
                 localStorage.setItem('aurora_contatos', JSON.stringify(contatos));
-                
                 contatoParaExcluir = null;
-                
                 fecharModal('modalConfirmarExclusao');
-                atualizarGridContatos(); // Atualiza o grid do painel principal
+                atualizarGridContatos();
                 showStatus('✅ Contato excluído com sucesso!', 'success');
             }
         }
@@ -1073,29 +1160,31 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             
-            // Título
             doc.setFontSize(20);
             doc.setTextColor(255, 105, 180);
             doc.text('RELATÓRIO DE ALERTAS', 20, 20);
             
-            // Data
             doc.setFontSize(10);
             doc.setTextColor(100, 100, 100);
             doc.text(`Gerado em: ${new Date().toLocaleString()}`, 20, 30);
             
-            // Lista de alertas
+            const alertasSalvos = JSON.parse(localStorage.getItem('aurora_alertas') || '[]');
+            
             let y = 40;
-            alertas.slice(0, 10).forEach((alerta, index) => {
+            alertasSalvos.slice(0, 10).forEach((alerta, index) => {
+                const data = new Date(alerta.date).toLocaleString('pt-BR');
+                
                 doc.setFontSize(12);
                 doc.setTextColor(255, 105, 180);
-                doc.text(`${index + 1}. ${alerta.situacao}`, 20, y);
+                doc.text(`${index + 1}. ${alerta.situation}`, 20, y);
                 
                 doc.setFontSize(10);
                 doc.setTextColor(100, 100, 100);
-                doc.text(`Data: ${alerta.data}`, 25, y + 5);
-                doc.text(`Localização: ${alerta.localizacao ? 'Compartilhada' : 'Não compartilhada'}`, 25, y + 10);
+                doc.text(`Data: ${data}`, 25, y + 5);
+                doc.text(`Localização: ${alerta.lat && alerta.lng ? 'Compartilhada' : 'Não compartilhada'}`, 25, y + 10);
+                doc.text(`Nome: ${alerta.name}`, 25, y + 15);
                 
-                y += 20;
+                y += 25;
             });
             
             doc.save('historico-alertas.pdf');
@@ -1120,21 +1209,27 @@
         // INICIALIZAÇÃO
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
-            // Carregar contatos do localStorage
             carregarContatos();
             
-            // Adicionar eventos às tags
             document.querySelectorAll('.tag').forEach(tag => {
                 tag.addEventListener('click', function() {
                     selectTag(this);
                 });
             });
             
-            // Fechar modais clicando fora
             window.onclick = function(event) {
                 if (event.target.classList.contains('modal')) {
                     event.target.style.display = 'none';
                 }
+            };
+            
+            // Verificar permissão de localização
+            if (navigator.permissions) {
+                navigator.permissions.query({ name: 'geolocation' }).then(result => {
+                    if (result.state === 'denied') {
+                        showStatus('⚠️ Permissão de localização negada. Ative nas configurações do navegador.', 'warning');
+                    }
+                });
             }
         });
     </script>

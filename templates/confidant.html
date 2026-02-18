@@ -389,8 +389,8 @@
 
             <!-- LINK TESTE EXTERNO -->
             <div class="text-center mb-10">
-                <a href="/testar-sirene" target="_blank" style="color: #b0b0ff; font-size: 13px;">
-                    🔗 Abrir página de teste da sirene
+                <a href="#" onclick="testarAlerta()" style="color: #b0b0ff; font-size: 13px;">
+                    🔗 Testar alerta de exemplo
                 </a>
             </div>
 
@@ -458,7 +458,7 @@
 
     <!-- ÁUDIO DA SIRENE REAL -->
     <audio id="sirene" loop preload="auto">
-        <source src="/static/sounds/sirene-real.mp3" type="audio/mpeg">
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -490,7 +490,6 @@
                     sireneElement.currentTime = 0;
                     sireneAtiva = true;
                     
-                    // Atualizar UI
                     sireneLed.className = 'sirene-led ativa';
                     sireneStatusText.textContent = 'Sirene ativada';
                     sireneStatusText.style.color = '#aaffaa';
@@ -550,20 +549,17 @@
         // ============================================
         
         function limparAlerta() {
-            // Resetar UI
             alertSection.className = 'alert-section';
             alertTitle.innerHTML = '⏳ Aguardando alertas...';
             statusPill.className = 'status';
             statusPill.textContent = '🟢 Monitorando';
             
-            // Esconder informações
             infoGrid.style.display = 'none';
             document.getElementById('map').style.display = 'none';
             document.getElementById('noLocation').style.display = 'flex';
             document.getElementById('mapLink').style.display = 'none';
             document.getElementById('coordenadas').textContent = '';
             
-            // Limpar valores
             document.getElementById('infoNome').textContent = '—';
             document.getElementById('infoSit').textContent = '—';
             document.getElementById('infoMsg').textContent = '—';
@@ -578,15 +574,25 @@
             buscarAlertas();
         }
 
+        function testarAlerta() {
+            const alertaTeste = {
+                id: Date.now(),
+                name: "SALVECI (TESTE)",
+                situation: "Violência física",
+                message: "Preciso de ajuda! Teste do sistema.",
+                lat: -23.550520,
+                lng: -46.633308,
+                date: new Date().toISOString()
+            };
+            atualizarAlerta(alertaTeste);
+        }
+
         // ============================================
         // FORMATAR DATA/HORA
         // ============================================
         
         function formatarData(dataString) {
             if (!dataString || dataString === '—') return '—';
-            if (dataString.match(/^\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}$/)) {
-                return dataString;
-            }
             try {
                 let data = new Date(dataString);
                 if (!isNaN(data.getTime())) {
@@ -610,20 +616,17 @@
         function atualizarAlerta(alerta) {
             console.log('🚨 NOVO ALERTA:', alerta);
             
-            // Atualizar UI
             alertSection.className = 'alert-section ativo';
             alertTitle.innerHTML = '🚨 ALERTA DE EMERGÊNCIA!';
             statusPill.className = 'status ativo';
             statusPill.textContent = '🔴 ALERTA ATIVO';
             
-            // Mostrar informações
             infoGrid.style.display = 'grid';
             document.getElementById('infoNome').textContent = alerta.name || 'Anônimo';
             document.getElementById('infoSit').textContent = alerta.situation || 'Emergência';
             document.getElementById('infoMsg').textContent = alerta.message || '—';
             document.getElementById('infoData').textContent = formatarData(alerta.date) || '—';
             
-            // Mapa
             if (alerta.lat && alerta.lng && alerta.lat !== 'null' && alerta.lng !== 'null' && alerta.lat !== '' && alerta.lng !== '') {
                 const lat = parseFloat(alerta.lat);
                 const lng = parseFloat(alerta.lng);
@@ -652,32 +655,37 @@
         }
 
         // ============================================
-        // BUSCAR ALERTAS
+        // BUSCAR ALERTAS DO LOCALSTORAGE
         // ============================================
         
-        async function buscarAlertas() {
+        function buscarAlertas() {
             try {
-                const resposta = await fetch('/history_json', {
-                    cache: 'no-store',
-                    headers: { 
-                        'Cache-Control': 'no-cache',
-                        'Pragma': 'no-cache'
-                    }
-                });
+                // Buscar alertas do localStorage (compartilhado entre as páginas)
+                const alertasSalvos = JSON.parse(localStorage.getItem('aurora_alertas') || '[]');
                 
-                const dados = await resposta.json();
-                
-                if (dados && dados.length > 0) {
-                    const ultimo = dados[0];
+                if (alertasSalvos && alertasSalvos.length > 0) {
+                    const ultimo = alertasSalvos[0];
                     if (ultimo.id !== ultimoAlertaId) {
                         ultimoAlertaId = ultimo.id;
                         atualizarAlerta(ultimo);
                     }
                 }
             } catch (erro) {
-                console.log('Erro:', erro);
+                console.log('Erro ao buscar alertas:', erro);
             }
         }
+
+        // ============================================
+        // SIMULAR RECEBIMENTO DE LOCALIZAÇÃO (para teste)
+        // ============================================
+        
+        // Adicionar listener para storage events (comunicação entre abas)
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'aurora_alertas') {
+                console.log('🔄 Novo alerta detectado via storage!');
+                buscarAlertas();
+            }
+        });
 
         // ============================================
         // INICIAR
