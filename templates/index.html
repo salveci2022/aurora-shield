@@ -1,115 +1,120 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aurora Mulher Segura</title>
-    <link rel="manifest" href="/manifest.json">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <style>
-        .center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background: radial-gradient(circle at top, #3a0057, #0a0015);
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(45deg, #7a00ff, #ff2fd4);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px #ff2fd4;
-        }
-        
-        .btn-secondary {
-            background: transparent;
-            color: white;
-            border: 2px solid #7a00ff;
-        }
-        
-        .btn-secondary:hover {
-            background: #7a00ff40;
-        }
-        
-        .logo-large {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .logo-large img {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 15px;
-            border-radius: 50%;
-            border: 3px solid #ff2fd4;
-            box-shadow: 0 0 20px #7a00ff;
-            object-fit: cover;
-        }
-        
-        .app-name {
-            font-size: 24px;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff2fd4, #7a00ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .tagline {
-            color: #b366ff;
-            margin-top: 5px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aurora Mulher Segura</title>
+
+<!-- Ícone do App -->
+<link rel="icon" href="/static/images/logo.png">
+<link rel="apple-touch-icon" href="/static/images/logo.png">
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+
+<!-- CSS -->
+<link rel="stylesheet" href="/static/css/style.css">
+
+<style>
+.center{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    background:radial-gradient(circle at top,#3a0057,#0a0015);
+}
+.btn{
+    width:100%;
+    padding:15px;
+    margin:10px 0;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+.btn-primary{
+    background:linear-gradient(45deg,#7a00ff,#ff2fd4);
+    color:#fff;
+}
+.btn-primary:hover{
+    transform:scale(1.02);
+    box-shadow:0 0 20px #ff2fd4;
+}
+.btn-secondary{
+    background:transparent;
+    color:#fff;
+    border:2px solid #7a00ff;
+}
+.btn-secondary:hover{
+    background:#7a00ff40;
+}
+.logo-large{
+    text-align:center;
+    margin-bottom:30px;
+}
+.logo-large img{
+    width:120px;
+    height:120px;
+    margin-bottom:15px;
+    border-radius:50%;
+    border:3px solid #ff2fd4;
+    box-shadow:0 0 20px #7a00ff;
+    object-fit:cover;
+}
+.app-name{
+    font-size:24px;
+    font-weight:bold;
+    background:linear-gradient(45deg,#ff2fd4,#7a00ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+.tagline{
+    color:#b366ff;
+    margin-top:5px;
+}
+</style>
 </head>
+
 <body>
-    <div class="center">
-        <div class="card" style="max-width: 400px;">
-            <div class="logo-large">
-                <img src="/images/logo.png" alt="Aurora Logo">
-                <div class="app-name">Aurora</div>
-                <div class="tagline">Mulher Segura</div>
-            </div>
-            
-            <p style="text-align: center; margin-bottom: 30px;">
-                Proteção feminina 24 horas<br>
-                <small style="opacity: 0.7;">Seu botão de emergência sempre à mão</small>
-            </p>
-            
-            <a href="/mulher" style="text-decoration: none;">
-                <button class="btn btn-primary">🚨 Entrar como Mulher</button>
-            </a>
-            
-            <a href="/confidant" style="text-decoration: none;">
-                <button class="btn btn-secondary">👥 Pessoa de Confiança</button>
-            </a>
-            
-            <hr style="margin: 20px 0; border-color: #7a00ff40;">
-            
-            <div style="text-align: center; font-size: 12px; opacity: 0.5;">
-                Em caso de emergência, toque no botão SOS
-            </div>
-        </div>
-    </div>
-    
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js');
-        }
-    </script>
+
+<div class="center">
+<div class="card" style="max-width:400px;">
+
+<div class="logo-large">
+<img src="/static/images/logo.png" alt="Aurora Logo">
+<div class="app-name">Aurora</div>
+<div class="tagline">Mulher Segura</div>
+</div>
+
+<p style="text-align:center;margin-bottom:30px;">
+Proteção feminina 24 horas<br>
+<small style="opacity:.7;">Seu botão de emergência sempre à mão</small>
+</p>
+
+<a href="/mulher">
+<button class="btn btn-primary">🚨 Entrar como Mulher</button>
+</a>
+
+<a href="/confidant">
+<button class="btn btn-secondary">👥 Pessoa de Confiança</button>
+</a>
+
+<hr style="margin:20px 0;border-color:#7a00ff40;">
+
+<div style="text-align:center;font-size:12px;opacity:.6;">
+Em caso de emergência, toque no botão SOS
+</div>
+
+</div>
+</div>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js");
+}
+</script>
+
 </body>
 </html>
