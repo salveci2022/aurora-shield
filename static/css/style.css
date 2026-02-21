@@ -1,107 +1,233 @@
-*{margin:0;padding:0;box-sizing:border-box}
+/* ============================
+   RESET & BASE
+============================ */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
 body{
-background:#050008;
-font-family:Arial,Helvetica,sans-serif;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
+    background:radial-gradient(circle at top,#3a0057,#0a0015);
+    font-family:Arial, sans-serif;
+    color:#fff;
+    min-height:100vh;
+    line-height:1.6;
 }
 
+/* ============================
+   CONTAINER
+============================ */
 .container{
-width:100%;
-max-width:420px;
-background:#0f0018;
-min-height:100vh;
-border-radius:20px;
-overflow:hidden;
+    max-width:500px;
+    margin:0 auto;
+    padding:20px;
 }
 
-.top-bar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px;
-background:black;
+/* ============================
+   HEADER
+============================ */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+    gap:10px;
 }
 
-.logo-area{
-display:flex;
-gap:10px;
-align-items:center;
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
-.logo-icon{
-width:40px;
-height:40px;
-background:#ff2fd4;
-border-radius:12px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:20px;
+.logo-circle{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:linear-gradient(45deg,#ff2fd4,#7a00ff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:bold;
+    box-shadow:0 0 20px #ff2fd4;
 }
 
-.logo-text{
-font-size:14px;
-color:#ff69b4;
+.title{
+    font-size:13px;
+    opacity:.8;
 }
 
-.logo-text small{
-font-size:10px;
-color:#aaa;
-}
-
-.top-btn{
-background:#222;
-color:white;
-border:none;
-padding:6px 10px;
-border-radius:12px;
-font-size:11px;
-}
-
-.top-btn.sair{
-background:#8b0000;
-}
-
-.main-content{
-padding:20px;
-text-align:center;
-}
-
-.main-title{
-color:#ff69b4;
-margin-bottom:20px;
-}
-
+/* ============================
+   CARD
+============================ */
 .card{
-background:#16001f;
-padding:20px;
-border-radius:20px;
+    background:rgba(20,0,34,.95);
+    backdrop-filter:blur(10px);
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 0 40px rgba(122,0,255,.35);
+    border:1px solid rgba(255,47,212,.25);
+    margin-bottom:20px;
 }
 
-input,textarea{
-width:100%;
-margin-bottom:10px;
-padding:12px;
-border-radius:10px;
-border:none;
-background:#222;
-color:white;
+/* ============================
+   AURORA BRAND
+============================ */
+.app-name{
+    font-size:36px;
+    font-weight:900;
+    letter-spacing:1px;
+    text-align:center;
+    background:linear-gradient(45deg,#ff2fd4,#7a00ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-.sos-button{
-margin-top:20px;
-width:220px;
-height:220px;
-border-radius:50%;
-background:red;
-border:4px solid #ff69b4;
-font-size:48px;
-color:white;
-font-weight:bold;
-box-shadow:0 0 40px red;
+.tagline{
+    font-size:16px;
+    text-align:center;
+    color:#b366ff;
+    margin-top:4px;
+}
+
+/* ============================
+   INPUTS
+============================ */
+input,
+textarea,
+select{
+    width:100%;
+    padding:12px 15px;
+    margin:8px 0 15px;
+    border:2px solid #7a00ff;
+    border-radius:10px;
+    background:rgba(10,0,21,.85);
+    color:#fff;
+    font-size:16px;
+    transition:.3s;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    outline:none;
+    border-color:#ff2fd4;
+    box-shadow:0 0 15px #ff2fd4;
+}
+
+input::placeholder,
+textarea::placeholder{
+    color:rgba(255,255,255,.5);
+}
+
+/* ============================
+   BUTTONS
+============================ */
+button,
+.btn{
+    background:linear-gradient(45deg,#7a00ff,#ff2fd4);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:12px 24px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+    text-decoration:none;
+    display:inline-block;
+}
+
+button:hover,
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 25px #ff2fd4;
+}
+
+button:active,
+.btn:active{
+    transform:translateY(0);
+}
+
+.btn-block{
+    width:100%;
+}
+
+/* ============================
+   TAGS
+============================ */
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:15px 0;
+}
+
+.tag{
+    padding:8px 16px;
+    border-radius:25px;
+    border:2px solid #7a00ff;
+    background:transparent;
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+    font-size:14px;
+}
+
+.tag:hover{
+    background:rgba(122,0,255,.3);
+}
+
+.tag.active{
+    background:#7a00ff;
+    border-color:#ff2fd4;
+}
+
+/* ============================
+   CHECKBOX
+============================ */
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:15px 0;
+}
+
+/* ============================
+   LINKS
+============================ */
+a{
+    color:#ff2fd4;
+    text-decoration:none;
+}
+
+a:hover{
+    color:#ff7bff;
+    text-decoration:underline;
+}
+
+/* ============================
+   UTILITIES
+============================ */
+.text-center{ text-align:center; }
+.mt-20{ margin-top:20px; }
+.mb-20{ margin-bottom:20px; }
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media(max-width:480px){
+    .container{ padding:10px; }
+    .card{ padding:18px; }
+    .logo-circle{
+        width:35px;
+        height:35px;
+        font-size:18px;
+    }
+    .app-name{
+        font-size:30px;
+    }
 }
