@@ -1,200 +1,233 @@
-/* Reset e base */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* ============================
+   RESET & BASE
+============================ */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
-    background: radial-gradient(circle at top, #3a0057, #0a0015);
-    font-family: 'Arial', sans-serif;
-    color: white;
-    min-height: 100vh;
-    line-height: 1.6;
+body{
+    background:radial-gradient(circle at top,#3a0057,#0a0015);
+    font-family:Arial, sans-serif;
+    color:#fff;
+    min-height:100vh;
+    line-height:1.6;
 }
 
-.container {
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
+/* ============================
+   CONTAINER
+============================ */
+.container{
+    max-width:500px;
+    margin:0 auto;
+    padding:20px;
 }
 
-/* Header */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-    gap: 10px;
+/* ============================
+   HEADER
+============================ */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+    gap:10px;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
-.logo-circle {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #ff2fd4, #7a00ff);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: bold;
-    box-shadow: 0 0 20px #ff2fd4;
+.logo-circle{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:linear-gradient(45deg,#ff2fd4,#7a00ff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    font-weight:bold;
+    box-shadow:0 0 20px #ff2fd4;
 }
 
-.title {
-    font-size: 13px;
-    opacity: 0.8;
+.title{
+    font-size:13px;
+    opacity:.8;
 }
 
-/* Cards */
-.card {
-    background: rgba(20, 0, 34, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 25px;
-    border-radius: 20px;
-    box-shadow: 0 0 40px rgba(122, 0, 255, 0.3);
-    border: 1px solid rgba(255, 47, 212, 0.2);
-    margin-bottom: 20px;
+/* ============================
+   CARD
+============================ */
+.card{
+    background:rgba(20,0,34,.95);
+    backdrop-filter:blur(10px);
+    padding:25px;
+    border-radius:20px;
+    box-shadow:0 0 40px rgba(122,0,255,.35);
+    border:1px solid rgba(255,47,212,.25);
+    margin-bottom:20px;
 }
 
-/* Formulários */
-input, textarea, select {
-    width: 100%;
-    padding: 12px 15px;
-    margin: 8px 0 15px;
-    border: 2px solid #7a00ff;
-    border-radius: 10px;
-    background: rgba(10, 0, 21, 0.8);
-    color: white;
-    font-size: 16px;
-    transition: 0.3s;
+/* ============================
+   AURORA BRAND
+============================ */
+.app-name{
+    font-size:36px;
+    font-weight:900;
+    letter-spacing:1px;
+    text-align:center;
+    background:linear-gradient(45deg,#ff2fd4,#7a00ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-input:focus, textarea:focus {
-    outline: none;
-    border-color: #ff2fd4;
-    box-shadow: 0 0 15px #ff2fd4;
+.tagline{
+    font-size:16px;
+    text-align:center;
+    color:#b366ff;
+    margin-top:4px;
 }
 
-input::placeholder, textarea::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+/* ============================
+   INPUTS
+============================ */
+input,
+textarea,
+select{
+    width:100%;
+    padding:12px 15px;
+    margin:8px 0 15px;
+    border:2px solid #7a00ff;
+    border-radius:10px;
+    background:rgba(10,0,21,.85);
+    color:#fff;
+    font-size:16px;
+    transition:.3s;
 }
 
-/* Botões */
-button, .btn {
-    background: #7a00ff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-decoration: none;
-    display: inline-block;
+input:focus,
+textarea:focus,
+select:focus{
+    outline:none;
+    border-color:#ff2fd4;
+    box-shadow:0 0 15px #ff2fd4;
 }
 
-button:hover, .btn:hover {
-    background: #9a40ff;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px #7a00ff;
+input::placeholder,
+textarea::placeholder{
+    color:rgba(255,255,255,.5);
 }
 
-button:active, .btn:active {
-    transform: translateY(0);
+/* ============================
+   BUTTONS
+============================ */
+button,
+.btn{
+    background:linear-gradient(45deg,#7a00ff,#ff2fd4);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:12px 24px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+    text-decoration:none;
+    display:inline-block;
 }
 
-.btn-block {
-    width: 100%;
+button:hover,
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 25px #ff2fd4;
 }
 
-/* Tags/situações */
-.tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 15px 0;
+button:active,
+.btn:active{
+    transform:translateY(0);
 }
 
-.tag {
-    padding: 8px 16px;
-    border-radius: 25px;
-    border: 2px solid #7a00ff;
-    background: transparent;
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 14px;
+.btn-block{
+    width:100%;
 }
 
-.tag:hover {
-    background: rgba(122, 0, 255, 0.3);
+/* ============================
+   TAGS
+============================ */
+.tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:15px 0;
 }
 
-.tag.active {
-    background: #7a00ff;
-    border-color: #ff2fd4;
+.tag{
+    padding:8px 16px;
+    border-radius:25px;
+    border:2px solid #7a00ff;
+    background:transparent;
+    color:#fff;
+    cursor:pointer;
+    transition:.3s;
+    font-size:14px;
 }
 
-/* Checkbox */
-.checkbox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 15px 0;
+.tag:hover{
+    background:rgba(122,0,255,.3);
 }
 
-.checkbox input[type="checkbox"] {
-    width: auto;
-    margin: 0;
+.tag.active{
+    background:#7a00ff;
+    border-color:#ff2fd4;
 }
 
-/* Links */
-a {
-    color: #ff2fd4;
-    text-decoration: none;
-    transition: 0.3s;
+/* ============================
+   CHECKBOX
+============================ */
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:15px 0;
 }
 
-a:hover {
-    color: #ff7bff;
-    text-decoration: underline;
+/* ============================
+   LINKS
+============================ */
+a{
+    color:#ff2fd4;
+    text-decoration:none;
 }
 
-/* Utilitários */
-.text-center {
-    text-align: center;
+a:hover{
+    color:#ff7bff;
+    text-decoration:underline;
 }
 
-.mt-20 {
-    margin-top: 20px;
-}
+/* ============================
+   UTILITIES
+============================ */
+.text-center{ text-align:center; }
+.mt-20{ margin-top:20px; }
+.mb-20{ margin-bottom:20px; }
 
-.mb-20 {
-    margin-bottom: 20px;
-}
-
-/* Responsividade */
-@media (max-width: 480px) {
-    .container {
-        padding: 10px;
+/* ============================
+   RESPONSIVE
+============================ */
+@media(max-width:480px){
+    .container{ padding:10px; }
+    .card{ padding:18px; }
+    .logo-circle{
+        width:35px;
+        height:35px;
+        font-size:18px;
     }
-    
-    .card {
-        padding: 15px;
-    }
-    
-    .logo-circle {
-        width: 35px;
-        height: 35px;
-        font-size: 18px;
+    .app-name{
+        font-size:30px;
     }
 }
